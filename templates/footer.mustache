@@ -1,0 +1,46 @@
+<footer class="amd-lms-footer">
+    <div class="amd-lms-footer-promo-card">
+        <div class="amd-lms-footer-promo-card__content">
+            <h1>{{jumbotron.heading}}</h1>
+            <p>{{jumbotron.desc}}</p>
+        </div>
+        <a href="{{jumbotron.btnlink}}" class="amd-lms-footer-promo-card__button">
+            {{jumbotron.btntext}} <i class="ri-arrow-right-line"></i>
+        </a>
+    </div>
+
+    <div class="amd-lms-footer-main">
+        <div class="amd-lms-footer-container">
+            <div class="amd-lms-footer-main__top-grid">
+                <div class="amd-lms-footer-main__column">
+                    <h2>Quick Links</h2>
+                    <ul>
+                        <li><a href="{{{config.wwwroot}}}">Homepage</a></li>
+                        <li><a href="#">Courses</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="amd-lms-footer-main__column">
+                    <h2>Contact & Legal</h2>
+                    <ul>
+                        <li><a href="mailto:support@lms.com">support@lms.com</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+                <div class="amd-lms-footer-main__column">
+                    <h2>Join the Conversation – Let's Connect!</h2>
+                    <div class="amd-lms-topbar-social d-flex align-items-center gap-3">
+                       {{#setting.facebook}}<a href="{{{setting.facebook}}}" aria-label="Facebook" target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a>{{/setting.facebook}}
+                {{#setting.twitter}}<a href="{{{setting.twitter}}}" aria-label="Twitter" target="_blank" rel="noopener"><i class="fab fa-twitter"></i></a>{{/setting.twitter}}
+                {{#setting.instagram}}<a href="{{{setting.instagram}}}" aria-label="Instagram" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>{{/setting.instagram}}
+                {{#setting.linkedin}}<a href="{{{setting.linkedin}}}" aria-label="LinkedIn" target="_blank" rel="noopener"><i class="fab fa-linkedin-in"></i></a>{{/setting.linkedin}}
+                    </div>
+                </div>
+            </div>
+            <div class="amd-lms-footer-main__bottom">
+                <p>Copyright © {{{year}}} | Privacy Policy</p>
+            </div>
+        </div>
+    </div>
+</footer>

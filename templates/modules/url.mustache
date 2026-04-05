@@ -1,0 +1,15 @@
+<div class="amd-module-url">
+    {{#urlintro}}<div class="mb-3">{{{urlintro}}}</div>{{/urlintro}}
+    {{#isyoutube}}
+    <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;">
+        <iframe style="position:absolute;top:0;left:0;width:100%;height:100%;"
+            src="https://www.youtube.com/embed/{{youtubeid}}"
+            frameborder="0" allowfullscreen></iframe>
+    </div>
+    {{/isyoutube}}
+    {{#isexternalurl}}
+    <a href="{{externalurl}}" class="amd-lms-btn-register" target="_blank">
+        <i class="bi bi-link-45deg me-2"></i> Open Link
+    </a>
+    {{/isexternalurl}}
+</div>

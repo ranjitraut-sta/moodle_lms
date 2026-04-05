@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html {{ bodyattributes }}>
+<head>
+    <title>{{{ output.page_title }}}</title>
+    {{{ output.standard_head_html }}}
+</head>
+<body>
+    {{{ output.standard_top_of_body_html }}}
+
+    <div id="page-content" class="container-fluid">
+        <!-- Main content -->
+        <div id="region-main-box">
+            <div id="region-main-wrap">
+                <div id="region-main">
+                    {{{ main_content }}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{{ output.standard_end_of_body_html }}}
+</body>
+</html>

@@ -1,0 +1,964 @@
+/* --- Import Google Fonts --- */
+@import url('https://fonts.googleapis.com/css2?family=Literata:wght@400;700&family=Baskerville:wght@400;700&family=Roboto:wght@400;700&display=swap');
+
+/* ======================================================
+       ROOT THEME COLORS
+    ====================================================== */
+/* Theme V1 */
+:root {
+    /* Fonts */
+    --amd-font-family: 'BoldItalic';
+    --amd-tittle-font-family: 'BlackItalic';
+
+    /* Background */
+    --amd-body-bg: #ffffff;
+
+    /* Primary colors replaced with your colors */
+    --amd-primary: #00ff00;
+    /* Grassy Green */
+    --amd-primary-light: color-mix(in oklch, #9bc400 10%, white);
+    --amd-fade-primary: color-mix(in oklch, #9bc400 12%, transparent);
+
+    /* Secondary colors replaced */
+    --amd-secondary: #4D47C3;
+    /* Purple Mountains Majesty */
+    --amd-secondary-light: color-mix(in oklch, #8076a3 17%, white);
+    --amd-fade-secondary: color-mix(in oklch, #8076a3 30%, transparent);
+
+    /* Dark and light */
+    --amd-dark: #231d29;
+    /* Factory Stone Purple */
+    --amd-dark-light: color-mix(in oklch, #7c677f 40%, white);
+    --amd-light: #ffffff;
+    /* Misty Mountain Pink */
+    --amd-border: #d1d5db;
+    --amd-badge: #b42809;
+    --amd-muted: #6C757D;
+    /* Grayish */
+    /* Navbar specific */
+    --amd-navbar-top-bg: #434343;
+    --amd-navbar-top-text: #fbfbfb;
+    --amd-navbar-top-border: #acabab;
+    --amd-navbar-top-icon-color: #fbfbfb;
+    --amd-navbar-top-icon-bg: #e4e4e470;
+    --amd-nav-menu-bg: #ffffff;
+    --amd-nav-menu-text: #171717;
+    --amd-nav-menu-text-light: #fbfbfb;
+}
+
+/* Montserrat Regular */
+@font-face {
+    font-family: 'Italic';
+    src: url('../fonts/Lato-Italic.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Montserrat Bold */
+@font-face {
+    font-family: 'BoldItalic';
+
+    src: url('../fonts/Lato-BoldItalic.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Open Sans Regular */
+@font-face {
+    font-family: 'BlackItalic';
+    src: url('../fonts/Lato-BlackItalic.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Open Sans Bold */
+@font-face {
+    font-family: 'Bold';
+    src: url('../fonts/Lato-Bold.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Apply fonts */
+
+
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background: #F8F8FA;
+    color: #eaf3ff;
+    font-family: var(--amd-font-family);
+
+}
+
+/* amd-Lms btns */
+
+a {
+    text-decoration: none;
+    list-style: none;
+}
+
+/* Next/Prev/Review buttons */
+.amd-lms-btn {
+    position: relative;
+    display: inline-block;
+    padding: 6px 13px;
+    border-bottom: 2px solid var(--amd-secondary);
+    /* Tumhara orange color */
+    text-transform: uppercase;
+    color: var(--amd-muted);
+    text-decoration: none;
+    font-weight: 400;
+    font-size: 16px;
+    transition: 0.3s;
+    background-color: transparent;
+    cursor: pointer;
+    overflow: hidden;
+    user-select: none;
+}
+
+.amd-lms-btn::before {
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    width: calc(100% + 6px);
+    height: calc(100% + 2px);
+    background-color: var(--amd-fade-secondary);
+
+    transition: 0.3s ease-out;
+    transform: scaleY(1);
+    /* border-radius: 8px; */
+    z-index: 1;
+}
+
+.amd-lms-btn::after {
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    width: calc(100% + 4px);
+    height: calc(100% - 50px);
+    background-color: var(--amd-fade-primary);
+    transition: 0.3s ease-out;
+    transform: scaleY(1);
+    border-radius: 8px;
+    z-index: 1;
+}
+
+.amd-lms-btn:hover::before {
+    transform: translateY(-25px);
+    height: 0;
+}
+
+.amd-lms-btn:hover::after {
+    transform: scaleX(0);
+    transition-delay: 0.15s;
+}
+
+.amd-lms-btn:hover {
+    border: 2px solid var(--amd-secondary);
+    color: var(--amd-dark);
+}
+
+.amd-lms-btn .amd-lms-text,
+.amd-lms-btn .amd-lms-icon {
+    position: relative;
+    z-index: 2;
+    background-color: transparent;
+    border: none;
+    user-select: none;
+}
+
+@media (max-width: 768px) {
+    .amd-lms-btn {
+        font-size: 13px;
+        padding: 3px 7px;
+    }
+}
+
+@media (max-width: 480px) {
+    .amd-lms-btn {
+        font-size: 11px;
+        padding: 2px 5px;
+    }
+}
+
+/* amd-Lms btn end */
+
+
+/* custom tooltip lms  */
+/* Cursor and scale effect */
+.amd-lms-tooltip {
+    cursor: pointer;
+    transition: transform 0.15s ease;
+}
+
+.amd-lms-tooltip:hover,
+.amd-lms-tooltip:focus {
+    transform: scale(1.05);
+}
+
+/* Override Bootstrap tooltip inner style */
+.tooltip-inner {
+    background-color: rgba(15, 23, 42, 0.95) !important;
+    color: #fff !important;
+    font-size: 13px !important;
+    padding: 7px 12px !important;
+    border-radius: 8px !important;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35) !important;
+    max-width: none !important;
+    white-space: nowrap !important;
+}
+
+/* Customize tooltip arrow */
+.tooltip-arrow::before {
+    border-top-color: rgba(15, 23, 42, 0.95) !important;
+}
+
+/* custom tooltip end */
+
+.amd-app-wrap {
+    display: flex;
+    min-height: 100vh;
+    /* overflow: hidden;  <-- comment karo */
+}
+
+.amdcoursesidebar {
+    width: 320px;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    overflow-y: hidden;
+    overflow: hidden;
+    background: #fff;
+    border-right: 1px solid rgb(201 201 201 / 44%);
+    padding: 20px 0;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Icon Styling */
+.amd-lms-sidebar-toggle i {
+    font-size: 20px;
+    line-height: 1;
+
+}
+
+#amdcoursesidebarToggle {
+    color: var(--amd-secondary);
+    border-radius: 0 !important;
+    font-size: 20px;
+
+    background: var(--amd-secondary-light);
+
+}
+
+.amdcoursesidebar.collapsed {
+    width: 0px;
+}
+
+/* amd-course-brand */
+.amd-course-brand {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 12px;
+    padding: 0 10px;
+    white-space: nowrap;
+    position: relative;
+}
+
+.logo {
+    width: 44px;
+    height: 44px;
+    /* border-radius: 10px; */
+    border: 2px solid var(--amd-primary-light);
+    background: linear-gradient(135deg, #6558ab, #0e1aa9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 22px;
+    user-select: none;
+    color: white;
+    flex-shrink: 0;
+}
+
+.amd-course-brand-text {
+    font-family: var(--amd-tittle-font-family);
+    color: var(--amd-dark);
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 700;
+    font-size: 18px;
+    transition: opacity 0.2s ease, transform 0.2s ease, width 0.2s ease;
+    opacity: 1;
+    transform: translateX(0);
+    white-space: nowrap;
+}
+
+.amdcoursesidebar.collapsed .amd-course-brand-text {
+
+    opacity: 0;
+    pointer-events: none;
+    user-select: none;
+    transform: translateX(-10px);
+    width: 0;
+    overflow: hidden;
+    display: inline-block;
+}
+
+/* 
+.amdcoursesidebar.collapsed:hover .amd-course-brand-text {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transform: translateX(0) !important;
+    width: auto !important;
+    position: absolute;
+    left: 72px;
+    top: 12px;
+    background: #0a1229cc;
+    padding: 6px 12px;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.8);
+    white-space: nowrap;
+    z-index: 100;
+} */
+
+/* amdcoursesidebar inner scrollable */
+.amdcoursesidebar-inner {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+    margin-top: 8px;
+    user-select: none;
+    scroll-behavior: smooth;
+}
+
+/* Accordion style */
+.amd-course-chapter {
+    margin-bottom: 10px;
+    /* border-radius: 5px; */
+    background: var(--amd-secondary-light);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    overflow: hidden;
+}
+
+.amd-course-chapter-header {
+    padding: 12px 16px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--amd-dark);
+    user-select: none;
+    transition: background 0.3s ease;
+    position: relative;
+}
+
+.amd-course-chapter-header:hover {
+    background: var(--amd-fade-secondary);
+}
+
+.amdcoursesidebar.collapsed .amd-course-chapter-header {
+    justify-content: center;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.amdcoursesidebar.collapsed .amd-course-chapter-header .text-label {
+    opacity: 0;
+    pointer-events: none;
+    user-select: none;
+    transform: translateX(-10px);
+    width: 0;
+    overflow: hidden;
+    display: inline-block;
+    transition: opacity 0.2s ease, transform 0.2s ease, width 0.2s ease;
+}
+
+.amdcoursesidebar.collapsed:hover .amd-course-chapter-header .text-label {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    user-select: auto !important;
+    transform: translateX(0) !important;
+    width: auto !important;
+    position: absolute;
+    left: 72px;
+    top: 12px;
+    background: #0a1229cc;
+    padding: 6px 12px;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.8);
+    white-space: nowrap;
+    z-index: 100;
+}
+
+.amd-course-chapter-header.expanded i {
+    transform: rotate(180deg);
+    transition: transform 0.3s ease;
+}
+
+.amd-course-chapter-header.collapsed i {
+    transform: rotate(0deg);
+    transition: transform 0.3s ease;
+}
+
+.amd-course-chapter-header i {
+    flex-shrink: 0;
+    font-size: 20px;
+    color: var(--amd-dark);
+    transition: transform 0.3s ease;
+}
+
+.amd-course-chapter-header .number {
+    font-weight: 600;
+    margin-right: 8px;
+    color: var(--amd-dark);
+    flex-shrink: 0;
+}
+
+.amd-course-lessons-list {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+    font-size: 13px;
+    padding-left: 16px;
+}
+
+.amd-course-lessons-list.expanded {
+    max-height: 800px;
+    overflow: auto;
+    transition: max-height 0.3s ease;
+}
+
+.amdcoursesidebar.collapsed .amd-course-lessons-list.expanded {
+    max-height: 0 !important;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.lesson {
+    padding: 7px 10px;
+    /* border-radius: 5px; */
+    margin-bottom: 8px;
+    color: var(--amd-muted);
+    cursor: pointer;
+    display: flex;
+    /* space-between se flex-start me change karenge for wrapping */
+    justify-content: flex-start;
+    align-items: center;
+    user-select: none;
+    transition: background 0.1s ease;
+    position: relative;
+    padding-right: 30px;
+    /* space for the tick */
+}
+
+.lesson:hover {
+    background: rgba(189, 189, 189, 0.03);
+    color: var(--amd-secondary);
+}
+
+.lesson.active {
+    background: linear-gradient(90deg, #00000000, var(--amd-secondary));
+    color: var(--amd-light);
+    font-weight: 700;
+}
+
+.amd-course-sidebar-icon {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    /* color: var(--amd-secondary); */
+    font-size: 1rem;
+}
+
+.lesson .meta {
+    font-size: 12px;
+    /* color: var(--amd-dark); */
+    white-space: nowrap;
+    margin-left: 6px;
+    flex-shrink: 0;
+    /* prevent shrinking */
+    width: 40px;
+    /* fixed width */
+    text-align: right;
+}
+
+.amdcoursesidebar.collapsed .lesson {
+    justify-content: center;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.amdcoursesidebar.collapsed .lesson .meta,
+.amdcoursesidebar.collapsed .lesson .text-label {
+    opacity: 0;
+    pointer-events: none;
+    user-select: none;
+    transform: translateX(-10px);
+    width: 0;
+    overflow: hidden;
+    display: inline-block;
+    transition: opacity 0s ease, transform 0s ease, width 0.2s ease;
+}
+
+.amdcoursesidebar.collapsed:hover .lesson .text-label {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    user-select: auto !important;
+    transform: translateX(0) !important;
+    width: auto !important;
+    position: absolute;
+    left: 72px;
+    background: #0a1229cc;
+    padding: 6px 12px;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.8);
+    white-space: nowrap;
+    z-index: 100;
+    top: 50%;
+    transform: translateY(-50%) translateX(0) !important;
+}
+
+.lesson .number {
+    font-weight: 600;
+    margin-right: 8px;
+    color: var(--amd-dark);
+    flex-shrink: 0;
+    width: 40px;
+    /* fixed width to align numbers */
+}
+
+/* New rule for .text-label to wrap text */
+.lesson .text-label {
+    color: var(--amd-dark);
+    flex: 1 1 auto;
+    /* allow to grow and shrink */
+    white-space: normal;
+    /* allow wrapping */
+    word-break: break-word;
+    /* break long words */
+}
+
+/* MAIN CONTENT */
+.amd-course-content {
+    flex: 1;
+    overflow-y: auto;
+    height: 100vh;
+    padding: 15px;
+}
+
+
+.amd-course-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 0 9px 0px 36px;
+    flex-wrap: wrap;
+}
+
+.amd-course-header h1 {
+    font-family: var(--amd-tittle-font-family);
+    font-size: 30px;
+    margin: 0;
+    font-weight: 700;
+    color: var(--amd-dark);
+}
+
+
+.amd-course-content-description-icon {
+    font-size: 1.4rem;
+    color: var(--amd-secondary);
+}
+
+@media (max-width: 768px) {
+    .amd-course-header h1 {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .amd-course-header h1 {
+        font-size: 18px;
+    }
+}
+
+.amd-course-tag {
+    font-size: 12px;
+    padding: 4px 8px;
+    border: 1px solid var(--amd-muted);
+    border-radius: 999px;
+    color: var(--amd-dark);
+    user-select: none;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Video & progress */
+.amd-lesson-video-area {
+    position: relative;
+    margin-top: 20px;
+    padding: 12px 0 0 0;
+    /* overflow: hidden; */
+    border-radius: 5px;
+    background: #FFFFFF;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.amd-lesson-top-progress {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 0px 30px 13px;
+    user-select: none;
+}
+
+.amd-lesson-head-sticky {
+    position: sticky;
+    padding: 10px 0;
+    top: -12px;
+    z-index: 10;
+    background: #fff;
+    /* apne theme ke hisab se change kar lena */
+
+}
+
+.amd-course-progress-wrap {
+    flex: 1;
+    margin-right: 0px;
+    position: relative;
+    /* Yeh zaroori hai taaki percenamd-course-tage absolute position me aaye */
+}
+
+.amd-course-progress-bar-track {
+    height: 13px;
+    border-radius: 997px;
+    background: linear-gradient(90deg, var(--amd-fade-secondary));
+    padding: 3px;
+    position: relative;
+}
+
+.amd-course-progress-bar-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: green;
+    width: 15%;
+    transition: width 0.35s ease;
+}
+
+/* Percenamd-course-tage text ko progress bar ke upar right side me dikhana */
+.amd-course-tage {
+    position: absolute;
+    top: -3px;
+    right: 0px;
+    font-size: 14px;
+    font-weight: 600;
+    color: green;
+    user-select: none;
+}
+
+.amd-course-prog-label {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--amd-muted);
+    white-space: nowrap;
+    user-select: none;
+}
+
+.small-muted {
+    color: var(--amd-muted);
+    font-size: 13px;
+    user-select: none;
+}
+
+/* course video full screen play */
+.amd-course-video-fullscreen-btn {
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.6);
+    border: none;
+    color: white;
+    padding: 0px 3px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+@media (max-width:768px) {
+    .amd-course-prog-label {
+        font-size: 10px;
+    }
+
+    .amd-course-progress-bar-track {
+        height: 10px;
+    }
+}
+
+.amd-main-container {
+    padding: 20px 25px;
+    color: var(--amd-dark);
+}
+
+/***************** missing css inner1 and inner2 
+
+
+
+
+*******************/
+
+
+
+
+
+/* Scrollbar for amdcoursesidebar */
+.amdcoursesidebar-inner::-webkit-scrollbar {
+    width: 8px;
+}
+
+.amdcoursesidebar-inner::-webkit-scrollbar-thumb {
+    background: var(--amd-dark);
+
+}
+
+.amdcoursesidebarOpenBtn {
+    position: fixed;
+    top: 13px;
+    left: 1px;
+    height: 41px;
+    width: 48px;
+    background: var(--amd-secondary);
+    border: none;
+    border-radius: 0 !important;
+
+    color: var(--amd-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 2000;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 8px;
+}
+
+.amdcoursesidebarOpenBtn i {
+    font-size: 40px;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+    .amdcoursesidebar {
+        width: 320px;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        /* By default visible */
+        transition: left 0.3s ease;
+        z-index: 1000;
+    }
+
+    .amdcoursesidebar.collapsed {
+        left: -250px;
+        /* Hide amdcoursesidebar */
+    }
+
+    .amdcoursesidebarOpenBtn {
+        display: none;
+        /* initially hidden */
+        position: fixed;
+        top: 12px;
+        left: 0px;
+        height: 46px;
+        width: 40px;
+        z-index: 1100;
+    }
+
+    .amdcoursesidebarOpenBtn i {
+        font-size: 29px;
+    }
+
+    /* Show open button only if amdcoursesidebar is collapsed */
+    .amdcoursesidebar.collapsed+.amdcoursesidebarOpenBtn {
+        display: flex !important;
+    }
+}
+
+.amd-course-fab-toggle {
+    position: fixed;
+    right: 1.5rem;
+    bottom: 1.5rem;
+    z-index: 190;
+}
+
+.amd-course-fab-toggle .btn {
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    font-size: 1.5rem;
+    background: var(--amd-secondary);
+    color: var(--amd-light);
+}
+
+.amd-course-fab-toggle .btn:hover {
+    color: var(--amd-light) !important;
+}
+
+@media (max-width: 768px) {
+    .amd-course-fab-toggle .btn {
+        width: 43px;
+        height: 43px;
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .amd-course-fab-toggle .btn {
+        width: 36px;
+        height: 36px;
+        font-size: 0.7rem;
+    }
+}
+
+.amd-course-right-canvas {
+    position: fixed;
+    top: 0;
+    right: -400px;
+    width: 100%;
+    max-width: 360px;
+    height: 100%;
+    backdrop-filter: blur(10px) saturate(180%);
+    background-color: var(--amd-fade-secondary);
+    color: var(--amd-dark);
+    z-index: 200;
+    transition: right 0.3s ease;
+    padding: 1.5rem;
+    border-left: 1px solid var(--bg-light);
+}
+
+.amd-course-right-canvas ul li a {
+    color: var(--amd-dark-light);
+    text-decoration: none;
+}
+
+.amd-course-right-canvas.show {
+    right: 0;
+}
+
+/* Responsive & Utility */
+.amd-course-app-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 180;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s;
+}
+
+.amd-course-app-backdrop.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+
+
+/*  */
+
+/* Locked lesson in sidebar */
+.amd-lesson-locked {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+
+
+
+/* custom */
+
+
+/* folder module */
+.amd-folder-filelist {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.amd-folder-file-item {
+    border: 1px solid var(--amd-border);
+    border-radius: 4px;
+    transition: background 0.2s ease;
+}
+.amd-folder-file-item:hover {
+    background: var(--amd-fade-secondary);
+}
+.amd-folder-file-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    text-decoration: none;
+    color: var(--amd-dark);
+    font-size: 0.95rem;
+}
+.amd-folder-file-link i {
+    font-size: 1.3rem;
+}
+/* folder module end */
+
+/* customcert module */
+.amd-module-customcert {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+}
+.amd-cert-wrap {
+    text-align: center;
+    padding: 3rem;
+    border: 2px solid #f6c90e;
+    border-radius: 8px;
+    max-width: 480px;
+    background: linear-gradient(135deg, #fffdf0, #fff8d6);
+}
+.amd-cert-icon {
+    font-size: 4rem;
+    color: #f6c90e;
+    margin-bottom: 1rem;
+}
+.amd-cert-wrap h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+}
+.amd-cert-wrap p {
+    color: #666;
+    margin-bottom: 1.5rem;
+}
+/* customcert module end */
+

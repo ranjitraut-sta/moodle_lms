@@ -1,0 +1,62 @@
+<section class="amd-lms-breadcum-section">
+    <div class="amd-lms-breadcum-section__content">
+        <nav aria-label="breadcrumb">
+            <ol class="amd-lms-breadcum-nav">
+                <li class="amd-lms-breadcum-nav__item"><a href="{{wwwroot}}">Home</a></li>
+                <span>/</span>
+                <li class="amd-lms-breadcum-nav__item amd-lms-breadcum-nav__item--active" aria-current="page">
+                    <span>Course List</span>
+                </li>
+            </ol>
+        </nav>
+    </div>
+</section>
+
+<main class="amd-lms-course-list-container">
+    <div class="amd-lms-course-list-topbar">
+        <div class="amd-lms-course-list-topbar__title">
+            <h1>All Courses</h1>
+            <span>{{totalcourses}} courses found</span>
+        </div>
+        <div class="amd-lms-course-list-topbar__controls">
+            <select name="filter" id="filter-select" onchange="window.location.href='{{wwwroot}}theme/mytheme/pages/courselist.php?category='+this.value">
+                <option value="">Filter by: All Categories</option>
+                {{#categories}}
+                <option value="{{id}}" {{#selected}}selected{{/selected}}>{{name}}</option>
+                {{/categories}}
+            </select>
+            <div class="amd-lms-course-list-view-switcher" id="amd-lms-course-list-view-switcher">
+                <button class="active" data-columns="4" aria-label="4 columns"><i class="ri-function-line"></i></button>
+                <button data-columns="3" aria-label="3 columns"><i class="ri-layout-grid-line"></i></button>
+                <button data-columns="2" aria-label="2 columns"><i class="ri-layout-4-line"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="amd-lms-course-list-grid" id="amd-lms-course-list-grid">
+        {{#courses}}
+        <a href="{{url}}" class="amd-lms-course-list-card">
+            <div class="amd-lms-course-list-card__image-wrapper">
+                <img src="{{image}}" alt="{{fullname}}" class="amd-lms-course-list-card__image">
+            </div>
+            <div class="amd-lms-course-list-card__content">
+                <span class="amd-lms-course-list-card__category">{{category}}</span>
+                <h3 class="amd-lms-course-list-card__title">{{fullname}}</h3>
+                <div class="amd-lms-course-list-card__meta">
+                    <span><i class="ri-group-line"></i> Students: {{enrolledcount}}</span>
+                </div>
+                {{#teachername}}
+                <div class="amd-lms-course-list-card__author">
+                    <span>Prof: {{teachername}}</span>
+                </div>
+                {{/teachername}}
+            </div>
+        </a>
+        {{/courses}}
+        {{^courses}}
+        <div class="col-12 text-center py-5">
+            <p>No courses found.</p>
+        </div>
+        {{/courses}}
+    </div>
+</main>

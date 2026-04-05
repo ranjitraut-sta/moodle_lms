@@ -1,0 +1,179 @@
+<div class="amd-app-wrap" role="application">
+    {{! Left Sidebar }}
+    <nav class="amdcoursesidebar" id="amdcoursesidebar" aria-label="Course navigation" role="navigation" tabindex="0">
+        <div class="amd-course-brand" tabindex="0" aria-label="Course title">
+            <a href="{{wwwroot}}" class="logo amd-lms-tooltip" aria-hidden="true" data-bs-toggle="tooltip"
+                data-bs-placement="right" title="Home">
+                <i class="fas fa-home"></i>
+            </a>
+            <div class="amd-course-brand-text">{{coursename}}</div>
+            <button id="amdcoursesidebarToggle" aria-label="Collapse sidebar" aria-expanded="true"
+                class="btn btn-sm btn-outline-light ms-auto amd-lms-tooltip" data-bs-toggle="tooltip"
+                data-bs-placement="left" title="Close sidebar">
+                <i class="ri-arrow-left-s-line"></i>
+            </button>
+        </div>
+
+        <div class="amdcoursesidebar-inner" tabindex="0">
+            {{#sections}}
+            <section class="amd-course-chapter">
+                <div class="amd-course-chapter-header expanded" aria-expanded="true" role="button" tabindex="0">
+                    <span class="text-label">{{name}}</span>
+                    <i class="ri-arrow-down-s-line"></i>
+                </div>
+                <ul class="amd-course-lessons-list expanded">
+                    {{#modules}}
+                    <a href="{{url}}" class="lesson {{#active}}active{{/active}} {{#locked}}amd-lesson-locked{{/locked}}" tabindex="0" title="{{name}}">
+                        <span class="number"><i class="bi bi-{{icon}}"></i></span>
+                        <span class="text-label">{{name}}</span>
+                        {{#completed}}
+                        <i class="fa fa-check amd-course-sidebar-icon" aria-hidden="true"></i>
+                        {{/completed}}
+                        {{^completed}}
+                        {{#locked}}
+                        <i class="fa fa-lock amd-course-sidebar-icon" aria-hidden="true"></i>
+                        {{/locked}}
+                        {{^locked}}
+                        {{#active}}
+                        <i class="fa-solid fa-lock-open amd-course-sidebar-icon"></i>
+                        {{/active}}
+                        {{^active}}
+                        <i class="fa fa-lock-open amd-course-sidebar-icon" aria-hidden="true"></i>
+                        {{/active}}
+                        {{/locked}}
+                        {{/completed}}
+                    </a>
+                    {{/modules}}
+                </ul>
+            </section>
+            {{/sections}}
+        </div>
+    </nav>
+
+    {{! Sidebar open button (shown when collapsed) }}
+    <button class="amdcoursesidebarOpenBtn btn btn-outline-secondary amd-lms-tooltip" id="amdcoursesidebarOpenBtn"
+        data-bs-toggle="tooltip" data-bs-placement="right" title="Open Sidebar">
+        <i class="ri-graduation-cap-line"></i>
+    </button>
+
+    {{! Main Content }}
+    <main class="amd-course-content main-content" role="main">
+
+        <header class="amd-course-header" aria-label="Course details">
+            <div class="d-flex align-items-center gap-2">
+                <h1>{{coursename}}</h1>
+                <i class="fas fa-info-circle amd-course-content-description-icon" role="button" id="lessonInfoBtn"
+                    data-bs-placement="right" title="View lesson description"
+                    data-bs-toggle="offcanvas" data-bs-target="#lessonInfoCanvas"></i>
+            </div>
+            <div>
+                <span class="amd-course-tag mx-1 amd-lms-tooltip" title="Back to Course" data-bs-toggle="tooltip"
+                    data-bs-placement="left">
+                    <a href="{{courseurl}}"><i class="fas fa-arrow-left"></i> Back to Course</a>
+                </span>
+                <span class="amd-course-tag">{{category}}</span>
+            </div>
+        </header>
+
+        {{! Lesson description offcanvas }}
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="lessonInfoCanvas">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title">{{modulename}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+            </div>
+            <div class="offcanvas-body">
+                {{> theme_mytheme/module_content }}
+            </div>
+        </div>
+
+        <div class="amd-lesson-video-area" aria-label="Lesson content area" tabindex="0">
+
+            {{! Progress bar }}
+            <div class="amd-lesson-top-progress">
+                <div class="amd-course-progress-wrap" aria-live="polite" aria-atomic="true">
+                    <div class="amd-course-prog-label" id="progLabel">{{modulename}}</div>
+                    <div class="amd-course-progress-bar-track" role="progressbar" aria-valuemin="0"
+                        aria-valuemax="100" aria-label="Course progress">
+                        <div class="amd-course-progress-bar-fill" id="progFill" style="width: 0%;"></div>
+                    </div>
+                </div>
+                {{#ismanualcompletion}}
+                <a href="{{toggleurl}}" class="amd-lms-btn ms-3 {{#ismarkedcomplete}}amd-lms-prev-btn{{/ismarkedcomplete}}{{^ismarkedcomplete}}amd-lms-next-btn{{/ismarkedcomplete}}" style="white-space:nowrap;">
+                    {{#ismarkedcomplete}}
+                    <span class="amd-lms-icon"><i class="fa-solid fa-circle-check"></i></span>
+                    <span class="amd-lms-text">Completed</span>
+                    {{/ismarkedcomplete}}
+                    {{^ismarkedcomplete}}
+                    <span class="amd-lms-icon"><i class="fa-regular fa-circle"></i></span>
+                    <span class="amd-lms-text">Mark as done</span>
+                    {{/ismarkedcomplete}}
+                </a>
+                {{/ismanualcompletion}}
+            </div>
+
+              {{!  lesson detail attach  }}
+            <div class="amd-main-container">
+                {{> theme_mytheme/module_content }}
+            </div>
+
+        </div>
+
+        {{! Prev / Next navigation }}
+        <div class="container">
+            <div class="amd-lms-btns-wrap d-flex justify-content-center align-items-center mt-4 gap-4" role="group"
+                aria-label="Lesson navigation buttons">
+
+                {{#prevmodule}}
+                <a href="{{prevmodule.url}}" class="amd-lms-btn amd-lms-prev-btn" aria-label="Previous lesson"
+                    title="{{prevmodule.name}}">
+                    <span class="amd-lms-icon"><i class="fa-solid fa-arrow-left"></i></span>
+                    <span class="amd-lms-text">Previous</span>
+                </a>
+                {{/prevmodule}}
+
+                {{#nextmodule}}
+                {{^islastlesson}}
+                {{#nextmodule.locked}}
+                <button class="amd-lms-btn amd-lms-next-btn" disabled title="Complete this lesson first">
+                    <span class="amd-lms-text">Next</span>
+                    <span class="amd-lms-icon"><i class="fa-solid fa-lock"></i></span>
+                </button>
+                {{/nextmodule.locked}}
+                {{^nextmodule.locked}}
+                <a href="{{nextmodule.url}}" class="amd-lms-btn amd-lms-next-btn" aria-label="Next lesson"
+                    title="{{nextmodule.name}}">
+                    <span class="amd-lms-text">Next</span>
+                    <span class="amd-lms-icon"><i class="fa-solid fa-arrow-right"></i></span>
+                </a>
+                {{/nextmodule.locked}}
+                {{/islastlesson}}
+                {{/nextmodule}}
+
+                {{#islastlesson}}
+                {{^iscompleted}}
+                {{#nextmodule.locked}}
+                <button class="amd-lms-btn amd-lms-next-btn" disabled title="Complete this lesson first">
+                    <span class="amd-lms-text">Finish Course</span>
+                    <span class="amd-lms-icon"><i class="fa-solid fa-lock"></i></span>
+                </button>
+                {{/nextmodule.locked}}
+                {{^nextmodule.locked}}
+                <a href="{{nextmodule.url}}" class="amd-lms-btn amd-lms-next-btn" aria-label="Course complete">
+                    <span class="amd-lms-text">Finish Course</span>
+                    <span class="amd-lms-icon"><i class="fa-solid fa-check"></i></span>
+                </a>
+                {{/nextmodule.locked}}
+                {{/iscompleted}}
+                {{/islastlesson}}
+
+                {{#iscompleted}}{{#certurl}}
+                <a href="{{certurl}}" target="_blank" class="amd-lms-btn amd-lms-next-btn" aria-label="View certificate">
+                    <span class="amd-lms-text">View Certificate</span>
+                    <span class="amd-lms-icon"><i class="fa-solid fa-certificate"></i></span>
+                </a>
+                {{/certurl}}{{/iscompleted}}
+
+            </div>
+        </div>
+    </main>
+</div>

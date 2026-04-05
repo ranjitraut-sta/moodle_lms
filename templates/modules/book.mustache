@@ -1,0 +1,16 @@
+<div class="amd-module-book">
+    {{#bookintro}}<div class="mb-4">{{{bookintro}}}</div>{{/bookintro}}
+    <div class="row g-4">
+        {{#chapters}}
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-bottom d-flex align-items-center gap-2 py-3">
+                    <span class="badge rounded-pill bg-primary px-3 py-2">{{num}}</span>
+                    <h5 class="mb-0 fw-bold">{{title}}</h5>
+                </div>
+                <div class="card-body p-4">{{{content}}}</div>
+            </div>
+        </div>
+        {{/chapters}}
+    </div>
+</div>

@@ -1,0 +1,182 @@
+<section class="amd-lms-breadcum-section">
+    <div class="amd-lms-breadcum-section__content">
+        <nav aria-label="breadcrumb">
+            <ol class="amd-lms-breadcum-nav">
+                <li class="amd-lms-breadcum-nav__item"><a href="{{wwwroot}}">Home</a></li>
+                <span>/</span>
+                <li class="amd-lms-breadcum-nav__item"><a href="{{wwwroot}}course/index.php">Courses</a></li>
+                <span>/</span>
+                <li class="amd-lms-breadcum-nav__item amd-lms-breadcum-nav__item--active" aria-current="page">
+                    <span>{{coursename}}</span>
+                </li>
+            </ol>
+        </nav>
+    </div>
+</section>
+
+<section class="amd-lms-course-detail-container amd-shine-bg">
+    <div class="container">
+        <a href="{{wwwroot}}/course/index.php" class="amd-lms-course-detail-back-btn">
+            <i class="fas fa-arrow-left"></i>
+            <span>Back</span>
+        </a>
+
+        <div class="amd-lms-course-detail-grid">
+            <!-- Main Content Column -->
+            <div class="amd-lms-course-detail-main">
+                {{#courseimage}}
+                <img src="{{courseimage}}" alt="{{coursename}}" class="amd-lms-course-detail-main__image">
+                {{/courseimage}}
+
+                <div class="amd-lms-course-detail-main__content-wrapper">
+                    <h1 class="amd-lms-course-detail-main__title">{{coursename}}</h1>
+                    {{#teachername}}
+                    <p class="amd-lms-course-detail-main__author">by {{teachername}}</p>
+                    {{/teachername}}
+
+                    <!-- Description Section -->
+                    <section class="amd-lms-course-detail-section">
+                        <h2>Description</h2>
+                        <div>{{{coursesummary}}}</div>
+                    </section>
+
+                    <!-- Tags Section -->
+                    {{#hastags}}
+                    <section class="amd-lms-course-detail-section">
+                        <h2>Course Tags</h2>
+                        <div class="amd-lms-course-tags">
+                            {{#tags}}
+                            <span class="amd-lms-course-tag"><i class="ri-price-tag-3-line"></i> {{tagname}}</span>
+                            {{/tags}}
+                        </div>
+                    </section>
+                    {{/hastags}}
+
+                    <!-- Course Contents Section -->
+                    <section class="amd-lms-course-detail-section">
+                        <h2>Course Contents</h2>
+                        <div class="amd-lms-course-detail-accordion">
+                            {{#sections}}
+                            <details class="amd-lms-course-detail-accordion__item">
+                                <summary class="amd-lms-course-detail-accordion__header">
+                                    <span class="amd-lms-course-detail-accordion__header-title">
+                                        <i class="ri-folder-fill"></i>
+                                        <span>{{name}}</span>
+                                    </span>
+                                </summary>
+                                <ul class="amd-lms-course-detail-accordion__body">
+                                    {{#modules}}
+                                    <li class="amd-lms-course-detail-accordion__body-item">
+                                        <span class="lesson-title">
+                                            <i class="{{icon}}"></i>
+                                            <span>{{{name}}}</span>
+                                        </span>
+                                        <span class="lesson-duration">{{modname}}</span>
+                                    </li>
+                                    {{/modules}}
+                                </ul>
+                            </details>
+                            {{/sections}}
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <!-- Sidebar Column -->
+            <aside class="amd-lms-course-detail-sidebar">
+                <div class="amd-lms-course-detail-sidebar-card amd-lms-course-detail-meta">
+                    <ul>
+                        {{#category}}
+                        <li><i class="ri-price-tag-3-line"></i><span class="meta-label">Category:</span><span class="meta-value">{{category}}</span></li>
+                        {{/category}}
+                        <li><i class="ri-vidicon-line"></i><span class="meta-label">Lessons:</span><span class="meta-value">{{modulecount}}</span></li>
+                        <li><i class="ri-group-line"></i><span class="meta-label">Students:</span><span class="meta-value">{{enrolledcount}}</span></li>
+                        <li><i class="ri-award-line"></i><span class="meta-label">Certificate:</span><span class="meta-value">On Completion</span></li>
+                    </ul>
+                </div>
+
+                <div class="amd-lms-course-detail-actions">
+                    {{#isenrolled}}
+                        {{#iscompleted}}
+                        <a href="{{firstlessonurl}}" class="amd-lms-btn-register">
+                            Review Course <i class="ri-refresh-line"></i>
+                        </a>
+                        {{#certurl}}
+                        <a href="{{certurl}}" target="_blank" class="amd-lms-btn-register">
+                            Certificate <i class="ri-award-line"></i>
+                        </a>
+                        {{/certurl}}
+                        {{/iscompleted}}
+                        {{^iscompleted}}
+                        <a href="{{firstlessonurl}}" class="amd-lms-btn-register">
+                            Continue Learning <i class="ri-play-circle-line"></i>
+                        </a>
+                        {{/iscompleted}}
+                    {{/isenrolled}}
+                    {{^isenrolled}}
+                    <a href="{{wwwroot}}theme/mytheme/pages/enroll.php?id={{courseid}}&sesskey={{sesskey}}" class="amd-lms-btn-register">
+                        Enroll Now <i class="ri-play-circle-line"></i>
+                    </a>
+                    {{/isenrolled}}
+                </div>
+
+                {{#teachername}}
+                <div class="amd-lms-course-detail-sidebar-card amd-lms-course-detail-author">
+                    <h3>About the Author</h3>
+                    <div class="amd-lms-course-detail-author__header">
+                        {{#teacherphoto}}
+                        <img src="{{teacherphoto}}" alt="{{teachername}}">
+                        {{/teacherphoto}}
+                        <div class="amd-lms-course-detail-author__header-info">
+                            <div class="name">{{teachername}}</div>
+                            {{#teacheremail}}
+                            <div class="email">{{teacheremail}}</div>
+                            {{/teacheremail}}
+                        </div>
+                    </div>
+                </div>
+                {{/teachername}}
+
+                <div class="amd-lms-course-detail-sidebar-card amd-lms-course-detail-share">
+                    <h3>Share This Course</h3>
+                    <div class="amd-lms-course-detail-social-links">
+                        <a href="https://twitter.com/intent/tweet?url={{wwwroot}}/theme/mytheme/pages/course.php?id={{courseid}}" target="_blank" class="twitter"><i class="bi bi-twitter"></i></a>
+                        <a href="https://www.facebook.com/sharer/sharer.php?u={{wwwroot}}/theme/mytheme/pages/course.php?id={{courseid}}" target="_blank" class="facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="https://www.linkedin.com/sharing/share-offsite/?url={{wwwroot}}/theme/mytheme/pages/course.php?id={{courseid}}" target="_blank" class="linkedin"><i class="bi bi-linkedin"></i></a>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+</section>
+
+<!-- Related Courses Scroll Section -->
+{{#relatedcourses}}
+<section class="amd-lms-course-card-scroll-container">
+    <div class="container">
+        <h3 class="mb-3">Related Courses</h3>
+        <button id="amd-lms-scroll-left" class="amd-lms-scroll-btn amd-lms-scroll-left d-none" aria-label="Scroll Left">&#10094;</button>
+        <div id="amd-lms-course-scroll-wrapper">
+            {{#relatedcourses}}
+            <a href="{{wwwroot}}/theme/mytheme/pages/course.php?id={{id}}" class="amd-lms-course-list-card">
+                <div class="amd-lms-course-list-card__image-wrapper">
+                    <img src="{{image}}" alt="{{fullname}}" class="amd-lms-course-list-card__image">
+                </div>
+                <div class="amd-lms-course-list-card__content">
+                    <h3 class="amd-lms-course-list-card__title">{{fullname}}</h3>
+                    <div class="amd-lms-course-list-card__meta">
+                        <span><i class="ri-group-line"></i> Students: {{enrolledcount}}</span>
+                    </div>
+                    {{#teachername}}
+                    <div class="amd-lms-course-list-card__author">
+                        <span>Prof: {{teachername}}</span>
+                    </div>
+                    {{/teachername}}
+                </div>
+            </a>
+            {{/relatedcourses}}
+        </div>
+        <button id="amd-lms-scroll-right" class="amd-lms-scroll-btn amd-lms-scroll-right d-none" aria-label="Scroll Right">&#10095;</button>
+    </div>
+</section>
+{{/relatedcourses}}

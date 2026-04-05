@@ -1,0 +1,80 @@
+<style>
+    /* Ali clean look ko lagi custom hover effect */
+    .amd-folder-file-item {
+        transition: all 0.2s ease-in-out;
+        border-radius: 8px;
+        margin-bottom: 5px;
+    }
+    .amd-folder-file-item:hover {
+        background-color: #f8f9fa;
+        transform: translateX(5px);
+    }
+    .amd-folder-file-link {
+        text-decoration: none !important;
+        color: #333;
+        display: flex;
+        align-items: center;
+        padding: 10px 15px;
+    }
+    .amd-folder-file-link i {
+        font-size: 1.25rem;
+        margin-right: 12px;
+    }
+    .file-name {
+        font-weight: 500;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
+
+<div class="amd-module-folder container my-4">
+    {{#folderintro}}
+    <div class="alert alert-light border-start border-4 border-primary mb-4 shadow-sm">
+        {{{folderintro}}}
+    </div>
+    {{/folderintro}}
+
+    <div class="amd-folder-filelist list-group shadow-sm">
+        {{#folderfiles}}
+        <div class="amd-folder-file-item border-bottom">
+            
+            {{#ispdf}}
+            <a href="{{fileurl}}" target="_blank" class="amd-folder-file-link">
+                <i class="bi bi-file-earmark-pdf-fill text-danger"></i>
+                <span class="file-name">{{filename}}</span>
+            </a>
+            {{/ispdf}}
+
+            {{#isimage}}
+            <a href="{{fileurl}}" target="_blank" class="amd-folder-file-link">
+                <i class="bi bi-file-earmark-image-fill text-success"></i>
+                <span class="file-name">{{filename}}</span>
+            </a>
+            {{/isimage}}
+
+            {{#isvideo}}
+            <a href="{{fileurl}}" target="_blank" class="amd-folder-file-link">
+                <i class="bi bi-file-earmark-play-fill text-primary"></i>
+                <span class="file-name">{{filename}}</span>
+            </a>
+            {{/isvideo}}
+
+            {{#isaudio}}
+            <a href="{{fileurl}}" target="_blank" class="amd-folder-file-link">
+                <i class="bi bi-file-earmark-music-fill text-warning"></i>
+                <span class="file-name">{{filename}}</span>
+            </a>
+            {{/isaudio}}
+
+            {{#isother}}
+            <a href="{{fileurl}}" target="_blank" class="amd-folder-file-link">
+                <i class="bi bi-file-earmark-fill text-secondary"></i>
+                <span class="file-name">{{filename}}</span>
+            </a>
+            {{/isother}}
+
+        </div>
+        {{/folderfiles}}
+    </div>
+</div>

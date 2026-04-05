@@ -1,0 +1,184 @@
+<div class="amd-module-quiz"
+     data-quizid="{{quizid}}"
+     data-cmid="{{cmid}}"
+     data-ajaxurl="{{ajaxurl}}"
+     data-sesskey="{{sesskey}}"
+     data-attemptid="{{#inprogress}}{{attemptid}}{{/inprogress}}{{^inprogress}}0{{/inprogress}}">
+
+    <h4 class="mb-3">{{quizname}}</h4>
+
+    {{#hasattempts}}
+    <div class="mb-3">
+        <div><strong>Your attempts:</strong></div>
+        <div class="list-group">
+            {{#attempts}}
+            <div class="list-group-item">
+                <div><strong>Attempt {{attemptnumber}}</strong> — {{status}}</div>
+                <div>Started: {{started}}, Completed: {{completed}}, Duration: {{duration}}</div>
+                <div>Marks: {{marks}}/{{maxmarks}}, Grade: {{grade}}%</div>
+                <div><a href="{{reviewurl}}" class="text-decoration-none">Review</a></div>
+            </div>
+            {{/attempts}}
+        </div>
+    </div>
+    {{/hasattempts}}
+
+    {{#inprogress}}
+    <div class="alert alert-info mb-3">
+        <strong>In-progress attempt</strong>: Attempt #{{inprogressinfo.attemptnumber}} started on {{inprogressinfo.started}} and is currently open.
+    </div>
+    {{/inprogress}}
+
+    {{#hasresult}}
+    {{#attemptresult}}
+    <div class="alert {{#passed}}alert-success{{/passed}}{{#failed}}alert-warning{{/failed}} mb-3 d-flex justify-content-between align-items-center">
+        <div>
+            <strong>{{#passed}}Passed{{/passed}}{{#failed}}Failed{{/failed}}</strong>
+            &nbsp;&middot; Attempt {{attemptnumber}} &middot; {{timefinished}}
+        </div>
+        <span class="fs-5 fw-semibold">
+            {{sumgrades}} / {{maxgrade}}
+            <small class="fs-6 text-muted">({{percentage}}%)</small>
+        </span>
+    </div>
+    {{/attemptresult}}
+    {{/hasresult}}
+
+    <div class="amd-quiz-live-result alert d-none mb-3"></div>
+
+    {{^inprogress}}
+    <div class="amd-quiz-start-wrap mb-3">
+        <button class="btn btn-primary amd-quiz-start-btn">
+            {{#hasresult}}Retake Quiz{{/hasresult}}
+            {{^hasresult}}Start Quiz{{/hasresult}}
+        </button>
+    </div>
+    {{/inprogress}}
+
+    <div class="amd-quiz-body {{^inprogress}}d-none{{/inprogress}}">
+
+        {{#questions}}
+        <div class="amd-quiz-question card mb-3 p-3"
+             data-slot="{{slot}}"
+             data-questionid="{{id}}"
+             data-type="{{type}}"
+             data-mcqsingle="{{#ismcqsingle}}1{{/ismcqsingle}}{{^ismcqsingle}}0{{/ismcqsingle}}">
+
+            <div class="d-flex justify-content-between mb-2">
+                <span class="badge bg-secondary">{{type}}</span>
+                <span class="text-muted small">{{mark}} mark(s)</span>
+            </div>
+
+            <div class="amd-quiz-qtext mb-3">{{{text}}}</div>
+
+            {{! MCQ }}
+            {{#ismcq}}
+            <ul class="list-group list-group-flush amd-mcq-options">
+                {{#answers}}
+                <li class="list-group-item amd-mcq-option"
+                    data-answerid="{{answerid}}"
+                    style="cursor:pointer;">
+                    <span class="amd-mcq-marker me-2">&#9675;</span>{{{answertext}}}
+                </li>
+                {{/answers}}
+            </ul>
+            {{/ismcq}}
+
+            {{! True/False }}
+            {{#istruefalse}}
+            <div class="d-flex gap-2 amd-tf-options">
+                {{#answers}}
+                <button class="btn btn-outline-secondary amd-tf-option"
+                        data-answerid="{{answerid}}">
+                    {{{answertext}}}
+                </button>
+                {{/answers}}
+            </div>
+            {{/istruefalse}}
+
+            {{! Short answer }}
+            {{#isshortans}}
+            <div class="mt-2">
+                <input type="text"
+                       class="form-control amd-shortans-input"
+                       placeholder="Type your answer here">
+            </div>
+            {{/isshortans}}
+
+            {{! Drag & Drop into Text }}
+            {{#isddwtos}}
+            <div class="amd-ddwtos-question">
+                <!-- Drag Items / Options -->
+                <div class="amd-ddwtos-drag-area mb-3 p-3 border rounded bg-light">
+                    <h6 class="fw-semibold mb-2">
+                        <i class="fas fa-hand-pointer me-2"></i>Drag these items:
+                    </h6>
+                    <div class="d-flex flex-wrap gap-2">
+                        {{#ddwtosoptions}}
+                        <div class="amd-ddwtos-drag-item badge bg-primary p-2" 
+                             data-optionno="{{no}}"
+                             draggable="true"
+                             style="cursor: move;">
+                            <i class="fas fa-grip-vertical me-1"></i>{{{text}}}
+                        </div>
+                        {{/ddwtosoptions}}
+                    </div>
+                </div>
+
+                <!-- Drop Zones / Blanks -->
+                <div class="amd-ddwtos-drop-areas">
+                    <h6 class="fw-semibold mb-2">
+                        <i class="fas fa-inbox me-2"></i>Drop here:
+                    </h6>
+                    {{#ddwtositems}}
+                    <div class="amd-ddwtos-drop-zone card p-3 mb-2 position-relative" 
+                         data-no="{{no}}"
+                         style="min-height: 60px; border: 2px dashed #ccc;">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div class="flex-grow-1">
+                                <small class="text-muted fw-semibold d-block mb-1">Blank {{no}}:</small>
+                                <div class="amd-ddwtos-display d-none text-dark"></div>
+                                <input type="hidden" class="amd-ddwtos-input">
+                            </div>
+                            <button type="button" 
+                                    class="amd-ddwtos-clear btn btn-sm btn-outline-danger d-none"
+                                    title="Clear">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    {{/ddwtositems}}
+                </div>
+            </div>
+
+            <style>
+                .amd-ddwtos-drag-item {
+                    transition: all 0.2s ease;
+                    user-select: none;
+                }
+                .amd-ddwtos-drag-item:hover {
+                    transform: scale(1.05);
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+                }
+                .amd-ddwtos-drag-item.dragging {
+                    opacity: 0.5;
+                }
+                .amd-ddwtos-drop-zone {
+                    transition: all 0.2s ease;
+                }
+                .amd-ddwtos-drop-zone.drag-over {
+                    border-color: #0d6efd !important;
+                    background-color: #e7f1ff !important;
+                }
+            </style>
+            {{/isddwtos}}
+        </div>
+        {{/questions}}
+
+        <div class="text-end mt-3">
+            <button type="button" class="btn btn-success amd-quiz-submit-btn">Submit Quiz</button>
+        </div>
+
+    </div>
+
+</div>

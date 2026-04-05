@@ -1,0 +1,144 @@
+<main>
+    <!-- Hero Section -->
+<section class="amd-lms-hero-section">
+    <div class="amd-lms-hero-glow amd-lms-hero-glow-1"></div>
+    <div class="amd-lms-hero-glow amd-lms-hero-glow-2"></div>
+    
+    <div id="heroBgCarousel" class="carousel slide carousel-fade amd-lms-hero-bg-carousel" data-bs-ride="carousel" data-bs-interval="8000" data-bs-pause="false">
+        
+        <div class="carousel-indicators">
+            {{#sliders}}
+                <button type="button" data-bs-target="#heroBgCarousel" data-bs-slide-to="{{index}}" class="{{#is_first}}active{{/is_first}}" aria-current="{{#is_first}}true{{/is_first}}" aria-label="Slide {{index_display}}"></button>
+            {{/sliders}}
+        </div>
+
+        <div class="carousel-inner">
+            {{#sliders}}
+            <div class="carousel-item {{#is_first}}active{{/is_first}}">
+                {{#imageurl}}
+                    <img src="{{{imageurl}}}" alt="{{title}}">
+                {{/imageurl}}
+                {{^imageurl}}
+                    <img src="{{{config.wwwroot}}}/theme/mytheme/asset/imgs/default-bg.png" alt="{{title}}">
+                {{/imageurl}}
+                
+                <div class="carousel-caption">
+                    <div class="amd-lms-hero-text-content">
+                        <h1 class="amd-lms-hero-headline">{{title}}</h1>
+                        <div class="amd-lms-hero-subheadline">{{{desc}}}</div>
+                        
+                        <div class="d-flex align-items-center gap-4 justify-content-center amd-lms-hero-button-group">
+                            {{#btntext}}
+                                <a href="{{btnlink}}" class="btn amd-lms-hero-btn-primary">{{btntext}}</a>
+                            {{/btntext}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/sliders}}
+        </div>
+
+        <button class="carousel-control-prev" type="button" data-bs-target="#heroBgCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#heroBgCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</section>
+
+    <!-- About Section -->
+    <section class="amd-lms-about amd-shine-bg">
+        <div class="container">
+            <div class="amd-lms-about-section">
+                <div class="row align-items-center">
+                    <div class="col-lg-6">
+                        <div class="amd-lms-about-section-image-wrapper">
+                            {{#about.imageurl}}
+                                <img src="{{{about.imageurl}}}" alt="Learning" class="amd-lms-about-section-image">
+                            {{/about.imageurl}}
+                            {{^about.imageurl}}
+                                <img src="{{{config.wwwroot}}}/theme/mytheme/asset/imgs/Cream Yellow Illustrative Self-Help Book Cover.jpg" alt="Learning" class="amd-lms-about-section-image">
+                            {{/about.imageurl}}
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="amd-lms-about-section-content">
+                            <h6 class="amd-lms-about__pre-title">{{sitename}}</h6>
+                            <h1 class="amd-lms-about__title">{{about.heading}}</h1>
+                            <p class="amd-lms-about__description">{{{about.desc}}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="amd-lms-about__achievements">
+                <div class="amd-lms-about__achievements-card">
+                    <h5 class="amd-lms-about__achievements-title">Our Achievements</h5>
+                    <div class="row">
+                        {{#about.stats}}
+                        <div class="col-md-4">
+                            <div class="amd-lms-about__stat">
+                                <h2 class="amd-lms-about__stat-number">{{number}}</h2>
+                                <p class="amd-lms-about__stat-description">{{{description}}}</p>
+                            </div>
+                        </div>
+                        {{/about.stats}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Course Section -->
+    <section class="amd-lms-course-section">
+        <div class="container">
+            <div class="amd-lms-course-section__header d-lg-flex justify-content-between align-items-center">
+                <div class="amd-lms-text-wrap">
+                    <h2 class="amd-lms-course-section__title">Our Popular Courses.</h2>
+                    <p class="amd-lms-course-section__subtitle">Lorem ipsum dolor sit amet, consectetur aliqua adipiscing elit, sed do eiusmod tempor.</p>
+                </div>
+                <div class="amd-lms-course-section__filters mt-4 mt-lg-0">
+                    <a href="{{wwwroot}}course/index.php" class="dropdown">
+                        <button type="button">View All <i class="fas fa-arrow-right"></i></button>
+                    </a>
+                </div>
+            </div>
+
+            <div class="row g-4 amd-lms-course-section__grid">
+                {{#courses}}
+                <div class="col-lg-4 col-md-6 amd-lms-course-section__grid-item">
+                    <div class="amd-lms-course-section__card">
+                        <a href="{{{url}}}">
+                            <div class="amd-lms-course-section__card-image-wrapper">
+                                <img src="{{{image}}}" alt="{{fullname}}">
+                                <span class="amd-lms-course-section__card-category">{{category}}</span>
+                            </div>
+                            <div class="amd-lms-course-section__card-body">
+                                <div class="amd-lms-course-section__card-stats">
+                                    <span class="amd-lms-course-section__card-stat"><i class="bi bi-star-fill"></i> 4.5 (100)</span>
+                                    <span class="amd-lms-course-section__card-stat"><i class="bi bi-person"></i> {{enrolledcount}}</span>
+                                    <span class="amd-lms-course-section__card-stat"><i class="bi bi-list-task"></i> 325</span>
+                                </div>
+                                <a href="{{{url}}}" class="amd-lms-course-section__card-title">{{fullname}}</a>
+                            </div>
+                            <div class="amd-lms-course-section__card-footer">
+                                <span class="amd-lms-course-section__card-duration"><i class="bi bi-clock"></i> 16 Week</span>
+                                <span class="amd-lms-course-section__card-price">Free</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                {{/courses}}
+                {{^courses}}
+                <div class="col-12">
+                    <p class="text-center">No courses available at the moment.</p>
+                </div>
+                {{/courses}}
+            </div>
+        </div>
+    </section>
+    
+</main>

@@ -1,0 +1,1023 @@
+// course list
+/* FontAwesome CDN Link - CSS ko top ma rakhnuhos */
+// @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
+/* Container and Card Styling */
+#inst5.block_myoverview {
+    border: none;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border-radius: 12px;
+}
+
+#inst5 .card-body {
+    padding: 1.5rem !important;
+}
+
+/* Modernizing the Course Cards */
+.course-card {
+    border: 1px solid #eef0f2 !important;
+    border-radius: 10px !important;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+}
+
+.course-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+/* Image Top Section */
+.course-card .card-img-top {
+    height: 150px;
+    background-size: cover !important;
+    background-position: center !important;
+    border-bottom: 1px solid #eee;
+}
+
+/* Filter and Sort Buttons */
+#inst5 .btn-outline-secondary {
+    border-color: #d1d9e0;
+    color: #495057;
+    border-radius: 8px;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+}
+
+#inst5 .btn-outline-secondary:hover {
+    background-color: #f8f9fa;
+    border-color: #adb5bd;
+    color: #212529;
+}
+
+/* Search Bar Customization */
+#inst5 .simplesearchform .input-group {
+    background: #f4f6f9;
+    border-radius: 8px;
+    padding: 2px 5px;
+}
+
+#inst5 .simplesearchform .form-control {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+/* Typography and Links */
+.coursename {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2d3436 !important;
+    text-decoration: none !important;
+}
+
+.categoryname {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #636e72 !important;
+}
+
+/* Star Icon Styling */
+[data-region="favourite-icon"] .text-primary {
+    color: #fdcb6e !important; /* Gold star */
+}
+
+
+
+// header navigation css
+/* Navbar Main Container */
+.navbar.fixed-top {
+    border-bottom: 1px solid #edf2f7;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.04);
+    padding: 0.6rem 1.5rem;
+    height: 70px;
+}
+
+/* Brand/Logo Styling */
+.navbar-brand {
+    font-weight: 800;
+    font-size: 1.4rem;
+    color: #1a202c !important;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Primary Navigation Links */
+.primary-navigation .nav-link {
+    font-weight: 500;
+    color: #4a5568 !important;
+    margin: 0 10px;
+    padding: 0.5rem 1rem !important;
+    border-radius: 8px;
+    transition: all 0.2s ease-in-out;
+}
+
+.primary-navigation .nav-link:hover {
+    background-color: #f7fafc;
+    color: #3182ce !important;
+}
+
+.primary-navigation .nav-link.active {
+    color: #3182ce !important;
+    background-color: #ebf8ff;
+    border-bottom: none; /* Removing the default underline if any */
+}
+
+/* Icons (Bell & Message) */
+.popover-region-toggle.nav-link {
+    background: #f7fafc;
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px;
+    transition: transform 0.2s;
+}
+
+.popover-region-toggle.nav-link:hover {
+    background: #edf2f7;
+    transform: translateY(-2px);
+}
+
+.popover-region-toggle.nav-link i {
+    font-size: 1.1rem;
+    color: #4a5568;
+}
+
+/* Notification Count Badge */
+.count-container {
+    background-color: #e53e3e !important;
+    font-size: 10px;
+    padding: 2px 5px;
+    top: 5px !important;
+    right: 5px !important;
+}
+
+/* User Menu / Avatar Styling */
+#user-menu-toggle {
+    background: transparent !important;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 4px 8px;
+    transition: all 0.2s;
+}
+
+#user-menu-toggle:hover {
+    background: #f7fafc !important;
+}
+
+.userinitials {
+    background-color: #3182ce !important; /* Brand Blue */
+    color: white;
+    font-weight: 600;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(49, 130, 206, 0.2);
+}
+
+/* Dropdown Menu Styling */
+.dropdown-menu {
+    border: none;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    padding: 10px;
+    margin-top: 15px !important;
+}
+
+.dropdown-item {
+    border-radius: 8px;
+    padding: 10px 15px;
+    color: #4a5568;
+    font-weight: 500;
+}
+
+.dropdown-item:hover {
+    background-color: #f7fafc;
+    color: #3182ce;
+}
+
+/* Responsive Toggler */
+.navbar-toggler {
+    background: #f7fafc;
+    border-radius: 8px;
+}
+
+
+
+// user profile 
+/* Profile Header Section */
+#page-header {
+    background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+    border-radius: 15px;
+    padding: 5px !important;
+    margin-bottom: 5px !important;
+    border: 1px solid #e3e8ee;
+    margin-top: 20px !important;
+}
+
+/* User Avatar (SB initials) */
+.page-header-image .userinitials {
+    width: 100px !important;
+    height: 100px !important;
+    font-size: 2.5rem !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    background: #3182ce !important; /* Blue Accent */
+    box-shadow: 0 10px 20px rgba(49, 130, 206, 0.2);
+    border: 4px solid #fff;
+}
+
+/* Page Headings */
+.page-header-headings h1 {
+    font-weight: 800;
+    color: #2d3748;
+    margin-left: 10px;
+}
+
+/* Buttons Styling (Message & Customise) */
+.header-button-group .btn, 
+.singlebutton .btn {
+    border-radius: 10px;
+    padding: 8px 18px;
+    font-weight: 600;
+    transition: all 0.3s;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.header-button-group .btn-secondary, 
+.singlebutton .btn-secondary {
+    background-color: #edf2f7;
+    color: #4a5568;
+}
+
+#message-user-button {
+    background-color: #3182ce;
+    color: #fff !important;
+}
+
+#message-user-button:hover {
+    background-color: #2b6cb0;
+    transform: translateY(-2px);
+}
+
+/* Profile Cards Grid */
+.profile_tree {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+}
+
+.node_category.card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    transition: transform 0.2s;
+    background: #fff;
+}
+
+.node_category.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+}
+
+.node_category.card .card-body h3.lead {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #3182ce;
+    border-bottom: 2px solid #ebf8ff;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+/* List Items Styling */
+.node_category ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.node_category ul li {
+    padding: 8px 0;
+    border-bottom: 1px solid #f7fafc;
+}
+
+.node_category ul li:last-child {
+    border-bottom: none;
+}
+
+.node_category ul li a {
+    color: #4a5568;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.node_category ul li a:hover {
+    color: #3182ce;
+}
+
+/* Data Labels (Email, Timezone, etc.) */
+dt {
+    color: #718096;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+}
+
+dd {
+    color: #2d3748;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+/* Hide Moodle's default Screen Reader labels but keep logic */
+.sr-only { display: none; }
+
+
+// new dash block css table
+
+/* Block Container Styling */
+#inst34.block_dash {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    background: #fff;
+}
+
+/* Header Styling */
+#inst34 .card-title {
+    font-weight: 700;
+    color: #1a202c;
+    font-size: 1.1rem;
+    padding-left: 5px;
+}
+
+/* Block Controls (Cog icon) cleanup */
+#inst34 .block-controls .icon {
+    color: #a0aec0;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+}
+
+#inst34 .block-controls .icon:hover {
+    color: #3182ce;
+}
+
+/* Table Design */
+.dash-table {
+    border-collapse: separate;
+    border-spacing: 0 8px; /* Adds space between rows */
+    margin-top: -10px;
+}
+
+.dash-table thead th {
+    background-color: #f8fafc;
+    border: none;
+    color: #718096;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 15px;
+    font-weight: 600;
+}
+
+.dash-table thead th:first-child { border-radius: 8px 0 0 8px; }
+.dash-table thead th:last-child { border-radius: 0 8px 8px 0; }
+
+/* Table Body Rows */
+.dash-table tbody tr {
+    transition: all 0.2s ease;
+    background-color: #ffffff;
+}
+
+.dash-table tbody td {
+    padding: 16px 15px;
+    vertical-align: middle;
+    border-top: 1px solid #f1f5f9;
+    border-bottom: 1px solid #f1f5f9;
+    color: #4a5568;
+    font-size: 0.9rem;
+}
+
+/* First and Last TD rounding for "Card" effect per row */
+.dash-table tbody td:first-child { 
+    border-left: 1px solid #f1f5f9;
+    border-radius: 10px 0 0 10px; 
+}
+.dash-table tbody td:last-child { 
+    border-right: 1px solid #f1f5f9;
+    border-radius: 0 10px 10px 0; 
+}
+
+/* Row Hover Effect */
+.dash-table tbody tr:hover {
+    transform: scale(1.005);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+    background-color: #fbfcfe;
+}
+
+.dash-table tbody tr:hover td {
+    color: #3182ce;
+    border-color: #e2e8f0;
+}
+
+/* Badge-style for Email */
+.dash-table td:nth-child(3) {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    color: #718096;
+}
+
+/* Zebra striping alternative - instead of full row color, we use subtle bg */
+.dash-table tbody tr:nth-of-type(even) {
+    background-color: #fcfcfd;
+}
+
+/* Responsive Fixes */
+.table-responsive {
+    border: none;
+}
+
+/* Sorting Icon Styling */
+.dash-sort::after {
+    content: '\f0dc';
+    font-family: FontAwesome;
+    font-size: 0.7rem;
+    margin-left: 8px;
+    color: #cbd5e0;
+}
+
+
+// course add place css
+/* Block Container Styling */
+#inst34.block_dash {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    background: #fff;
+}
+
+/* Header Styling */
+#inst34 .card-title {
+    font-weight: 700;
+    color: #1a202c;
+    font-size: 1.1rem;
+    padding-left: 5px;
+}
+
+/* Block Controls (Cog icon) cleanup */
+#inst34 .block-controls .icon {
+    color: #a0aec0;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+}
+
+#inst34 .block-controls .icon:hover {
+    color: #3182ce;
+}
+
+/* Table Design */
+.dash-table {
+    border-collapse: separate;
+    border-spacing: 0 8px; /* Adds space between rows */
+    margin-top: -10px;
+}
+
+.dash-table thead th {
+    background-color: #f8fafc;
+    border: none;
+    color: #718096;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 15px;
+    font-weight: 600;
+}
+
+.dash-table thead th:first-child { border-radius: 8px 0 0 8px; }
+.dash-table thead th:last-child { border-radius: 0 8px 8px 0; }
+
+/* Table Body Rows */
+.dash-table tbody tr {
+    transition: all 0.2s ease;
+    background-color: #ffffff;
+}
+
+.dash-table tbody td {
+    padding: 16px 15px;
+    vertical-align: middle;
+    border-top: 1px solid #f1f5f9;
+    border-bottom: 1px solid #f1f5f9;
+    color: #4a5568;
+    font-size: 0.9rem;
+}
+
+/* First and Last TD rounding for "Card" effect per row */
+.dash-table tbody td:first-child { 
+    border-left: 1px solid #f1f5f9;
+    border-radius: 10px 0 0 10px; 
+}
+.dash-table tbody td:last-child { 
+    border-right: 1px solid #f1f5f9;
+    border-radius: 0 10px 10px 0; 
+}
+
+/* Row Hover Effect */
+.dash-table tbody tr:hover {
+    transform: scale(1.005);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+    background-color: #fbfcfe;
+}
+
+.dash-table tbody tr:hover td {
+    color: #3182ce;
+    border-color: #e2e8f0;
+}
+
+/* Badge-style for Email */
+.dash-table td:nth-child(3) {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    color: #718096;
+}
+
+/* Zebra striping alternative - instead of full row color, we use subtle bg */
+.dash-table tbody tr:nth-of-type(even) {
+    background-color: #fcfcfd;
+}
+
+/* Responsive Fixes */
+.table-responsive {
+    border: none;
+}
+
+/* Sorting Icon Styling */
+.dash-sort::after {
+    content: '\f0dc';
+    font-family: FontAwesome;
+    font-size: 0.7rem;
+    margin-left: 8px;
+    color: #cbd5e0;
+}
+
+
+// settings 
+/* Container Row Styling */
+.row {
+    background: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    border: 1px solid #f1f4f8;
+    transition: box-shadow 0.3s ease;
+}
+
+.row:hover {
+    box-shadow: 0 5px 20px rgba(0,0,0,0.03);
+}
+
+/* Left Column - Category Heading */
+.col-sm-3 {
+    border-right: 2px solid #f7fafc;
+    display: flex;
+    align-items: flex-start;
+    padding-top: 10px;
+}
+
+.col-sm-3 h4 a {
+    color: #1a202c !important;
+    font-weight: 800;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: #ebf8ff;
+    padding: 8px 16px;
+    border-radius: 8px;
+    text-decoration: none !important;
+    display: inline-block;
+}
+
+/* Right Column - Links List */
+.col-sm-9 .list-unstyled {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 12px;
+    padding-left: 15px;
+}
+
+.col-sm-9 .list-unstyled li {
+    margin-bottom: 0; /* Removing default margin */
+}
+
+.col-sm-9 .list-unstyled li a {
+    display: block;
+    padding: 12px 15px;
+    background-color: #ffffff;
+    border: 1px solid #edf2f7;
+    border-radius: 10px;
+    color: #4a5568;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 0.2s ease-in-out;
+    text-decoration: none !important;
+}
+
+/* Hover Effects for Links */
+.col-sm-9 .list-unstyled li a:hover {
+    background-color: #3182ce;
+    color: #ffffff !important;
+    border-color: #3182ce;
+    transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(49, 130, 206, 0.15);
+}
+
+/* Icon addition via Pseudo-element (Optional but looks solid) */
+.col-sm-9 .list-unstyled li a::before {
+    content: '\f105'; /* FontAwesome Chevron Right */
+    font-family: FontAwesome;
+    margin-right: 10px;
+    font-size: 0.8rem;
+    opacity: 0.6;
+}
+
+.col-sm-9 .list-unstyled li a:hover::before {
+    opacity: 1;
+}
+
+/* Responsive adjustment */
+@media (max-width: 768px) {
+    .col-sm-3 {
+        border-right: none;
+        border-bottom: 2px solid #f7fafc;
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+    }
+    .col-sm-9 .list-unstyled {
+        grid-template-columns: 1fr;
+    }
+}
+/* Base Style for the Icon */
+.col-sm-9 .list-unstyled li a::before {
+    content: "\f105"; /* Chevron Right Unicode */
+    font-family: 'FontAwesome';
+    margin-right: 12px;
+    font-size: 0.85rem;
+    color: #3182ce; /* Icon lai primary blue color */
+    opacity: 0.5;
+    transition: all 0.3s ease; /* Smooth transition for hover */
+    display: inline-block;
+}
+
+/* Hover State: Icon moves and becomes solid */
+.col-sm-9 .list-unstyled li a:hover::before {
+    opacity: 1;
+    color: #ffffff; /* Card blue huda icon white hunchha */
+    transform: translateX(3px); /* Icon ali right tira slide hunchha */
+}
+
+/* List Item Card Styling (if not already applied) */
+.col-sm-9 .list-unstyled li a {
+    display: flex;
+    align-items: center;
+    padding: 12px 18px;
+    background: #f8fafc;
+    border: 1px solid #edf2f7;
+    border-radius: 12px;
+    color: #2d3748;
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-decoration: none !important;
+    margin-bottom: 8px;
+}
+
+/* Hover Effect for the entire Card */
+.col-sm-9 .list-unstyled li a:hover {
+    background: #3182ce;
+    color: #fff !important;
+    box-shadow: 0 4px 15px rgba(49, 130, 206, 0.2);
+    transform: translateY(-2px);
+}
+
+
+// recently activity 
+/* Block Container */
+#inst6.block_recentlyaccesseditems {
+    border: none;
+    border-radius: 20px;
+    background: #ffffff;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.04);
+    overflow: hidden;
+}
+
+/* Header Styling */
+#inst6 .card-title {
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: #1e293b;
+    letter-spacing: -0.3px;
+}
+
+/* Individual Item Card */
+[data-region="items-list"] .card {
+    border: 1px solid #f1f5f9 !important;
+    border-radius: 12px !important;
+    margin-bottom: 10px !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: #fff;
+}
+
+/* Hover Effect: Background light blue and slight lift */
+[data-region="items-list"] .card:hover {
+    transform: translateX(5px);
+    border-color: #3182ce !important;
+    background-color: #f8fafc;
+    box-shadow: 0 4px 12px rgba(49, 130, 206, 0.08);
+}
+
+/* Activity Icon Container */
+.activityiconcontainer {
+    width: 45px;
+    height: 45px;
+    background: #edf2f7;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease;
+}
+
+[data-region="items-list"] .card:hover .activityiconcontainer {
+    background: #3182ce;
+}
+
+/* Icon Styling inside container */
+.activityiconcontainer img.icon {
+    width: 24px;
+    height: 24px;
+    margin: 0 !important;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05));
+}
+
+[data-region="items-list"] .card:hover img.icon {
+    filter: brightness(0) invert(1); /* Makes icon white on hover */
+}
+
+/* Item Heading (Quiz/File name) */
+[data-region="items-list"] h6 {
+    font-weight: 600;
+    color: #334155;
+    font-size: 0.95rem;
+    transition: color 0.3s ease;
+}
+
+[data-region="items-list"] .card:hover h6 {
+    color: #3182ce;
+}
+
+/* Course Name text */
+[data-region="items-list"] small {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    display: block;
+    margin-top: 2px;
+}
+
+/* Show More Button */
+[data-action="more-items"] {
+    width: 100%;
+    background: #f1f5f9 !important;
+    border: none !important;
+    color: #475569 !important;
+    font-weight: 600 !important;
+    border-radius: 10px !important;
+    padding: 10px !important;
+    transition: all 0.2s;
+}
+
+[data-action="more-items"]:hover {
+    background: #e2e8f0 !important;
+    color: #1e293b !important;
+}
+
+/* Remove default link underline */
+[data-region="items-list"] a {
+    text-decoration: none !important;
+}
+
+
+/* Block Container Styling */
+#inst10.block_settings {
+    border: none;
+    border-radius: 15px;
+    background: #ffffff;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+/* Header Styling */
+#inst10 .card-title {
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    color: #475569;
+    letter-spacing: 1px;
+}
+
+/* Tree Structure Removal - Clean Look */
+.block_tree .tree_item {
+    padding: 10px 15px;
+    margin: 4px 0;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-decoration: none !important;
+    color: #334155;
+    font-weight: 500;
+}
+
+/* Parent/Branch Styling */
+.block_tree .tree_item.branch {
+    background: #f8fafc;
+    border-left: 4px solid #cbd5e1;
+}
+
+/* Hover Effect for Items */
+.block_tree .tree_item:hover {
+    background: #eff6ff;
+    color: #2563eb;
+    transform: translateX(5px);
+}
+
+/* Icon Styling */
+.block_tree .icon {
+    font-size: 0.9rem;
+    margin-right: 12px;
+    color: #64748b;
+    transition: color 0.3s ease;
+}
+
+.block_tree .tree_item:hover .icon {
+    color: #2563eb;
+}
+
+/* Nested Ul (Sub-menus) Padding */
+.block_tree ul {
+    padding-left: 20px !important;
+    border-left: 1px solid #e2e8f0;
+    margin-left: 10px;
+}
+
+/* Search Box Styling in Footer */
+.simplesearchform .input-group {
+    background: #f1f5f9;
+    border-radius: 10px;
+    padding: 5px;
+    border: 1px solid #e2e8f0;
+}
+
+.simplesearchform input.form-control {
+    background: transparent;
+    border: none;
+    font-size: 0.9rem;
+    box-shadow: none !important;
+}
+
+.simplesearchform .btn-submit {
+    background: #3182ce;
+    color: white;
+    border-radius: 8px !important;
+    padding: 5px 15px;
+}
+
+.simplesearchform .btn-submit:hover {
+    background: #2b6cb0;
+}
+
+/* Active/Selected Node Highlight */
+.block_tree [aria-selected="true"] > .tree_item {
+    background: #3182ce !important;
+    color: #fff !important;
+    border-left-color: #1a365d;
+}
+
+.block_tree [aria-selected="true"] > .tree_item .icon {
+    color: #fff !important;
+}
+
+/* Hide Moodle's default bullet points */
+.block_tree ul li {
+    list-style: none !important;
+}
+
+
+// settings
+/* Container focus */
+#region-main .col {
+    padding: 25px;
+    background: #f8fafc;
+    border-radius: 20px;
+}
+
+/* List Style Reset */
+#region-main .list-unstyled {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 0;
+}
+
+/* Individual Card Styling */
+#region-main .list-unstyled li {
+    list-style: none;
+    perspective: 1000px;
+}
+
+#region-main .list-unstyled li a {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    background: #ffffff;
+    color: #334155;
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none !important;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Background Ornament on Hover */
+#region-main .list-unstyled li a::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 100px;
+    height: 100px;
+    background: rgba(37, 99, 235, 0.05);
+    border-radius: 50%;
+    transition: all 0.6s ease;
+}
+
+/* Hover Effects */
+#region-main .list-unstyled li a:hover {
+    background: #ffffff;
+    border-color: #2563eb;
+    color: #2563eb !important;
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 25px -5px rgba(37, 99, 235, 0.1), 
+                0 10px 10px -5px rgba(37, 99, 235, 0.04);
+}
+
+#region-main .list-unstyled li a:hover::after {
+    width: 300px;
+    height: 300px;
+    background: rgba(37, 99, 235, 0.1);
+}
+
+/* Dynamic Icon Addition */
+#region-main .list-unstyled li a::before {
+    content: "\f13e"; /* Default Shield Icon */
+    font-family: 'FontAwesome';
+    margin-right: 15px;
+    font-size: 1.4rem;
+    background: #eff6ff;
+    color: #2563eb;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px; 
+    transition: all 0.3s ease;
+}
+
+/* Specific Icons for Specific Links (Optional but looks great) */
+#region-main .list-unstyled li a[href*="ipblocker"]::before { content: "\f05e"; } /* Ban icon */
+#region-main .list-unstyled li a[href*="sitepolicies"]::before { content: "\f023"; } /* Lock icon */
+#region-main .list-unstyled li a[href*="httpsecurity"]::before { content: "\f121"; } /* Code icon */
+#region-main .list-unstyled li a[href*="notifications"]::before { content: "\f0f3"; } /* Bell icon */
+
+/* Hover change for icon background */
+#region-main .list-unstyled li a:hover::before {
+    background: #2563eb;
+    color: #ffffff;
+    transform: rotate(360deg);
+}
+     
+/* Responsive adjustment */
+@media (max-width: 576px) {
+    #region-main .list-unstyled {
+        grid-template-columns: 1fr;
+    }
+}
+

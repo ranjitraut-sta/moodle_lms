@@ -1,0 +1,3947 @@
+/* ---------------------------------- */
+/* --- AMD-LMS Theme Variables --- */
+/* ---------------------------------- */
+:root {
+    /* Fonts */
+    --amd-font-family: 'Lato', sans-serif;
+    --amd-tittle-font-family: 'Lato', sans-serif;
+
+    /* Background */
+    --amd-body-bg: #040216d4;
+
+    /* =========================================
+       PRIMARY COLOR SYSTEM (AUTO GENERATED)
+    ========================================== */
+    --amd-primary: #cacaca;
+    /* Change only this */
+    --amd-primary-light: color-mix(in oklch, var(--amd-primary) 60%, white);
+    --amd-fade-primary: color-mix(in oklch, var(--amd-primary) 12%, transparent);
+
+    /* =========================================
+       SECONDARY COLOR SYSTEM (AUTO GENERATED)
+    ========================================== */
+    --amd-secondary: #090089a6;
+    /* Change only this */
+    --amd-secondary-light: color-mix(in oklch, var(--amd-secondary) 70%, white);
+    --amd-fade-secondary: color-mix(in oklch, var(--amd-secondary) 25%, transparent);
+
+    /* =========================================
+       OTHER COLORS (NO CHANGE)
+    ========================================== */
+    --amd-preload: #000000;
+
+    --amd-dark: #231d29;
+    --amd-dark-light: color-mix(in oklch, var(--amd-dark) 40%, white);
+
+    --amd-light: #ffffff;
+    --amd-border: #d1d5db;
+    --amd-muted: #acacac;
+
+    --amd-navbar-top-bg: #2d3436;
+    --amd-navbar-top-text: #0e0e0e;
+    --amd-nav-menu-bg: #424242;
+    --amd-nav-menu-text: #f1f1f1;
+}
+
+
+/* ---------------------------------- */
+/* --- Custom AMD-LMS Stylesheet --- */
+/* ---------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;0,900;1,400;1,700&display=swap');
+
+/* Apply fonts */
+
+
+
+/* Body styling */
+body {
+    font-family: var(--amd-font-family);
+    line-height: 1.5;
+    /* Padding top adjusted for fixed header bars */
+    /* padding-top: 125px; */
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--amd-tittle-font-family);
+    font-weight: 700;
+
+    margin-top: 0;
+}
+
+li,
+a {
+    list-style: none;
+    text-decoration: none;
+}
+
+/* --------------------------------------------------- */
+/* --- Smooth Header Scroll Animation (AMD-LMS) --- */
+/* --------------------------------------------------- */
+#mainHeader {
+    background: #fffefe;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1050;
+    transition: transform 0.6s ease, background-color 0.6s ease, box-shadow 0.6s ease;
+    transform: translateY(0);
+}
+
+/* Hidden (Scroll Down) */
+#mainHeader.header-hidden {
+    transform: translateY(-120%);
+}
+
+/* Background Active (Scroll Triggered) */
+#mainHeader.header-bg-active {
+    background: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+/* Optional subtle fade for child elements */
+#mainHeader .amd-lms-navbar {
+    transition: opacity 0.5s ease;
+}
+
+#mainHeader.header-hidden .amd-lms-navbar {
+    opacity: 0;
+}
+
+#mainHeader.header-bg-active .amd-lms-navbar {
+    opacity: 1;
+}
+
+/* extra css for course detail page  */
+.amd-lms-course-nav {
+    /* background: var(--amd-secondary); */
+    background: #040216d4;
+    backdrop-filter: blur(10px);
+}
+
+/* course detail page nav end */
+/* --- Header Wrapper --- */
+.amd-lms-header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1030;
+    transition: top 0.3s ease-in-out;
+    /* box-shadow and border-bottom commented out */
+    /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); */
+    /* border-bottom: 1px solid var(--amd-light); */
+}
+
+/* Class to hide header by moving it up */
+.header-hidden {
+    top: -150px;
+    /* Hide both bars by shifting above viewport */
+}
+
+/* --- Top Bar Styling --- */
+.amd-lms-topbar {
+    /* background-color: var(--amd-navbar-top-bg); */
+    padding: 6px 0px 6px 0;
+    font-size: 0.8rem;
+    border-bottom: 1px solid var(--amd-muted);
+}
+
+/* Flex container for topbar content */
+.amd-lms-topbar-content {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1.5rem;
+}
+
+/* Links and dropdown toggle styles inside topbar */
+.amd-lms-search-trigger {
+    color: var(--amd-dark) !important;
+}
+
+.amd-language-drops i,
+.language {
+    color: var(--amd-dark) !important;
+}
+
+.dropdown-menu-dark li a {
+    color: var(--amd-light) !important;
+}
+
+.amd-lms-topbar a,
+.amd-lms-topbar .dropdown-toggle {
+    color: var(--amd-light);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+/* Hover effect for links/dropdown toggle */
+.amd-lms-topbar a:hover,
+.amd-lms-topbar .dropdown-toggle:hover {
+    color: var(--amd-light);
+}
+
+
+/* Remove default dropdown arrow */
+.amd-lms-topbar .dropdown-toggle::after {
+    display: none;
+}
+
+.amd-lms-topbar-social a {
+    background: var(--amd-fade-primary);
+    padding: 5px 10px;
+    width: 30px;
+    height: 30px;
+    color: var(--amd-dark) !important;
+    display: inline-block;
+    /* inline-block better for transform */
+    transition: all 0.2s ease-in;
+}
+
+.amd-lms-topbar-social a:hover {
+    color: var(--amd-primary);
+    border-radius: 50%;
+    transform: scale(1.2) rotate(45deg);
+    /* scale me value unit nahi hota */
+}
+
+/* Login button styling */
+.amd-lms-btn-login {
+    background: var(--amd-secondary);
+
+    border-radius: 0 !important;
+    padding: 0.2rem 0.8rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+/* Hover effect for login button */
+.amd-lms-btn-login:hover {
+    background-color: var(--amd-primary);
+    color: var(--amd-dark) !important;
+}
+
+/* --- Main Navbar Styling --- */
+.amd-lms-navbar {
+    /* background-color: var(--amd-navbar-top-bg); */
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+/* Container position static to avoid conflicts */
+.amd-lms-navbar .container {
+    position: static;
+}
+
+/* Brand name styling */
+.amd-lms-brand {
+    font-family: var(--amd-tittle-font-family);
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--amd-navbar-top-text);
+    text-decoration: none;
+}
+
+/* Brand highlight */
+.amd-lms-brand .amd-lms-brand-m {
+    color: var(--amd-primary);
+}
+
+/* Wrapper for nav links, dropdowns, search etc. */
+.amd-lms-main-nav-wrapper {
+    display: contents;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* Nav links style */
+.amd-lms-nav .nav-link {
+    color: var(--amd-navbar-top-text);
+    font-weight: 500;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+}
+
+/* Hover and active nav link */
+.amd-lms-nav .nav-link:hover,
+.amd-lms-nav .nav-link.active {
+    color: var(--amd-secondary);
+    opacity: 1;
+}
+
+.navbar-nav .nav-link.active,
+.navbar-nav .nav-link.show {
+    color: var(--amd-secondary) !important;
+}
+
+/* Icon inside nav links */
+.amd-lms-nav .nav-link .amd-lms-icon {
+    margin-right: 8px;
+    font-size: 1.1em;
+    color: var(--amd-dark);
+    transition: color 0.2s ease;
+}
+
+/* Icon color on hover */
+.amd-lms-nav .nav-link:hover .amd-lms-icon {
+    color: var(--amd-secondary);
+}
+
+/* Register button styling */
+.amd-lms-btn-register {
+    background-color: var(--amd-secondary);
+    border-color: var(--amd-secondary);
+    padding: 0.6rem 1.5rem;
+    color: var(--amd-light);
+    border-radius: 0 !important;
+    font-weight: 600;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    font-size: 0.8rem;
+    text-decoration: none;
+}
+
+/* Hover effect for register button */
+.amd-lms-btn-register:hover {
+    color: var(--amd-dark);
+    background: transparent;
+    border: 1px solid var(--amd-secondary);
+    filter: brightness(0.9);
+
+}
+
+/* Dropdown menu styling */
+.amd-lms-dropdown-menu {
+    background-color: var(--amd-nav-menu-bg);
+    border: 1px solid var(--amd-border);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    border-radius: 0 !important;
+    margin-top: 0.5rem !important;
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Fade in animation for dropdown */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Dropdown item styling */
+.amd-lms-dropdown-menu .dropdown-item {
+    font-weight: 500;
+    color: var(--amd-nav-menu-text);
+    padding: 0.75rem 1.5rem;
+}
+
+/* Hover effect for dropdown items */
+.amd-lms-dropdown-menu .dropdown-item:hover {
+    background-color: rgba(47, 0, 255, 0.1);
+    color: var(--amd-primary);
+}
+
+.dropdown-menu {
+    border-radius: 0 !important;
+    background: var(--amd-nav-menu-bg);
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+    background: var(--amd-fade-primary);
+}
+
+/* Divider in dropdown */
+.dropdown-divider {
+    border-color: var(--amd-border);
+}
+
+/* Dropdown submenu container */
+.amd-lms-dropdown-submenu {
+    position: relative;
+}
+
+/* Position submenu dropdown */
+.amd-lms-dropdown-submenu>.dropdown-menu {
+    top: -10px;
+    left: 100%;
+    margin-left: 0.1rem;
+    display: none;
+}
+
+/* Remove arrow from submenu toggles */
+.amd-lms-dropdown-submenu>.dropdown-toggle::after {
+    display: none;
+}
+
+/* Arrow icon in submenu */
+.amd-lms-submenu-arrow {
+    position: absolute;
+    right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.7rem;
+}
+
+/* --- Mega Menu --- */
+.amd-lms-mega-menu {
+    width: 600px;
+    padding: 2rem;
+}
+
+/* Mega menu headings */
+.amd-lms-mega-heading {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--amd-light);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--amd-primary);
+    display: inline-block;
+}
+
+/* Links inside mega menu */
+.amd-lms-mega-menu .list-unstyled a {
+    display: block;
+    text-decoration: none;
+    color: var(--amd-muted);
+    padding: 0.5rem 0;
+    transition: all 0.2s ease;
+}
+
+/* Hover effect for mega menu links */
+.amd-lms-mega-menu .list-unstyled a:hover {
+    color: var(--amd-primary);
+    padding-left: 5px;
+}
+
+/* --- Expanded Search Styling --- */
+.amd-lms-search-expanded {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(4, 2, 22, 0.266);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.35s ease;
+    z-index: 10;
+}
+
+/* Search input styling */
+.amd-lms-search-expanded .form-control {
+    border: none;
+    box-shadow: none;
+    font-size: 1.2rem;
+    height: 100%;
+    padding: 0 1rem;
+    background: transparent;
+    color: var(--amd-dark);
+}
+
+/* Remove outline on focus for search input */
+.amd-lms-search-expanded .form-control:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+/* Placeholder color for search input */
+.amd-lms-search-expanded input::placeholder {
+    color: var(--amd-dark-light);
+    /* soft gray */
+    opacity: 1;
+}
+
+/* Darker placeholder color on focus */
+.amd-lms-search-expanded input:focus::placeholder {
+    color: #6b7280;
+    /* darker gray when typing */
+}
+
+/* Search icon color */
+.amd-lms-search-expanded i.fas.fa-search {
+    color: var(--amd-dark-light);
+    /* same tone as placeholder */
+    transition: color 0.3s ease;
+}
+
+/* Change icon color on input focus */
+.amd-lms-search-expanded input:focus+.amd-lms-search-close,
+.amd-lms-search-expanded:focus-within i.fas.fa-search {
+    color: var(--amd-primary) !important;
+    /* highlight color */
+}
+
+/* Search close button */
+.amd-lms-search-close {
+    font-size: 2rem;
+    line-height: 1;
+    font-weight: 300;
+    background: none;
+    border: none;
+    color: var(--amd-muted);
+    cursor: pointer;
+}
+
+/* Hover effect for search close button */
+.amd-lms-search-close:hover {
+    color: var(--amd-light);
+}
+
+/* When search active, hide main nav wrapper */
+.amd-lms-navbar.search-active .amd-lms-main-nav-wrapper {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* -------------------------------------------- */
+/* AMD-LMS Active Link Styling (Only Active) */
+/* -------------------------------------------- */
+.amd-lms-link-active {
+    color: var(--amd-dark);
+    font-weight: 600;
+    border-left: 3px solid var(--amd-secondary-light);
+    background: var(--amd-fade-secondary);
+
+    padding-left: 5px;
+    transition: all 0.35s ease-in-out;
+}
+
+/* -------------------------------------------- */
+/* AMD-LMS Active Link + Icon Styling */
+/* -------------------------------------------- */
+
+
+/* ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¸ Active Link Icon Color */
+.amd-lms-link-active i {
+    color: var(--amd-secondary) !important;
+    transition: color 0.3s ease-in-out;
+}
+
+/* Show expanded search when active */
+.amd-lms-navbar.search-active .amd-lms-search-expanded {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Remove border from navbar toggler */
+.navbar-toggler {
+    border: none;
+}
+
+/* Remove focus shadow from toggler */
+.navbar-toggler:focus {
+    box-shadow: none;
+}
+
+/* Custom hamburger icon for toggler */
+.navbar-toggler-icon {
+    /* background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28251, 251, 251, 0.8%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e"); */
+}
+
+/* --- Responsive styles --- */
+/* Desktop: show submenu dropdowns on hover */
+@media (min-width: 992px) {
+    .amd-lms-dropdown-submenu:hover>.dropdown-menu {
+        display: block;
+    }
+}
+
+/* Mobile: submenu dropdown style */
+@media (max-width: 991.98px) {
+    .amd-lms-dropdown-submenu>.dropdown-menu {
+        position: static;
+        display: none;
+        width: 100%;
+        background-color: #3e4446;
+        border: none;
+        box-shadow: none;
+        padding-left: 1rem;
+    }
+
+    /* Submenu toggles layout */
+    .amd-lms-dropdown-submenu>a {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* Arrow positioning reset */
+    .amd-lms-submenu-arrow {
+        position: static;
+        transform: none;
+        transition: transform 0.3s ease;
+    }
+
+    /* Rotate arrow when submenu open */
+    .amd-lms-dropdown-submenu.open>a>.amd-lms-submenu-arrow {
+        transform: rotate(90deg);
+    }
+
+    .amd-lms-navbar {
+        background: rgb(255 255 255 / 27%);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+    }
+}
+
+
+/* globle shine bg effect***************************** */
+.amd-shine-bg {
+    position: relative;
+    /* overflow: hidden; */
+    z-index: 0;
+
+}
+
+/* Top-left purple glow */
+.amd-shine-bg::before {
+    content: "";
+    position: absolute;
+    top: -100px;
+    left: -100px;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle at top left,
+            var(--amd-secondary),
+            /* purple */
+            transparent 70%);
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Bottom-right green glow */
+.amd-shine-bg::after {
+    content: "";
+    position: absolute;
+    bottom: -100px;
+    right: 0;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle at bottom right,
+            var(--amd-primary),
+            /* green */
+            transparent 70%);
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Ensure content above shine */
+.amd-shine-bg>* {
+    position: relative;
+    z-index: 1;
+}
+
+/* global shine effect end */
+
+/* lms hero section**************************************** */
+/* --- NEW: Preloader Styles --- */
+.amd-lms-hero-preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--amd-preload);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.8s ease-in-out, visibility 0.8s ease-in-out;
+}
+
+.amd-lms-hero-preloader.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.amd-lms-hero-preloader .preloader-text {
+    font-family: var(--amd-tittle-font-family);
+    font-size: clamp(2.5rem, 5vw, 3rem);
+    color: var(--amd-light);
+    animation: amd-lms-hero-preloader-pulse 2.5s ease-in-out infinite;
+}
+
+@keyframes amd-lms-hero-preloader-pulse {
+
+    0%,
+    100% {
+        opacity: 0.8;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.02);
+    }
+}
+
+
+.amd-lms-hero-section {
+    position: relative;
+    min-height: 100vh;
+    background-color: var(--amd-preload);
+    color: var(--amd-light);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.amd-lms-hero-glow {
+    position: absolute;
+    border-radius: 50%;
+    z-index: 1;
+    filter: blur(150px);
+    opacity: 0.15;
+    animation: amd-lms-hero-glow-pulse 20s ease-in-out infinite;
+}
+
+.amd-lms-hero-glow-1 {
+    width: 600px;
+    height: 600px;
+    background: var(--amd-secondary);
+    top: -20%;
+    left: -20%;
+}
+
+.amd-lms-hero-glow-2 {
+    width: 500px;
+    height: 500px;
+    background: var(--amd-primary);
+    bottom: -25%;
+    right: -15%;
+    animation-duration: 25s;
+    animation-delay: -5s;
+}
+
+@keyframes amd-lms-hero-glow-pulse {
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    50% {
+        transform: translate(40px, -30px) scale(1.1);
+    }
+
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+}
+
+.amd-lms-hero-bg-carousel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+}
+
+.amd-lms-hero-bg-carousel .carousel-inner,
+.amd-lms-hero-bg-carousel .carousel-item {
+    height: 100%;
+}
+
+.amd-lms-hero-bg-carousel .carousel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    opacity: 0.5;
+}
+
+.carousel-fade .carousel-item {
+    transition: opacity 1.5s ease-in-out;
+}
+
+@keyframes amd-lms-hero-ken-burns {
+    from {
+        transform: scale(1.05);
+    }
+
+    to {
+        transform: scale(1.15);
+    }
+}
+
+@keyframes amd-lms-hero-clip-reveal {
+    from {
+        clip-path: circle(0% at center);
+    }
+
+    to {
+        clip-path: circle(75% at center);
+    }
+}
+
+@keyframes amd-lms-hero-color-in {
+    from {
+        filter: grayscale(100%);
+    }
+
+    to {
+        filter: grayscale(0%);
+    }
+}
+
+.carousel-item.active img {
+    animation-duration: 8s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+}
+
+.carousel-item:nth-child(1).active img {
+    animation-name: amd-lms-hero-ken-burns;
+}
+
+.carousel-item:nth-child(2).active img {
+    animation-name: amd-lms-hero-clip-reveal;
+    animation-duration: 1.5s;
+    animation-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.carousel-item:nth-child(3).active img {
+    animation-name: amd-lms-hero-color-in;
+    animation-duration: 5s;
+}
+
+.amd-lms-hero-bg-carousel .carousel-caption {
+    top: 50%;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 550px;
+    text-align: center;
+}
+
+@keyframes amd-lms-hero-fade-in-up {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes amd-lms-hero-fade-in-left {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes amd-lms-hero-fade-in-scale {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.carousel-item .amd-lms-hero-text-content>* {
+    opacity: 0;
+}
+
+.carousel-item.active .amd-lms-hero-text-content>* {
+    animation-duration: 0.7s;
+    animation-fill-mode: forwards;
+}
+
+.carousel-item:nth-child(1).active .amd-lms-hero-text-content>* {
+    animation-name: amd-lms-hero-fade-in-up;
+}
+
+.carousel-item:nth-child(2).active .amd-lms-hero-text-content>* {
+    animation-name: amd-lms-hero-fade-in-left;
+}
+
+.carousel-item:nth-child(3).active .amd-lms-hero-text-content>* {
+    animation-name: amd-lms-hero-fade-in-scale;
+}
+
+.carousel-item.active .amd-lms-hero-headline {
+    animation-delay: 0.5s;
+}
+
+.carousel-item.active .amd-lms-hero-subheadline {
+    animation-delay: 0.6s;
+}
+
+.carousel-item.active .amd-lms-hero-button-group {
+    animation-delay: 0.7s;
+}
+
+.amd-lms-hero-content-wrapper {
+    position: relative;
+    z-index: 3;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    pointer-events: none;
+}
+
+.amd-lms-hero-content-wrapper>* {
+    pointer-events: auto;
+}
+
+.amd-lms-hero-navbar {
+    padding: 1.5rem 0;
+    font-family: var(--amd-font-family);
+}
+
+.amd-lms-hero-navbar .navbar-brand {
+    font-family: var(--amd-tittle-font-family);
+    font-weight: 500;
+    font-size: 1.75rem;
+    color: var(--amd-light);
+}
+
+.amd-lms-hero-navbar .navbar-nav .nav-link {
+    color: var(--amd-light);
+    opacity: 0.8;
+    transition: opacity 0.2s;
+    padding: 0.75rem 0;
+}
+
+.amd-lms-hero-navbar .navbar-nav .nav-link:hover {
+    opacity: 1;
+}
+
+.amd-lms-hero-navbar .btn-register {
+    border: 1px solid var(--amd-light);
+    color: var(--amd-light);
+    border-radius: 50px;
+    padding: 0.5rem 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.amd-lms-hero-navbar .btn-register:hover {
+    background-color: var(--amd-light);
+    color: var(--amd-dark);
+}
+
+.amd-lms-hero-navbar .navbar-toggler {
+    color: var(--amd-dark);
+    border: 1px solid var(--amd-border);
+}
+
+.amd-lms-hero-navbar .navbar-toggler:focus {
+    box-shadow: none;
+}
+
+.amd-lms-hero-navbar .navbar-toggler-icon {
+    /* background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.8%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e"); */
+}
+
+.amd-lms-hero-side-links {
+    list-style: none;
+    padding: 0;
+    position: absolute;
+    z-index: 10;
+    bottom: 5vh;
+    left: 5vw;
+    font-family: var(--amd-font-family);
+    font-size: 0.9rem;
+}
+
+.amd-lms-hero-side-links li {
+    margin-bottom: 1.5rem;
+}
+
+.amd-lms-hero-side-links a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-decoration: none;
+    color: var(--amd-light);
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--amd-border);
+    transition: color 0.3s;
+    min-width: 200px;
+}
+
+.amd-lms-hero-side-links a:hover {
+    color: var(--amd-light);
+}
+
+.amd-lms-hero-side-links .arrow-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--amd-border);
+    border-radius: 50%;
+    color: var(--amd-light);
+    background-color: transparent;
+    transition: all 0.35s ease-in-out;
+    /* smooth transition for everything */
+    transform: scale(1);
+}
+
+/* ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¨ Smooth Hover Effect */
+.amd-lms-hero-side-links a:hover .arrow-icon {
+    background-color: var(--amd-fade-primary);
+    color: var(--amd-light);
+
+    transform: scale(1.12);
+    /* subtle zoom-in for smooth interaction */
+}
+
+
+.amd-lms-hero-play-button {
+    position: absolute;
+    z-index: 10;
+    bottom: 21vh;
+    right: 5vw;
+    width: 70px;
+    height: 70px;
+    border: 1px solid var(--amd-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--amd-light);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.amd-lms-hero-play-button i {
+    font-size: 1.5rem;
+    margin-left: 3px;
+}
+
+.amd-lms-hero-play-button:hover {
+    background-color: var(--amd-light);
+    color: var(--amd-dark);
+    transform: scale(1.1);
+}
+
+.amd-lms-hero-play-button::after {
+    content: '';
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    border-top: 1px solid var(--amd-border);
+    border-radius: 50%;
+    top: 227%;
+    left: 50%;
+    transform: translate(-50%, -100%) rotate(-45deg);
+    z-index: -1;
+}
+
+.amd-lms-hero-headline {
+    font-family: var(--amd-tittle-font-family);
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    font-weight: 500;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+}
+
+.amd-lms-hero-subheadline {
+    font-family: var(--amd-font-family);
+    line-height: 1.6;
+    opacity: 0.9;
+    margin-bottom: 2.5rem;
+}
+
+.amd-lms-hero-btn-primary {
+    background-color: var(--amd-light);
+    color: var(--amd-dark);
+    border: none;
+    border-radius: 50px;
+    padding: 0.75rem 2rem;
+    font-weight: 500;
+    font-family: var(--amd-font-family);
+    transition: transform 0.2s ease;
+}
+
+.amd-lms-hero-btn-primary:hover {
+    transform: scale(1.05);
+}
+
+.amd-lms-hero-link-secondary {
+    color: var(--amd-light);
+    text-decoration: none;
+    font-weight: 500;
+    font-family: var(--amd-font-family);
+    position: relative;
+}
+
+.amd-lms-hero-link-secondary::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    background-color: var(--amd-light);
+    bottom: -3px;
+    left: 0;
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.3s ease;
+}
+
+.amd-lms-hero-link-secondary:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+#videoModal .modal-dialog {
+    max-width: 900px;
+}
+
+#videoModal .modal-content {
+    background-color: var(--amd-dark);
+    border: 1px solid var(--amd-border);
+}
+
+#videoModal .modal-header {
+    border-bottom: none;
+}
+
+.amd-lms-hero-bg-carousel .carousel-control-prev:hover,
+.amd-lms-hero-bg-carousel .carousel-control-next:hover {
+    background: #8ca40424;
+
+    /* height: 40px; */
+}
+
+.amd-lms-hero-bg-carousel .carousel-control-prev {
+    left: 0rem;
+
+    width: 50px;
+}
+
+.amd-lms-hero-bg-carousel .carousel-control-next {
+    right: 0rem;
+    width: 50px;
+}
+
+@media (max-width: 991.98px) {
+
+    .amd-lms-hero-side-links,
+    .amd-lms-hero-play-button,
+    .amd-lms-hero-play-button::after {
+        display: none;
+    }
+
+    .amd-lms-hero-glow {
+        filter: blur(100px);
+        opacity: 0.1;
+    }
+
+    .amd-lms-hero-navbar .navbar-collapse {
+        background-color: rgba(0, 0, 0, 0.9);
+        backdrop-filter: blur(10px);
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin-top: 1rem;
+        text-align: center;
+    }
+
+    .amd-lms-hero-navbar .nav-item:not(:last-child) {
+        border-bottom: 1px solid var(--amd-border);
+    }
+
+    .amd-lms-hero-navbar .btn-register {
+        margin-top: 1.5rem;
+        display: block;
+        width: 100%;
+    }
+
+    .amd-lms-hero-bg-carousel .carousel-control-prev,
+    .amd-lms-hero-bg-carousel .carousel-control-next {
+        width: 40px;
+        /* height: 40px; */
+    }
+
+    .amd-lms-hero-bg-carousel .carousel-control-prev {
+        left: 0.2rem;
+    }
+
+    .amd-lms-hero-bg-carousel .carousel-control-next {
+        right: 0.2rem;
+    }
+
+    .amd-lms-hero-bg-carousel .carousel-indicators {
+        bottom: 20px;
+    }
+}
+
+@media (max-width:768px) {
+    .amd-lms-hero-subheadline {
+        word-break: break-all;
+    }
+
+    .amd-lms-hero-bg-carousel .carousel-control-prev {
+        left: -0.6rem;
+    }
+
+    .amd-lms-hero-bg-carousel .carousel-control-next {
+        right: -0.6rem;
+    }
+
+    .amd-lms-hero-section {
+        min-height: 65vh;
+        /* or 65vh based on your content */
+        height: auto;
+        padding: 2rem 1rem;
+        /* adjust for comfortable spacing */
+    }
+}
+
+
+/* lms about section************************************** */
+/* --- COMPONENT: amd-lms-about --- */
+.amd-lms-about {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+    overflow: hidden;
+    background: var(--amd-light);
+}
+
+/* --- Hero Section Elements --- */
+.amd-lms-about-section {
+    padding-bottom: 5rem;
+    /* Space between hero and achievements */
+}
+
+/* Image Wrapper and Decorations */
+.amd-lms-about-section-image-wrapper {
+    position: relative;
+}
+
+.amd-lms-about-section-image {
+    /* border-radius: 20px; */
+    width: 100%;
+    max-width: 398px;
+    display: block;
+    margin: 0 auto;
+}
+
+.amd-lms-about__deco-wavy-line {
+    position: absolute;
+    top: -20px;
+    left: -30px;
+    width: 150px;
+    z-index: -1;
+}
+
+.amd-lms-about__deco-dot-grid {
+    position: absolute;
+    bottom: -20px;
+    right: 0;
+    width: 100px;
+    z-index: -1;
+}
+
+/* Tutor Finder Card */
+.amd-lms-about__tutor-card {
+    position: absolute;
+    bottom: 40px;
+    left: 20px;
+    background-color: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    max-width: 250px;
+}
+
+.amd-lms-about__tutor-card-icon {
+    width: 40px;
+    height: 40px;
+}
+
+.amd-lms-about__tutor-card-title {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.amd-lms-about__tutor-card-desc {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--amd-muted);
+}
+
+/* Hero Content */
+.amd-lms-about-section-content {
+    padding-left: 2rem;
+}
+
+.amd-lms-about__pre-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #0d6efd;
+    display: inline-block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 1rem;
+}
+
+.amd-lms-about__pre-title::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 25px;
+    height: 2px;
+    background-color: #ef4444;
+}
+
+.amd-lms-about__title {
+    font-size: 3.2rem;
+    font-weight: 800;
+    line-height: 1.2;
+    color: #1e293b;
+}
+
+.amd-lms-about__title-sparkle {
+    width: 40px;
+    height: 40px;
+    vertical-align: top;
+}
+
+.amd-lms-about__description {
+    color: #475569;
+    margin-top: 1.5rem;
+    max-width: 450px;
+}
+
+/* Feature List & Info Cards */
+.amd-lms-about__feature-list {
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0;
+}
+
+.amd-lms-about__feature-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+    font-weight: 500;
+    color: #334155;
+}
+
+.amd-lms-about__feature-item i {
+    color: #10b981;
+    font-size: 1.2rem;
+}
+
+.amd-lms-about__info-cards-container {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2.5rem;
+}
+
+.amd-lms-about__info-card {
+    background-color: var(--amd-light);
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 0.6rem;
+    flex: 1;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.amd-lms-about__info-card-icon {
+    font-size: 1.5rem;
+    color: #ef4444;
+}
+
+.amd-lms-about__info-card-title {
+    margin-bottom: 0.25rem;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.amd-lms-about__info-card-desc {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #64748b;
+    line-height: 1.5;
+}
+
+/* --- Achievements Section Elements --- */
+.amd-lms-about__achievements {
+    margin-top: -25px;
+    /* Adjust overlap */
+    position: relative;
+    z-index: 10;
+}
+
+.amd-lms-about__achievements-card {
+    /* background-color: var(--amd-light); */
+    /* border-radius: 20px; */
+    /* padding: 2.5rem 2rem; */
+    box-shadow: 0 31px 21px rgba(0, 0, 0, 0.08);
+}
+
+.amd-lms-about__achievements-title {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    font-weight: 600;
+    color: #334155;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.amd-lms-about__achievements-sparkle {
+    width: 24px;
+    height: 24px;
+}
+
+.amd-lms-about__stat {
+    text-align: center;
+    padding: 0 1rem;
+}
+
+.amd-lms-about__stat:not(:last-child) {
+    border-right: 1px solid #e2e8f0;
+}
+
+.amd-lms-about__stat-number {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.amd-lms-about__stat-description {
+    color: #64748b;
+    font-size: 0.9rem;
+    margin-top: 0.25rem;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 991.98px) {
+    .amd-lms-about-section {
+        text-align: center;
+        padding-bottom: 3rem;
+    }
+
+    .amd-lms-about-section-content {
+        padding-left: 0;
+        margin-top: 4rem;
+    }
+
+    .amd-lms-about__description,
+    .amd-lms-about__info-cards-container {
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .amd-lms-about__feature-list {
+        display: inline-block;
+        text-align: left;
+    }
+
+    .amd-lms-about__deco-wavy-line {
+        left: 10px;
+    }
+
+    .amd-lms-about__tutor-card {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .amd-lms-about__achievements {
+        margin-top: 0;
+    }
+
+    .amd-lms-about__stat {
+        border-right: none;
+        border-bottom: 1px solid #e2e8f0;
+        padding-bottom: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .amd-lms-about__stat:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .amd-lms-about__title {
+        font-size: 2.5rem;
+    }
+
+    .amd-lms-about__info-cards-container {
+        flex-direction: column;
+    }
+}
+
+
+/* ---------------------------------- */
+/*  lms course section*****************************************/
+/* ---------------------------------- */
+
+/* Main Block */
+.amd-lms-course-section {
+    position: relative;
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+    overflow: hidden;
+    background: var(--amd-body-bg);
+    /* background: linear-gradient(135deg, var(--amd-secondary) 50%, var(--amd-primary) 100%); */
+    backdrop-filter: blur(4px);
+    z-index: 0;
+}
+
+/* Overlay for smooth blur + shine animation */
+.amd-lms-course-section::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    /* background: linear-gradient(270deg,
+                    rgba(61, 13, 173, 0.218) 0%,
+                    rgba(221, 255, 0, 0.226) 50%,
+                    rgba(106, 13, 173, 0.167) 100%); */
+    filter: blur(10px);
+    animation: shineMove 8s linear infinite;
+    z-index: -1;
+    pointer-events: none;
+    border-radius: 1rem;
+}
+
+/* Shine animation moves the gradient smoothly */
+@keyframes shineMove {
+    0% {
+        transform: translateX(-50%) translateY(0);
+    }
+
+    100% {
+        transform: translateX(50%) translateY(0);
+    }
+}
+
+/* Content inside should be above the shine */
+.amd-lms-course-section>* {
+    position: relative;
+    z-index: 1;
+}
+
+
+/* Element: Header */
+.amd-lms-course-section__header {
+    margin-bottom: 3rem;
+}
+
+.amd-lms-course-section__title {
+    font-family: var(--amd-tittle-font-family);
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--amd-light);
+}
+
+.amd-lms-course-section__subtitle {
+    color: var(--amd-muted);
+}
+
+/* Element: Filters Dropdown */
+.amd-lms-course-section__filters .dropdown .btn {
+    background-color: var(--amd-primary-light);
+    color: var(--amd-dark);
+    border-radius: 0 !important;
+    border: none;
+    font-weight: 600;
+    min-width: 150px;
+}
+
+.amd-lms-course-section__filters .dropdown .btn:hover,
+.amd-lms-course-section__filters .dropdown .btn:focus {
+    background-color: var(--amd-primary-light);
+    color: var(--amd-dark);
+}
+
+.amd-lms-course-section__filters .dropdown-menu {
+    background-color: var(--amd-nav-menu-bg);
+    border: 1px solid var(--amd-border);
+    border-radius: 0 !important;
+}
+
+.amd-lms-course-section__filters .dropdown-item {
+    color: var(--amd-light);
+}
+
+.amd-lms-course-section__filters .dropdown-item:hover,
+.amd-lms-course-section__filters .dropdown-item.active {
+    background-color: rgba(25, 0, 255, 0.1);
+    color: var(--amd-primary);
+}
+
+/* Element: Card */
+.amd-lms-course-section__card {
+    border: 1px solid var(--amd-border);
+    /* border-radius: 10px; */
+    background-color: var(--amd-fade-secondary);
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+.amd-lms-course-section__card:hover {
+    transform: translateY(-5px);
+    border-color: var(--amd-primary);
+    /* box-shadow: 0 8px 25px var(--amd-fade-secondary); */
+}
+
+.amd-lms-course-section__card-image-wrapper {
+    position: relative;
+    /* border-radius: 10px 10px 0 0; */
+    overflow: hidden;
+}
+
+.amd-lms-course-section__card-image-wrapper img {
+    height: 200px;
+    object-fit: cover;
+    width: 100%;
+    filter: saturate(0.9);
+}
+
+.amd-lms-course-section__card-category {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    color: var(--amd-dark);
+    font-weight: 600;
+    background-color: var(--amd-primary-light);
+    padding: 0.25rem 0.75rem;
+    /* border-radius: 5px; */
+    font-size: 0.8rem;
+
+}
+
+.amd-lms-course-section__card-body {
+    padding: 1rem 1.25rem;
+}
+
+.amd-lms-course-section__card-stats {
+    display: flex;
+    gap: 1rem;
+    color: var(--amd-muted);
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+}
+
+.amd-lms-course-section__card-stats i.bi-star-fill {
+    color: var(--amd-primary);
+}
+
+.amd-lms-course-section__card-stat {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.amd-lms-course-section__card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--amd-light);
+    text-decoration: none;
+    display: block;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+}
+
+.amd-lms-course-section__card-title:hover {
+    color: var(--amd-primary);
+}
+
+.amd-lms-course-section__card-instructor {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.amd-lms-course-section__card-instructor-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.amd-lms-course-section__card-instructor-name {
+    font-size: 0.9rem;
+    color: var(--amd-muted);
+}
+
+.amd-lms-course-section__card-footer {
+    padding: 1rem 1.25rem;
+    background-color: transparent;
+    border-top: 1px solid var(--amd-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.amd-lms-course-section__card-duration {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--amd-muted);
+}
+
+.amd-lms-course-section__card-price {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--amd-primary);
+}
+
+.amd-lms-course-section__card-price--free {
+    color: var(--amd-primary);
+}
+
+
+/* Element: Grid + Mobile Carousel Behavior */
+@media (max-width:991px) {
+    .amd-lms-text-wrap {
+        text-align: center;
+    }
+
+    .amd-lms-course-section__filters {
+        text-align: right;
+    }
+
+    .amd-lms-course-section {
+        padding: 2rem 0;
+    }
+
+}
+
+@media (max-width: 767.98px) {
+    .amd-lms-course-section__grid {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        margin-left: 0;
+        /* Align with container padding */
+        margin-right: 0;
+    }
+
+    .amd-lms-course-section__grid::-webkit-scrollbar {
+        display: none;
+    }
+
+    .amd-lms-course-section__title {
+        font-size: 1.7rem;
+    }
+
+    .amd-lms-course-section__card-body {
+        padding: 5px 10px;
+    }
+
+    .amd-lms-course-section__card-title {
+        font-size: 1rem;
+    }
+
+    .amd-lms-course-section__filters .dropdown .btn {
+        font-size: 14px;
+        min-width: 0;
+    }
+
+    .amd-lms-course-section__grid-item {
+        flex: 0 0 85%;
+        max-width: 85%;
+    }
+
+    .amd-lms-course-section__header {
+        margin-bottom: 2rem;
+    }
+
+}
+
+
+/* lms course section end */
+
+
+/* Lms package section  */
+/* --- Main Pricing Section Wrapper --- */
+.amd-lms-pricing-section {
+    padding: 2rem 0;
+    background: var(--amd-light);
+    text-align: center;
+}
+
+/* --- Header Styling --- */
+.amd-lms-pricing-section__pre-title {
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--amd-secondary);
+    /* Dark Teal */
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.amd-lms-pricing-section__title {
+
+    font-size: 3.5rem;
+    color: var(--amd-dark);
+    margin-bottom: 1rem;
+}
+
+.amd-lms-pricing-section__description {
+    max-width: 600px;
+    margin: 0 auto 4rem auto;
+    color: var(--amd-muted);
+}
+
+/* --- Grid for Pricing Cards --- */
+.amd-lms-pricing-section__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    align-items: start;
+    /* Align items to the top */
+}
+
+/* --- Base Pricing Card Style --- */
+.amd-lms-pricing-card {
+    padding: 1rem;
+    border-top: 1px solid var(--amd-secondary);
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.amd-lms-pricing-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.amd-lms-pricing-card__title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--amd-dark);
+    margin-bottom: 0.5rem;
+}
+
+.amd-lms-pricing-card__description {
+    font-size: 0.9rem;
+    color: var(--amd-muted);
+    margin-bottom: 2rem;
+}
+
+.amd-lms-pricing-card__price {
+    font-size: 4rem;
+    font-weight: 700;
+    color: var(--amd-dark);
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: flex-start;
+    /* Aligns currency symbol to the top */
+}
+
+.amd-lms-pricing-card__price .currency {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-right: 0.25rem;
+    margin-top: 0.5rem;
+}
+
+.amd-lms-pricing-card__price .period {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--amd-muted);
+    margin-left: 0.5rem;
+    align-self: flex-end;
+    /* Aligns '/month' to the bottom */
+    margin-bottom: 0.75rem;
+}
+
+.amd-lms-pricing-card__button {
+    display: block;
+    width: 100%;
+    padding: 1rem;
+
+    text-align: center;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    background-color: var(--amd-secondary);
+    /* Dark Teal */
+    color: var(--amd-light);
+    margin-bottom: 2rem;
+}
+
+.amd-lms-pricing-card__features {
+    list-style: none;
+    padding: 0;
+    margin-top: auto;
+    /* Pushes list to the bottom, aligning buttons */
+}
+
+.amd-lms-pricing-card-texts {
+    color: var(--amd-dark);
+}
+
+.amd-lms-pricing-card__features li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.95rem;
+}
+
+.amd-lms-pricing-card__features i {
+    color: var(--amd-secondary);
+    font-size: 1.2rem;
+}
+
+/* --- Highlighted (Middle) Card Style --- */
+.amd-lms-pricing-card--highlighted {
+    background-color: var(--amd-secondary);
+    /* Dark Teal */
+    color: var(--amd-light);
+    transform: scale(1.05);
+    /* Makes it slightly bigger */
+}
+
+.amd-lms-pricing-card--highlighted:hover {
+    transform: scale(1.05) translateY(-10px);
+    /* Keep scale on hover */
+}
+
+.amd-lms-pricing-card--highlighted .amd-lms-pricing-card__title,
+.amd-lms-pricing-card--highlighted .amd-lms-pricing-card__price {
+    color: var(--amd-light);
+}
+
+.amd-lms-pricing-card--highlighted .amd-lms-pricing-card__description,
+.amd-lms-pricing-card--highlighted .amd-lms-pricing-card__price .period {
+    color: #ccc;
+}
+
+.amd-lms-pricing-card--highlighted .amd-lms-pricing-card__button {
+    background-color: var(--amd-light);
+    color: var(--amd-secondary);
+}
+
+.amd-lms-pricing-card--highlighted .amd-lms-pricing-card__features i {
+    color: var(--amd-light);
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 992px) {
+    .amd-lms-pricing-section__grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .amd-lms-pricing-card--highlighted {
+        transform: scale(1);
+        /* Reset scale on smaller screens */
+    }
+
+    .amd-lms-pricing-card--highlighted:hover {
+        transform: translateY(-10px);
+        /* Keep hover effect */
+    }
+}
+
+@media (max-width: 768px) {
+    .amd-lms-pricing-section__title {
+        font-size: 2.5rem;
+    }
+
+    .amd-lms-pricing-card {
+        padding: 1.5rem;
+    }
+}
+
+/* Lms package section end */
+
+
+/* lms contact section */
+
+/* --- Main Contact Section Wrapper --- */
+.amd-lms-contact-section {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    background-color: var(--amd-light);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-top: 5rem;
+}
+
+/* --- 1. Left Info Column --- */
+.amd-lms-contact-section__info {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), url('../imgs/Navy\ and\ White\ Illustration\ Paper\ Plane\ Sky\ Quotes\ Phone\ Wallpaper\ \(1\).png');
+    background-size: cover;
+    background-position: center;
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.amd-lms-contact-section__info-logo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--amd-light);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.amd-lms-contact-section__info-logo i {
+    color: var(--amd-primary);
+    /* Blue color */
+}
+
+.amd-lms-contact-section__info-text {
+    color: var(--amd-light);
+    line-height: 1.7;
+}
+
+.amd-lms-contact-section__info-socials {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.amd-lms-contact-section__info-socials a {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    background-color: #f1f3f5;
+    color: var(--amd-muted);
+    border-radius: 4px;
+    font-size: 1.2rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.amd-lms-contact-section__info-socials a.active,
+.amd-lms-contact-section__info-socials a:hover {
+    background-color: #1a1a1a;
+    color: var(--amd-light);
+}
+
+/* --- 2. Right Form Column --- */
+.amd-lms-contact-section__form-wrapper {
+    padding: 3.5rem;
+}
+
+.amd-lms-contact-section__form-wrapper h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--amd-dark);
+    margin-bottom: 0.5rem;
+}
+
+.amd-lms-contact-section__form-wrapper p {
+    color: var(--amd-muted);
+    margin-bottom: 2.5rem;
+}
+
+.amd-lms-contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.amd-lms-contact-form__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.amd-lms-contact-input-group {
+    position: relative;
+    background-color: #f8f9fa;
+    border: 1px solid var(--amd-fade-primary);
+
+    transition: border-color 0.3s ease;
+}
+
+.amd-lms-contact-input-group:focus-within {
+    border-color: var(--amd-fade-primary);
+}
+
+.amd-lms-contact-input-group i {
+    position: absolute;
+    top: 50%;
+    left: 1rem;
+    transform: translateY(-50%);
+    color: var(--amd-muted);
+    font-size: 1.2rem;
+}
+
+.amd-lms-contact-input-group input,
+.amd-lms-contact-input-group textarea {
+    width: 100%;
+    border: none;
+    background: transparent;
+    padding: 1rem 1rem 0.8rem 1.5rem;
+    /* Top, Right, Bottom, Left */
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    padding-left: 41px;
+    font-weight: 600;
+    color: var(--amd-dark);
+    outline: none;
+}
+
+.amd-lms-contact-input-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.amd-lms-contact-input-group label {
+    position: absolute;
+    left: 3rem;
+    top: 0.8rem;
+    color: var(--amd-muted);
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+
+/* The floating label magic */
+.amd-lms-contact-input-group input:not(:placeholder-shown)+label,
+.amd-lms-contact-input-group textarea:not(:placeholder-shown)+label,
+.amd-lms-contact-input-group input:focus+label,
+.amd-lms-contact-input-group textarea:focus+label {
+    top: -0.5rem;
+    font-size: 0.75rem;
+    color: var(--amd-dark);
+}
+
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 992px) {
+    .amd-lms-contact-section {
+        grid-template-columns: 1fr;
+        /* Stack columns */
+    }
+
+    .amd-lms-contact-section__info {
+        display: none;
+        /* Push content to bottom */
+    }
+
+    .amd-lms-contact-section__info-logo,
+    .amd-lms-contact-section__info-text {
+        display: none;
+        /* Hide text on smaller screens for cleaner look */
+    }
+}
+
+@media (max-width: 768px) {
+    .amd-lms-contact-section__form-wrapper {
+        padding: 2rem;
+    }
+
+    .amd-lms-contact-form__row {
+        grid-template-columns: 1fr;
+    }
+
+
+
+}
+
+/* lms contact sectione end */
+
+/* Lms footer section */
+/* --- Main Footer Wrapper --- */
+.amd-lms-footer {
+    position: relative;
+    /* This top margin provides space for the promo card to sit in */
+    margin-top: 16rem;
+}
+
+/* --- 1. The Overlapping Promo Card --- */
+.amd-lms-footer-promo-card {
+    position: absolute;
+    top: -13rem;
+    /* Pulls the card up, creating the overlap */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    width: 90%;
+    max-width: 1200px;
+    height: 380px;
+    /* Fixed height for consistency */
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 3rem;
+    background-image: linear-gradient(#2a1a81c2), url('../imgs/Navy\ and\ White\ Illustration\ Paper\ Plane\ Sky\ Quotes\ Phone\ Wallpaper\ \(1\).png');
+    background-size: cover;
+    background-position: center;
+}
+
+.amd-lms-footer-promo-card__content {
+    padding: 2.5rem;
+    border-radius: 16px;
+    max-width: 50%;
+}
+
+.amd-lms-footer-promo-card__content h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--amd-light);
+    margin-bottom: 1rem;
+}
+
+.amd-lms-footer-promo-card__content p {
+    color: var(--amd-light);
+    margin-bottom: 1.5rem;
+}
+
+.amd-lms-footer-promo-card__listen {
+    color: var(--amd-muted);
+    font-weight: 600;
+}
+
+.amd-lms-footer-promo-card__icons {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.amd-lms-footer-promo-card__icons a {
+    display: grid;
+    place-content: center;
+    width: 36px;
+    height: 36px;
+    background-color: var(--amd-dark);
+    color: var(--amd-light);
+    border-radius: 50%;
+    font-size: 1.2rem;
+    transition: background-color 0.3s ease;
+}
+
+.amd-lms-footer-promo-card__icons a:hover {
+    background-color: var(--amd-muted);
+}
+
+.amd-lms-footer-promo-card__button {
+    background-color: var(--amd-dark);
+    color: var(--amd-light);
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background-color 0.3s ease;
+}
+
+.amd-lms-footer-promo-card__button:hover {
+    background-color: var(--amd-muted);
+}
+
+/* --- 2. The Main Black Footer Area --- */
+.amd-lms-footer-main {
+    background-color: var(--amd-body-bg);
+    color: var(--amd-light);
+    position: relative;
+    /* THIS IS THE KEY: Creates space at the top for the promo card to overlap into */
+    padding-top: 198px;
+    padding-bottom: 1rem;
+}
+
+.amd-lms-footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.amd-lms-footer-main__top-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(203px, 1fr));
+    gap: 3rem;
+    padding-bottom: 0rem;
+}
+
+.amd-lms-footer-main__column h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.amd-lms-footer-main__column ul li {
+    margin-bottom: 0.8rem;
+}
+
+.amd-lms-footer-main__column ul a {
+    color: var(--amd-muted);
+}
+
+.amd-lms-footer-main__column ul a:hover {
+    color: var(--amd-light);
+}
+
+.amd-lms-footer-main__socials {
+    display: flex;
+    gap: 1rem;
+}
+
+.amd-lms-footer-main__socials a {
+    display: grid;
+    place-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: #222;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.amd-lms-footer-main__socials a:hover {
+    background-color: var(--amd-light);
+    color: var(--amd-dark);
+}
+
+
+
+.amd-lms-footer-main__form {
+    display: flex;
+    gap: 1rem;
+    flex-grow: 1;
+    max-width: 500px;
+}
+
+
+.amd-lms-footer-main__form button {
+    background-color: #E1F4B3;
+    /* Mint green */
+    color: var(--amd-dark);
+    border: none;
+    border-radius: 50px;
+    padding: 1rem 1.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.amd-lms-footer-main__form button:hover {
+    background-color: #d1e2a5;
+}
+
+.amd-lms-footer-main__bottom {
+    text-align: center;
+    padding-top: 2rem;
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 992px) {
+    .amd-lms-footer-promo-card {
+        flex-direction: column;
+        height: auto;
+        gap: 2rem;
+    }
+
+    .amd-lms-footer-promo-card__content {
+        max-width: 100%;
+    }
+
+    .amd-lms-footer-main__form {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .amd-lms-footer {
+        margin-top: 15rem;
+    }
+
+    .amd-lms-footer-promo-card {
+        top: -12rem;
+        padding: 1.5rem;
+    }
+
+    .amd-lms-footer-promo-card__content h1 {
+        font-size: 2rem;
+    }
+
+    .amd-lms-footer-main {
+        padding-top: 300px;
+    }
+
+    .amd-lms-footer-main__form {
+        flex-direction: column;
+        width: 100%;
+    }
+}
+
+/* Lms footer section end */
+
+
+
+/* breadcrum section global css */
+/* --- Main Breadcrumb Section Wrapper --- */
+.amd-lms-breadcum-section {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding-top: 9rem;
+    min-height: 350px;
+    color: #fff;
+    /* Background Image */
+    background-image: url('../../asset/imgs/Gradient\ Corporate\ Zoom\ Virtual\ Background.png');
+    background-size: cover;
+    background-position: center;
+}
+
+/* Dark Overlay for the entire section */
+.amd-lms-breadcum-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1;
+}
+
+/* --- Content Container --- */
+.amd-lms-breadcum-section__content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 900px;
+
+
+}
+
+.amd-lms-breadcum-head {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    margin-bottom: 18px;
+    max-width: 900px;
+
+    /* This creates the inner dark bar effect */
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 1rem 0rem;
+}
+
+/* --- Title Styling --- */
+.amd-lms-breadcum-section__title {
+    font-size: 3rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    /* margin-bottom: 1.5rem; */
+}
+
+/* --- Breadcrumb Navigation Styling --- */
+.amd-lms-breadcum-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    list-style: none;
+}
+
+.amd-lms-breadcum-nav__item a,
+.amd-lms-breadcum-nav__item span {
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    transition: color 0.3s ease;
+}
+
+/* Non-active breadcrumb link */
+.amd-lms-breadcum-nav__item a {
+    color: #aaa;
+}
+
+.amd-lms-breadcum-nav__item a:hover {
+    color: #fff;
+}
+
+/* Active breadcrumb item (not a link) */
+.amd-lms-breadcum-nav__item--active span {
+    color: #fff;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+    .amd-lms-breadcum-section {
+        min-height: 300px;
+    }
+
+    .amd-lms-breadcum-section__content {
+        padding: 2rem 1rem;
+    }
+
+    .amd-lms-breadcum-section__title {
+        font-size: 2rem;
+        letter-spacing: 2px;
+    }
+
+    .amd-lms-breadcum-nav {
+        gap: 1rem;
+    }
+
+    .amd-lms-breadcum-nav__item a,
+    .amd-lms-breadcum-nav__item span {
+        font-size: 0.7rem;
+        letter-spacing: 1px;
+    }
+}
+
+/* breadcrum section global css end */
+
+
+
+
+/* course list page css */
+
+/* --- Main Container --- */
+.amd-lms-course-list-container {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 2.5rem;
+}
+
+/* --- Top Bar for Controls --- */
+.amd-lms-course-list-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+.amd-lms-course-list-topbar__title h1 {
+    font-size: 1.8rem;
+}
+
+.amd-lms-course-list-topbar__title span {
+    font-size: 1rem;
+    color: var(--amd-muted);
+}
+
+.amd-lms-course-list-topbar__controls {
+    display: grid;
+    grid-template-columns: max-content 1fr 1fr 1fr;
+    gap: 12px;
+}
+
+
+.amd-lms-course-list-topbar__controls select {
+    width: auto;
+    border: 1px solid var(--amd-border);
+    padding: 0.5rem 1rem;
+    border-radius: 0 !important;
+    background-color: #fff;
+    font-family: 'Poppins', sans-serif;
+}
+
+.amd-lms-course-list-view-switcher {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid var(--amd-border);
+    border-radius: 0 !important;
+    padding: 0.25rem;
+}
+
+.amd-lms-course-list-view-switcher button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.4rem 0.6rem;
+    border-radius: 4px;
+    color: var(--amd-muted);
+    transition: all 0.3s ease;
+}
+
+.amd-lms-course-list-view-switcher button.active {
+    background-color: var(--amd-secondary);
+    color: #fff;
+}
+
+.amd-lms-course-list-view-switcher button:not(.active):hover {
+    background-color: var(--amd-light);
+}
+
+/* --- Course Grid --- */
+.amd-lms-course-list-grid {
+    display: grid;
+    /* This CSS variable will be controlled by JavaScript */
+    grid-template-columns: repeat(var(--amd-lms-grid-columns, 4), 1fr);
+    gap: 1.5rem;
+}
+
+/* --- Course Card --- */
+.amd-lms-course-list-card {
+    background-color: #fff;
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: var(--amd-dark);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.amd-lms-course-list-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+.amd-lms-course-list-card__image-wrapper {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+}
+
+.amd-lms-course-list-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.amd-lms-course-list-card:hover .amd-lms-course-list-card__image {
+    transform: scale(1.05);
+}
+
+.amd-lms-course-list-card__content {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    /* Makes content area fill available space */
+}
+
+.amd-lms-course-list-card__title {
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 0.75rem;
+    flex-grow: 1;
+    /* Pushes meta down */
+}
+
+.amd-lms-course-list-card__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-size: 0.8rem;
+    color: var(--amd-muted);
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--amd-border);
+}
+
+.amd-lms-course-list-card__meta span {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.amd-lms-course-list-card__author {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--amd-muted);
+    margin-top: 0.75rem;
+}
+
+.amd-lms-course-list-card__author-avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 1400px) {
+    .amd-lms-course-list-grid {
+        grid-template-columns: repeat(var(--amd-lms-grid-columns, 3), 1fr);
+    }
+}
+
+@media (max-width: 992px) {
+    .amd-lms-course-list-grid {
+        grid-template-columns: repeat(var(--amd-lms-grid-columns, 2), 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .amd-lms-course-list-topbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .amd-lms-course-list-topbar__controls {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 576px) {
+    .amd-lms-course-list-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .amd-lms-course-list-container {
+        padding: 1.5rem;
+    }
+}
+
+/* course list page css end */
+
+
+
+/* course detail page css */
+/* --- Main Container & Layout --- */
+.amd-lms-course-detail-container {
+    padding: 3rem 0;
+}
+
+.amd-lms-course-detail-back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    color: #333;
+    text-decoration: none;
+    font-weight: 600;
+
+}
+
+.amd-lms-course-detail-back-btn i {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--amd-border);
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+
+}
+
+.amd-lms-course-detail-back-btn:hover i {
+    background-color: var(--amd-border);
+}
+
+.amd-lms-course-detail-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2.5rem;
+    align-items: flex-start;
+}
+
+/* --- Main Content Column (Left) --- */
+.amd-lms-course-detail-main {
+    padding: 0 5px;
+    background-color: #fff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.amd-lms-course-detail-main__image {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+}
+
+.amd-lms-course-detail-main__content-wrapper {
+    padding: 2.5rem;
+}
+
+.amd-lms-course-detail-main__title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--amd-dark);
+    line-height: 1.2;
+}
+
+.amd-lms-course-detail-main__author {
+    color: var(--amd-light);
+    margin-bottom: 2rem;
+}
+
+.amd-lms-course-detail-section h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--amd-dark);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--amd-border);
+}
+
+.amd-lms-course-detail-section {
+    text-align: justify;
+    margin-bottom: 3rem;
+}
+
+/* NEW: What You'll Learn Section */
+.amd-lms-course-detail-learn-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    list-style: none;
+}
+
+.amd-lms-course-detail-learn-grid li {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+}
+
+.amd-lms-course-detail-learn-grid i {
+    color: var(--amd-secondary);
+    margin-top: 4px;
+    font-size: 1.1rem;
+}
+
+/* NEW: Requirements Section */
+.amd-lms-course-detail-requirements ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.amd-lms-course-detail-requirements li {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.amd-lms-course-detail-requirements i {
+    color: var(--amd-primary);
+}
+
+/* --- Accordion (Course Contents & FAQ) --- */
+.amd-lms-course-detail-accordion__item {
+    border: 1px solid var(--amd-border);
+
+    margin-bottom: 1rem;
+    overflow: hidden;
+}
+
+.amd-lms-course-detail-accordion__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background-color: var(--amd-light);
+    cursor: pointer;
+    list-style: none;
+    font-weight: 600;
+    color: #333;
+}
+
+.amd-lms-course-detail-accordion__header::-webkit-details-marker {
+    display: none;
+}
+
+.amd-lms-course-detail-accordion__header-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.amd-lms-course-detail-accordion__header-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--amd-dark);
+}
+
+.amd-lms-course-detail-accordion__header-meta .chevron {
+    transition: transform 0.3s ease;
+}
+
+.amd-lms-course-detail-accordion__item[open] .amd-lms-course-detail-accordion__header-meta .chevron {
+    transform: rotate(180deg);
+}
+
+.amd-lms-course-detail-accordion__body {
+    list-style: none;
+    background-color: #fff;
+}
+
+.amd-lms-course-detail-accordion__body-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--amd-border);
+    font-size: 0.95rem;
+}
+
+.amd-lms-course-detail-accordion__body-item .lesson-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--amd-muted);
+}
+
+.amd-lms-course-detail-accordion__body-item .lesson-duration {
+    color: var(--amd-light);
+}
+
+.amd-lms-course-detail-accordion__body-item i {
+    color: var(--amd-secondary);
+}
+
+/* NEW: FAQ Body Style */
+.amd-lms-course-detail-accordion__faq-body {
+    padding: 1.5rem;
+    border-top: 1px solid var(--amd-border);
+}
+
+/* NEW: Student Feedback Section */
+.amd-lms-course-detail-reviews__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.amd-lms-course-detail-review-card {
+    border: 1px solid var(--amd-border);
+
+    padding: 1.5rem;
+}
+
+.amd-lms-course-detail-review-card__header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.amd-lms-course-detail-review-card__header img {
+    width: 45px;
+    height: 45px;
+
+}
+
+.amd-lms-course-detail-review-card__header-info .name {
+    font-weight: 600;
+    color: #333;
+}
+
+.amd-lms-course-detail-review-card__stars {
+    color: #f7d200 !important;
+}
+
+.amd-lms-course-detail-review-card__text {
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+/* --- Sidebar Column (Right) --- */
+.amd-lms-course-detail-sidebar {
+    position: sticky;
+    top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.amd-lms-course-detail-sidebar-card {
+    background-color: #fff;
+
+    padding: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.amd-lms-course-detail-sidebar-card h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--amd-dark);
+    margin-bottom: 1rem;
+}
+
+.amd-lms-course-detail-meta ul {
+    list-style: none;
+}
+
+.amd-lms-course-detail-meta li {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+}
+
+.amd-lms-course-detail-meta li i {
+    font-size: 1.2rem;
+    color: var(--amd-secondary);
+    width: 20px;
+}
+
+.amd-lms-course-detail-meta li .meta-label {
+    color: var(--amd-dark);
+}
+
+.amd-lms-course-detail-meta li .meta-value {
+    color: #333;
+    font-weight: 500;
+    margin-left: auto;
+}
+
+.amd-lms-course-detail-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.amd-lms-course-detail-actions .btn {
+    flex-grow: 1;
+    padding: 0.8rem;
+
+    text-decoration: none;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.amd-lms-course-detail-actions .btn--primary {
+    background-color: var(--amd-primary);
+    color: #fff;
+}
+
+.amd-lms-course-detail-actions .btn--primary:hover {
+    background-color: #264bcf;
+}
+
+.amd-lms-course-detail-actions .btn--secondary {
+    background-color: #fff;
+    color: var(--amd-primary);
+    border: 1px solid var(--amd-border);
+}
+
+.amd-lms-course-detail-actions .btn--secondary:hover {
+    background-color: var(--amd-light);
+}
+
+.amd-lms-course-detail-author__header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.amd-lms-course-detail-author__header img {
+    width: 50px;
+    height: 50px;
+
+    object-fit: cover;
+}
+
+.amd-lms-course-detail-author__header-info .name {
+    font-weight: 600;
+    color: #333;
+}
+
+.amd-lms-course-detail-author__header-info .email {
+    font-size: 0.85rem;
+    color: var(--amd-light);
+}
+
+.amd-lms-course-detail-author p {
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+}
+
+.amd-lms-course-detail-social-links {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.amd-lms-course-detail-social-links a {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+
+    font-size: 1.1rem;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+}
+
+.amd-lms-course-detail-social-links a:hover {
+    opacity: 0.8;
+}
+
+.amd-lms-course-detail-social-links .facebook {
+    background-color: #1877F2;
+    color: #fff;
+}
+
+.amd-lms-course-detail-social-links .instagram {
+    background-color: #E4405F;
+    color: #fff;
+}
+
+.amd-lms-course-detail-social-links .linkedin {
+    background-color: #0A66C2;
+    color: #fff;
+}
+
+.amd-lms-course-detail-social-links .twitter {
+    background-color: #1DA1F2;
+    color: #fff;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 1200px) {
+    .amd-lms-course-detail-grid {
+        grid-template-columns: 1.5fr 1fr;
+    }
+}
+
+@media (max-width: 992px) {
+    .amd-lms-course-detail-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .amd-lms-course-detail-sidebar {
+        position: static;
+    }
+
+    .amd-lms-course-detail-learn-grid,
+    .amd-lms-course-detail-reviews__grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .amd-lms-course-detail-container {
+        /* padding: 0 1rem; */
+        /* margin: 1rem auto; */
+    }
+
+    .amd-lms-course-detail-main__content-wrapper {
+        padding: 0rem;
+    }
+
+    .amd-lms-course-detail-main__image {
+        height: 250px;
+    }
+}
+
+/* course detail page css end */
+
+
+
+/* blog page*/
+
+.amd-lms-blog-page-container {
+
+    margin: 0 auto;
+    padding: 40px 24px;
+}
+
+/* ------------------------------ */
+/* --- Page Header --- */
+/* ------------------------------ */
+.amd-lms-blog-page-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.amd-lms-blog-page-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--amd-dark);
+    margin: 0 0 10px;
+}
+
+.amd-lms-blog-page-header p {
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* ------------------------------ */
+/* --- Filters & Search --- */
+/* ------------------------------ */
+.amd-lms-blog-page-filters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.amd-lms-blog-page-search-wrapper {
+    position: relative;
+    flex-grow: 1;
+    max-width: 320px;
+}
+
+.amd-lms-blog-page-search-wrapper .bi-search {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--amd-muted);
+}
+
+.amd-lms-blog-page-search-wrapper input {
+    width: 100%;
+    padding: 12px 15px 12px 40px;
+    border: 1px solid var(--amd-secondary-light);
+    /* */
+    font-size: 1rem;
+    background-color: var(--amd-card-bg);
+    box-sizing: border-box;
+}
+
+/* --- Category Filters --- */
+.amd-lms-blog-page-filter-container {
+    position: relative;
+}
+
+
+.amd-lms-blog-page-filter-container .custom-dropdown-toggle {
+    border-radius: 0 !important;
+    /* no rounded corners */
+    border: 1px solid var(--amd-secondary-light);
+    background-color: #fff;
+    color: var(--amd-muted);
+    padding: 8px 16px;
+    font-weight: 600;
+    box-shadow: none;
+    width: 100%;
+    text-align: left;
+    transition: background-color 0.3s ease;
+}
+
+.amd-lms-blog-page-filter-container .custom-dropdown-toggle:hover,
+.amd-lms-blog-page-filter-container .custom-dropdown-toggle:focus {
+    background-color: #f8f9fa;
+    color: var(--amd-dark);
+    box-shadow: none;
+    border-color: var(--amd-muted);
+}
+
+.amd-lms-blog-page-filter-container .custom-dropdown-menu {
+    border-radius: 0 !important;
+    /* no rounded corners on dropdown */
+    border: 1px solid var(--amd-border);
+    box-shadow: none;
+    margin-top: 0;
+    padding: 0;
+    width: auto;
+}
+
+.amd-lms-blog-page-filter-container .custom-dropdown-menu .dropdown-item {
+    padding: 8px 16px;
+    color: var(--amd-light);
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+}
+
+.amd-lms-blog-page-filter-container .custom-dropdown-menu .dropdown-item:hover,
+.amd-lms-blog-page-filter-container .custom-dropdown-menu .dropdown-item.active {
+    background-color: #e9ecef;
+    color: var(--amd-dark);
+}
+
+.amd-lms-blog-page-filter-container .custom-dropdown-menu .dropdown-item i {
+    margin-right: 8px;
+    font-size: 1.1em;
+    vertical-align: middle;
+}
+
+/* ------------------------------ */
+/* --- Blog Grid & Cards --- */
+/* ------------------------------ */
+.amd-lms-blog-page-grid {
+    display: grid;
+    gap: 30px;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.amd-lms-blog-page-card {
+    background-color: var(--amd-card-bg);
+    border: 1px solid var(--amd-fade-secondary);
+    box-shadow: var(--amd-dark);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease-in-out;
+}
+
+.amd-lms-blog-page-card:hover {
+    transform: translateY(-5px);
+}
+
+.amd-lms-blog-page-card-image-link {
+    display: block;
+}
+
+.amd-lms-blog-page-card-image {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+}
+
+.amd-lms-blog-page-card-content {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.amd-lms-blog-page-card-meta {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--amd-secondary);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.amd-lms-blog-page-card-meta .date {
+    color: var(--amd-muted);
+    margin-left: 8px;
+}
+
+.amd-lms-blog-page-card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--amd-dark);
+    margin: 0 0 12px;
+    line-height: 1.4;
+}
+
+.amd-lms-blog-page-card-title a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.amd-lms-blog-page-card-title a:hover {
+    color: var(--amd-secondary);
+}
+
+.amd-lms-blog-page-card-excerpt {
+    margin: 0 0 20px;
+    flex-grow: 1;
+    font-size: 0.95rem;
+}
+
+.amd-lms-blog-page-card-read-more {
+    font-weight: 600;
+    color: var(--amd-dark);
+    text-decoration: none;
+}
+
+/* ------------------------------ */
+/* --- Responsive Design --- */
+/* ------------------------------ */
+/* Asymmetrical Grid for Desktop */
+
+@media (min-width: 992px) {
+    .amd-lms-blog-page-grid {
+        grid-template-columns: repeat(6, 1fr);
+    }
+
+    .amd-lms-blog-page-card:nth-child(1),
+    .amd-lms-blog-page-card:nth-child(2) {
+        grid-column: span 3;
+    }
+
+    .amd-lms-blog-page-card:nth-child(3),
+    .amd-lms-blog-page-card:nth-child(4),
+    .amd-lms-blog-page-card:nth-child(5) {
+        grid-column: span 2;
+    }
+
+    .amd-lms-blog-page-card:nth-child(6),
+    .amd-lms-blog-page-card:nth-child(7) {
+        grid-column: span 3;
+    }
+
+
+
+}
+
+/* Tablet & Mobile */
+@media (max-width: 767px) {
+    .amd-lms-blog-page-header h1 {
+        font-size: 2rem;
+    }
+
+    .amd-lms-blog-page-container {
+        padding: 2rem 0;
+    }
+
+    .amd-lms-blog-page-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .amd-lms-blog-page-filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .amd-lms-blog-page-search-wrapper {
+        max-width: 100%;
+    }
+
+}
+
+
+
+/* blog page end*/
+
+
+/* blog detail page css */
+/* --- Main Container & Layout --- */
+.amd-lms-blog-detail-container {
+    margin: 3rem auto;
+}
+
+/* --- Article Header --- */
+.amd-lms-blog-detail-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    position: relative;
+}
+
+.amd-lms-blog-detail-back-link {
+    position: absolute;
+    top: 10px;
+    left: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    color: var(--amd-dark);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.amd-lms-blog-detail-back-link i {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--amd-border);
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+}
+
+.amd-lms-blog-detail-back-link:hover i {
+    background-color: var(--amd-border);
+}
+
+.amd-lms-blog-detail-header__date {
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--amd-muted);
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+}
+
+.amd-lms-blog-detail-header__title {
+    font-family: var(--amd-font-family);
+    font-size: 3.5rem;
+    color: var(--amd-dark);
+    line-height: 1.2;
+    max-width: 800px;
+    margin: 0 auto 1.5rem auto;
+}
+
+.amd-lms-blog-detail-header__excerpt {
+    color: var(--amd-muted);
+    margin-bottom: 2rem;
+}
+
+.amd-lms-blog-detail-header__tags {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+.amd-lms-blog-detail-header__tags a {
+    background-color: var(--amd-border);
+    color: var(--amd-dark);
+    padding: 0.4rem 1rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: background-color 0.3s ease;
+}
+
+.amd-lms-blog-detail-header__tags a:hover {
+    background-color: #e9e9e9;
+}
+
+/* --- Featured Image --- */
+.amd-lms-blog-detail-featured-image {
+    width: 100%;
+    height: auto;
+    margin-bottom: 4rem;
+}
+
+/* --- Main Content Grid --- */
+.amd-lms-blog-detail-content-grid {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap: 4rem;
+    align-items: flex-start;
+}
+
+/* --- Sidebar (Summary) --- */
+.amd-lms-blog-detail-sidebar {
+    position: sticky;
+    top: 4rem;
+}
+
+.amd-lms-blog-detail-sidebar__title {
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--amd-secondary-light);
+    border-bottom: 1px solid var(--amd-border);
+    letter-spacing: 1px;
+    margin-bottom: 1.5rem;
+}
+
+.amd-lms-blog-detail-sidebar__nav {
+    list-style: none;
+    /* border-left: 1px solid var(--amd-border); */
+}
+
+.amd-lms-blog-detail-sidebar__nav li {
+    margin-bottom: 1.5rem;
+}
+
+.amd-lms-blog-detail-sidebar__nav a {
+    text-decoration: none;
+    color: var(--amd-muted);
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding-bottom: 0.25rem;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.amd-lms-blog-detail-sidebar__nav a.active {
+    color: var(--amd-dark);
+    border-bottom-color: var(--amd-dark);
+}
+
+/* --- Article Body --- */
+.amd-lms-blog-detail-article-body h2 {
+
+    font-size: 2rem;
+    color: var(--amd-dark);
+    margin-bottom: 1.5rem;
+    padding-top: 1rem;
+}
+
+.amd-lms-blog-detail-article-body p {
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+}
+
+.amd-lms-blog-detail-article-body__image {
+    width: 100%;
+    margin: 2rem 0;
+}
+
+.amd-lms-blog-detail-article-body__quote {
+    font-family: var(--amd-font-family);
+    font-size: 1.5rem;
+    font-style: italic;
+    color: var(--amd-dark);
+    text-align: center;
+    margin: 3rem 1rem;
+}
+
+/* --- Post-Article Sections --- */
+.amd-lms-blog-detail-post-footer {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--amd-muted);
+}
+
+.amd-lms-blog-detail-post-footer-section {
+    margin-bottom: 3rem;
+}
+
+.amd-lms-blog-detail-post-footer-section__title {
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--amd-dark);
+    letter-spacing: 1px;
+    margin-bottom: 1.5rem;
+}
+
+.amd-lms-blog-detail-share__links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+}
+
+.amd-lms-blog-detail-share__link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: var(--amd-muted);
+}
+
+.amd-lms-blog-detail-share__link i {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: var(--amd-light);
+    color: #888;
+}
+
+.amd-lms-blog-detail-author {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.amd-lms-blog-detail-author__avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+.amd-lms-blog-detail-author__info .name {
+    font-weight: 600;
+    color: var(--amd-dark);
+}
+
+.amd-lms-blog-detail-author__info .title {
+    font-size: 0.9rem;
+    color: #888;
+}
+
+/* --- Newsletter Footer --- */
+.amd-lms-blog-detail-newsletter {
+    background-color: var(--amd-light);
+    padding: 4rem 2rem;
+    margin-top: 4rem;
+}
+
+.amd-lms-blog-detail-newsletter__container {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+}
+
+.amd-lms-blog-detail-newsletter__info h3 {
+    font-family: var(--amd-font-family);
+    font-size: 1.8rem;
+    color: var(--amd-dark);
+    margin-bottom: 0.5rem;
+}
+
+.amd-lms-blog-detail-newsletter__info p {
+    color: #777;
+}
+
+.amd-lms-blog-detail-newsletter-form {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    min-width: 400px;
+}
+
+.amd-lms-blog-detail-newsletter-input-group {
+    position: relative;
+    flex-grow: 1;
+}
+
+.amd-lms-blog-detail-newsletter-input-group i {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    color: #bbb;
+}
+
+.amd-lms-blog-detail-newsletter-input-group input {
+    width: 100%;
+    border: none;
+    background: transparent;
+    border-bottom: 1px solid #ccc;
+    padding: 0.75rem 0 0.75rem 2rem;
+    font-family: var(--amd-tittle-font-family);
+    font-size: 1rem;
+}
+
+.amd-lms-blog-detail-newsletter-input-group input:focus {
+    outline: none;
+    border-bottom-color: var(--amd-dark);
+}
+
+.amd-lms-blog-detail-newsletter-form button {
+    background-color: var(--amd-dark);
+    color: #fff;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 992px) {
+    .amd-lms-blog-detail-content-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .amd-lms-blog-detail-sidebar {
+        position: static;
+        margin-bottom: -2rem;
+        border-bottom: 1px solid var(--amd-border);
+        padding-bottom: 2rem;
+    }
+
+    .amd-lms-blog-detail-sidebar__nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+    }
+
+    .amd-lms-blog-detail-sidebar__nav li {
+        margin-bottom: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .amd-lms-blog-detail-container {
+        margin: 2rem auto;
+
+    }
+
+    .amd-lms-blog-detail-back-link {
+        position: static;
+        margin-bottom: 2rem;
+    }
+
+    .amd-lms-blog-detail-header {
+        text-align: left;
+    }
+
+    .amd-lms-blog-detail-header__title {
+        font-size: 2.5rem;
+        margin-left: 0;
+    }
+
+    .amd-lms-blog-detail-header__tags,
+    .amd-lms-blog-detail-header__excerpt {
+        justify-content: flex-start;
+        margin-left: 0;
+    }
+
+    .amd-lms-blog-detail-newsletter__container {
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: center;
+    }
+
+    .amd-lms-blog-detail-newsletter-form {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+/* blog detail page css end */
+
+/* course tags */
+.amd-lms-course-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+.amd-lms-course-tag {
+    background: var(--amd-fade-secondary);
+    color: var(--amd-secondary);
+    border: 1px solid var(--amd-secondary-light);
+    padding: 0.3rem 0.9rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    border-radius: 2px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+/* course tags end */
+
+/* folder module */
+.amd-folder-filelist {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.amd-folder-file-item {
+    border: 1px solid var(--amd-border);
+    border-radius: 4px;
+    transition: background 0.2s ease;
+}
+.amd-folder-file-item:hover {
+    background: var(--amd-fade-secondary);
+}
+.amd-folder-file-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    text-decoration: none;
+    color: var(--amd-dark);
+    font-size: 0.95rem;
+}
+.amd-folder-file-link i {
+    font-size: 1.3rem;
+}
+/* folder module end */
+
+/* customcert module */
+.amd-module-customcert {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+}
+.amd-cert-wrap {
+    text-align: center;
+    padding: 3rem;
+    border: 2px solid #f6c90e;
+    border-radius: 8px;
+    max-width: 480px;
+    background: linear-gradient(135deg, #fffdf0, #fff8d6);
+}
+.amd-cert-icon {
+    font-size: 4rem;
+    color: #f6c90e;
+    margin-bottom: 1rem;
+}
+.amd-cert-wrap h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+}
+.amd-cert-wrap p {
+    color: #666;
+    margin-bottom: 1.5rem;
+}
+/* customcert module end */
+
+/* ========================================
+   MOODLE FILE PICKER FIXES (Step 5)
+   ======================================== */
+.theme-modal-open {
+    overflow: hidden;
+}
+
+body.theme-modal-open .modal-backdrop {
+    z-index: 1040 !important;
+}
+
+.fp-repo,
+.fp-repo-selector,
+.filepicker,
+[data-filepicker],
+.moodle-dialogue,
+.yui-panel,
+#filemanager_container ~ .fp-dialog {
+    z-index: 1060 !important;
+}
+
+.filepicker .fp-dialog {
+    z-index: 1070 !important;
+}
+
+/* Prevent theme modals blocking picker */
+#qOverlay,
+#modalBackdrop,
+#reviewModal {
+    z-index: 1055 !important;
+}
+

@@ -1,0 +1,44 @@
+<div class="amd-module-customcert">
+    {{#certpdfurls}}
+    <div class="amd-cert-preview" style="margin-bottom:30px;">
+        <canvas id="pdf-canvas-{{@index}}" style="width:100%; border:1px solid #ccc;"></canvas>
+        <div style="margin-top:5px;">
+            <a href="{{.}}" target="_blank" class="amd-lms-btn-certificate">
+                Download Certificate
+            </a>
+        </div>
+    </div>
+    {{/certpdfurls}}
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const pdfjsLib = window['pdfjsLib'];
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+        'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+    // Loop over all certificates
+    const certPreviews = document.querySelectorAll('.amd-cert-preview');
+    certPreviews.forEach((preview, index) => {
+        const canvas = preview.querySelector('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Get URL from the download link
+        const link = preview.querySelector('a').href;
+
+        if (!link) return;
+
+        pdfjsLib.getDocument({ url: link, withCredentials: true }).promise
+            .then(pdf => {
+                // Render first page
+                pdf.getPage(1).then(page => {
+                    const viewport = page.getViewport({ scale: 1.5 });
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+                    page.render({ canvasContext: ctx, viewport });
+                });
+            }).catch(err => console.error("PDF load error:", err));
+    });
+});
+</script>
