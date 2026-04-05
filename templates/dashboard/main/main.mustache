@@ -1,0 +1,108 @@
+<main class="amd-lms-user-dash-main-content">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="amd-lms-user-dash-section-title">Dashboard</h2>
+        <button class="btn amd-lms-user-dash-folder-btn"><i class="bi bi-folder me-2"></i> Class Folder</button>
+    </div>
+
+    <div class="row g-4">
+        {{#stats}}
+        <div class="col-12 col-sm-6 col-md-6 col-xl-3">
+            <div class="amd-lms-user-dash-card {{class}}">
+                <div class="amd-lms-user-dash-card-body">
+                    <p>{{title}}</p>
+                    <h3>{{value}}<span class="fs-6 fw-normal {{#scoretext}}{{scoretext}}{{/scoretext}} points</span></h3>
+                    <p class="mb-0 {{#label}}{{label}}{{/label}}"></p>
+                    {{{iconhtml}}}
+                </div>
+            </div>
+        </div>
+        {{/stats}}
+    </div>
+
+    <div class="row g-4 mt-2">
+        <div class="col-lg-8">
+            <div class="amd-lms-user-dash-card">
+                <div class="amd-lms-user-dash-card-header">
+                    <h3 class="amd-lms-user-dash-card-title">Upcoming Events</h3>
+                </div>
+                <div class="amd-lms-user-dash-card-body">
+                    <div id="amd-lms-event-slider">
+                        <p class="text-primary fw-bold mb-2"><i class="bi bi-broadcast"></i> Live class</p>
+                        {{#events}}
+                        <div class="amd-lms-user-dash-event-item">
+                            <img src="{{image}}" alt="{{title}}" />
+                            <div class="amd-lms-user-dash-event-info flex-grow-1">
+                                <h4>{{title}}</h4>
+                                <p>{{instructor}}</p>
+                                <p><i class="bi bi-calendar-event"></i> {{date}} &nbsp; <i class="bi bi-clock"></i> {{time}}</p>
+                                <div class="amd-lms-user-dash-event-controls">
+                                    <button class="btn btn-primary px-4">{{buttontext}}</button>
+                                    <div class="amd-lms-user-dash-event-slider-nav">
+                                        <a id="prev-event"><i class="bi bi-chevron-left"></i></a>
+                                        <span>1/4</span>
+                                        <a id="next-event"><i class="bi bi-chevron-right"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {{/events}}
+                    </div>
+                </div>
+            </div>
+            <div class="amd-lms-user-dash-card mt-4">
+                <div class="amd-lms-user-dash-card-header">
+                    <h3 class="amd-lms-user-dash-card-title">Leadership Board</h3>
+                </div>
+                <div class="amd-lms-user-dash-card-body">
+                    <div class="amd-lms-user-dash-leaderboard-header"><span>Rank</span><span>Student Name</span><span>Score</span></div>
+                    {{#leaderboard}}
+                    <div class="amd-lms-user-dash-leaderboard-row {{#current}}current-user{{/current}}">
+                        <span>{{rank}}</span><span>{{name}}</span><span>{{score}}</span>
+                    </div>
+                    {{/leaderboard}}
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="amd-lms-user-dash-card">
+                <div class="amd-lms-user-dash-card-header d-flex justify-content-between align-items-center">
+                    <h3 class="amd-lms-user-dash-card-title">Assignments</h3><a href="#" class="text-decoration-none" style="font-size: 0.9rem; color: var(--amd-lms-primary-color)">View all</a>
+                </div>
+                <div class="amd-lms-user-dash-card-body">
+                    <h4 class="h6 text-secondary fw-bold">To-do</h4>
+                    <ul class="list-unstyled amd-lms-user-dash-assignment-list">
+                        {{#assignments_todo}}
+                        <li><i class="bi bi-clock-history"></i>
+                            <div>
+                                <p>{{title}}</p><small>Deadline &nbsp; {{deadline}}</small>
+                            </div>
+                        </li>
+                        {{/assignments_todo}}
+                    </ul>
+                    <h4 class="h6 text-secondary fw-bold mt-4">Completed</h4>
+                    <ul class="list-unstyled amd-lms-user-dash-assignment-list">
+                        {{#assignments_completed}}
+                        <li><i class="bi bi-check-circle-fill"></i>
+                            <div>
+                                <p>{{title}}</p><small>Grade</small>
+                            </div><span class="ms-auto">{{grade}}</span>
+                        </li>
+                        {{/assignments_completed}}
+                    </ul>
+                </div>
+            </div>
+            <div class="amd-lms-user-dash-card mt-4">
+                <div class="amd-lms-user-dash-card-header d-flex justify-content-between align-items-center">
+                    <h3 class="amd-lms-user-dash-card-title">Communities</h3><i class="bi bi-search"></i>
+                </div>
+                <div class="amd-lms-user-dash-card-body">
+                    <ul class="list-unstyled amd-lms-user-dash-community-list">
+                        {{#communities}}
+                        <li>{{.}} <i class="bi bi-three-dots"></i></li>
+                        {{/communities}}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

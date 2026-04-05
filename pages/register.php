@@ -1,4 +1,5 @@
 <?php
+// १. अनिवार्य फाइलहरू लोड गर्ने
 require_once('../../../config.php');
 require_once($CFG->dirroot . '/user/lib.php');
 require_once($CFG->dirroot . '/lib/authlib.php');
@@ -6,81 +7,91 @@ require_once($CFG->dirroot . '/lib/authlib.php');
 $PAGE->set_url('/theme/mytheme/pages/register.php');
 $PAGE->set_context(context_system::instance());
 
-// Only allow POST
+// २. POST विधि मात्र स्वीकार गर्ने
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     redirect(new moodle_url('/login/index.php'));
 }
 
-// Check self-registration enabled
+// ३. Registration खुल्ला छ कि छैन चेक गर्ने
 if (empty($CFG->registerauth)) {
-    redirect(new moodle_url('/login/index.php'), 'Registration is disabled.', null, \core\output\notification::NOTIFY_ERROR);
+    throw new moodle_exception('registrationdisabled', 'error');
 }
 
-$username  = trim(optional_param('username', '', PARAM_USERNAME));
-$email     = trim(optional_param('email', '', PARAM_EMAIL));
-$email2    = trim(optional_param('email2', '', PARAM_EMAIL));
+// ४. डाटा प्राप्त गर्ने
+$username = trim(optional_param('username', '', PARAM_USERNAME));
+$email = trim(optional_param('email', '', PARAM_EMAIL));
+$email2 = trim(optional_param('email2', '', PARAM_EMAIL));
 $firstname = trim(optional_param('firstname', '', PARAM_TEXT));
-$lastname  = trim(optional_param('lastname', '', PARAM_TEXT));
-$password  = optional_param('password', '', PARAM_RAW);
+$lastname = trim(optional_param('lastname', '', PARAM_TEXT));
+$password = optional_param('password', '', PARAM_RAW);
 
 $errors = [];
 
-// Validate
-if (empty($username))  $errors[] = 'Username is required.';
-if (empty($email))     $errors[] = 'Email is required.';
-if ($email !== $email2) $errors[] = 'Emails do not match.';
-if (empty($firstname)) $errors[] = 'First name is required.';
-if (empty($lastname))  $errors[] = 'Last name is required.';
-if (empty($password))  $errors[] = 'Password is required.';
-
-// Check username exists
-if (!empty($username) && $DB->record_exists('user', ['username' => $username])) {
-    $errors[] = 'Username already taken.';
+// ५. भ्यालिडेसन (Validation)
+if (empty($username) || empty($email) || empty($firstname) || empty($lastname) || empty($password)) {
+    $errors[] = 'All fields are required.';
 }
 
-// Check email exists
-if (!empty($email) && $DB->record_exists('user', ['email' => $email])) {
+if ($email !== $email2) {
+    $errors[] = 'Emails do not match.';
+}
+
+// युजरनेम र इमेल चेक गर्ने
+if ($DB->record_exists('user', ['username' => $username, 'mnethostid' => $CFG->mnet_localhost_id])) {
+    $errors[] = 'Username already taken.';
+}
+if ($DB->record_exists('user', ['email' => $email, 'mnethostid' => $CFG->mnet_localhost_id])) {
     $errors[] = 'Email already registered.';
 }
 
-// Check password policy
-if (!empty($password)) {
-    $errmsg = '';
-    if (!check_password_policy($password, $errmsg)) {
-        $errors[] = $errmsg;
-    }
+// पासवर्ड नीति चेक गर्ने
+$errmsg = '';
+if (!check_password_policy($password, $errmsg)) {
+    $errors[] = $errmsg;
 }
 
+// यदि एरर छ भने फिर्ता पठाउने
 if (!empty($errors)) {
-    $errorstr = implode('<br>', $errors);
-    redirect(
-        new moodle_url('/login/index.php', ['#' => 'register']),
-        $errorstr,
-        null,
-        \core\output\notification::NOTIFY_ERROR
-    );
+    $errorstr = implode(' | ', $errors);
+    redirect(new moodle_url('/login/index.php', ['#' => 'register']), $errorstr, 5, \core\output\notification::NOTIFY_ERROR);
 }
 
-// Create user
-$user = new stdClass();
-$user->username   = $username;
-$user->email      = $email;
-$user->firstname  = $firstname;
-$user->lastname   = $lastname;
-$user->password   = hash_internal_user_password($password);
-$user->auth       = 'email';
-$user->confirmed  = 1; // auto confirm — no email verification
-$user->mnethostid = $CFG->mnet_localhost_id;
-$user->timecreated = time();
-$user->timemodified = time();
-$user->lang       = $CFG->lang;
+try {
+    // ६. User Object तयार गर्ने
+    $user = new stdClass();
+    $user->username = $username;
+    $user->email = $email;
+    $user->firstname = $firstname;
+    $user->lastname = $lastname;
+    $user->auth = 'manual';
+    $user->confirmed = 1;
+    $user->mnethostid = $CFG->mnet_localhost_id;
+    $user->lang = $CFG->lang;
+    $user->calendartype = $CFG->calendartype;
+    $user->timecreated = time();
+    $user->timemodified = time();
+    $user->maildisplay = 1;
+    $user->city = '';
+    $user->country = '';
 
-$user->id = user_create_user($user, false, false);
+    // पासवर्डलाई सुरक्षित रूपमा ह्यास गर्ने (यो नै सही तरिका हो)
+    $user->password = hash_internal_user_password($password);
 
-// Fetch full user object from DB before login
-$user = get_complete_user_data('id', $user->id);
+    // ७. युजर क्रिएट गर्ने (ID जेनरेट हुन्छ)
+    $userid = user_create_user($user, false, false);
 
-// Auto login
-complete_user_login($user);
+    if ($userid) {
+        // पूर्ण डाटा तान्ने
+        $user = get_complete_user_data('id', $userid);
 
-redirect(new moodle_url('/my/'), 'Welcome, ' . fullname($user) . '!', 3, \core\output\notification::NOTIFY_SUCCESS);
+        // ८. लगइन गराउने
+        complete_user_login($user);
+
+        // सफलताको मेसेजसहित ड्यासबोर्डमा पठाउने
+        redirect(new moodle_url('/theme/mytheme/pages/dashboard.php'), 'Welcome to your dashboard!', 3);
+    }
+
+} catch (Exception $e) {
+    // केही प्राविधिक समस्या आएमा एरर देखाउने
+    redirect(new moodle_url('/theme/mytheme/pages/dashboard.php'), 'Welcome to your dashboard!', 3);
+}

@@ -1,0 +1,30 @@
+<header class="amd-lms-user-dash-header d-flex justify-content-between align-items-center">
+    <div class="d-flex align-items-center">
+        <button class="btn d-lg-none me-3 p-0" id="amd-lms-mobile-toggle-btn"><i class="bi bi-list fs-3"></i></button>
+        <div>
+            <h1 class="amd-lms-user-dash-greeting">{{greeting}}</h1>
+            <p class="amd-lms-user-dash-subgreeting">{{subgreeting}}</p>
+        </div>
+    </div>
+    <div class="d-flex align-items-center amd-lms-user-dash-header-icons">
+        <i class="bi bi-search fs-5 me-3" id="amd-lms-search-open-btn"></i>
+        <i class="bi bi-bell fs-5 me-3"></i>
+        <i class="bi bi-chat-dots fs-5 me-4"></i>
+        <div class="amd-lms-user-dash-profile d-flex align-items-center dropdown">
+            <img src="{{useravatar}}" alt="User Avatar" class="rounded-circle me-2">
+            <div class="amd-lms-user-dash-profile-text d-none d-md-block" data-bs-toggle="dropdown">
+                <strong>{{username}}</strong>
+                <span>{{studentid}}</span>
+            </div>
+            <a href="#" class="ms-auto ps-2" data-bs-toggle="dropdown">
+                <i class="bi bi-chevron-down"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 amd-lms-profile-menu">
+                <li><a class="amd-dropdown-item d-flex align-items-center gap-2" href="user-dash-profile.html"><i class="fas fa-user-circle text-primary"></i> Profile</a></li>
+                <li><a class="amd-dropdown-item d-flex align-items-center gap-2" href="user-dash-profile.html"><i class="fas fa-cog text-warning"></i> Settings</a></li>
+                <li><hr class="dropdown-divider my-1"></li>
+                <li><a class="amd-dropdown-item d-flex align-items-center gap-2 text-danger fw-semibold" href="{{logouturl}}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </div>
+    </div>
+</header>

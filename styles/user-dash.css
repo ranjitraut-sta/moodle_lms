@@ -1,0 +1,2562 @@
+:root {
+    --amd-font-family: 'BoldItalic';
+    --amd-tittle-font-family: 'BlackItalic';
+    /* =========================================
+       ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â½Ãƒâ€šÃ‚Â¨ BRAND & PRIMARY COLOR SYSTEM
+    ========================================== */
+    --amd-lms-primary-color: #4D47C3;
+    /* Main primary */
+    --amd-lms-primary-light: color-mix(in oklch, var(--amd-lms-primary-color) 9%, white);
+    --amd-lms-primary-fade: color-mix(in oklch, var(--amd-lms-primary-color) 12%, transparent);
+
+    /* =========================================
+       ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚Â§Ãƒâ€šÃ‚Â± GLOBAL BACKGROUND SYSTEM
+    ========================================== */
+    --amd-lms-body-bg: #F8F8FA;
+    /* Page body background */
+    --amd-lms-card-bg: #FFFFFF;
+    /* Card & panel background */
+    --amd-lms-sidebar-bg: #FFFFFF;
+    /* Sidebar background */
+
+    /* =========================================
+       ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â SIDEBAR SIZES
+    ========================================== */
+    --amd-lms-sidebar-width: 320px;
+    /* Full size */
+    --amd-lms-sidebar-collapsed-width: 59px;
+    /* Collapsed */
+
+    /* =========================================
+       ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â TEXT COLOR SYSTEM
+    ========================================== */
+    --amd-lms-text-dark: #212529;
+    /* Main black */
+    --amd-lms-text-muted: #6C757D;
+    /* Grey text */
+    --amd-lms-text-light: #ffffff;
+    /* White text */
+
+    /* =========================================
+       ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚Â§Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â BORDER & DIVIDER COLORS
+    ========================================== */
+    --amd-lms-border-color: #E9ECEF;
+    /* Soft border */
+
+    /* =========================================
+       ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€¦Ã‚Â¡ MODULE / TOPIC COLOR SYSTEM
+    ========================================== */
+    --amd-lms-courses-bg: #E3F2FD;
+    --amd-lms-attendance-bg: #FFF3E0;
+    --amd-lms-grade-bg: #F3E5F5;
+    --amd-lms-leaderboard-bg: #E3F2FD;
+
+    /* =========================================
+       ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€¹Ã¢â‚¬Â  GRADE PROGRESS COLOR SYSTEM
+    ========================================== */
+    --amd-lms-grade-color-start: #EB5757;
+    /* Low grade */
+    --amd-lms-grade-color-end: #76E4A6;
+    /* High grade */
+    --amd-level-beginner: #28a745;
+    --amd-level-intermediate: #fd7e14;
+    --amd-level-advance: #ffc107;
+    --amd-level-master: #dc3545;
+    --amd-lms-gradient-start: #F47C7C;
+    --amd-lms-gradient-end: #FFB26B;
+}
+
+/* Montserrat Regular */
+@font-face {
+    font-family: 'Italic';
+    src: url('../fonts/Lato-Italic.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Montserrat Bold */
+@font-face {
+    font-family: 'BoldItalic';
+
+    src: url('../fonts/Lato-BoldItalic.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Open Sans Regular */
+@font-face {
+    font-family: 'BlackItalic';
+    src: url('../fonts/Lato-BlackItalic.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Open Sans Bold */
+@font-face {
+    font-family: 'Bold';
+    src: url('../fonts/Lato-Bold.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Apply fonts */
+
+
+
+body {
+    background-color: var(--amd-lms-body-bg);
+    font-family: var(--amd-font-family);
+    color: var(--amd-lms-text-dark);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--amd-tittle-font-family);
+
+}
+
+a {
+    text-decoration: none;
+}
+
+.amd-lms-user-dash-main-wrapper {
+    display: flex;
+}
+
+/* ================== Sidebar ================== */
+.amd-lms-user-dash-sidebar {
+    width: var(--amd-lms-sidebar-width);
+    background-color: var(--amd-lms-sidebar-bg);
+    padding: 20px 9px;
+    border-right: 1px solid var(--amd-lms-border-color);
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: width 0.3s ease-in-out, transform 0.3s ease-in-out;
+    overflow-y: auto;
+}
+
+.amd-lms-user-dash-sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    min-height: 38px;
+    /* Prevents layout shift */
+}
+
+.amd-lms-user-dash-logo {
+    font-weight: 700;
+    font-size: 1.5rem;
+    white-space: nowrap;
+    overflow: hidden;
+    transition: opacity 0.3s ease;
+}
+
+.amd-lms-user-dash-logo span:first-child {
+    color: var(--amd-lms-primary-color);
+}
+
+.amd-lms-user-dash-logo span:last-child {
+    color: var(--amd-lms-text-dark);
+}
+
+.amd-lms-user-dash-sidebar-toggle {
+    background: var(--amd-lms-primary-light);
+    /* color: var(--amd-lms-primary-color); */
+    border: none;
+    width: 37px;
+    height: 39px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+}
+
+.amd-lms-user-dash-nav-list .amd-lms-user-dash-nav-item a {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0.58rem;
+    margin-bottom: 0.5rem;
+
+    text-decoration: none;
+    color: var(--amd-lms-text-muted);
+    font-weight: 500;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.amd-lms-user-dash-nav-list .amd-lms-user-dash-nav-item a i {
+    margin-right: 0.75rem;
+    font-size: 1.2rem;
+    min-width: 24px;
+}
+
+.amd-lms-user-dash-nav-list .amd-lms-user-dash-nav-item a>span {
+    transition: opacity 0.2s, visibility 0.2s;
+}
+
+.amd-lms-user-dash-nav-list .amd-lms-user-dash-nav-item.active a,
+.amd-lms-user-dash-nav-list .amd-lms-user-dash-nav-item a:hover {
+    background-color: var(--amd-lms-primary-color);
+    color: #fff;
+}
+
+.amd-lms-user-dash-nav-item .badge {
+    background-color: var(--amd-lms-primary-light);
+    color: var(--amd-lms-primary-color);
+    margin-left: auto;
+    opacity: 1;
+    transition: opacity 0.2s, visibility 0.2s;
+}
+
+.amd-lms-user-dash-nav-item.active .badge {
+    background-color: #fff;
+}
+
+/* Sidebar Collapsed State (Desktop) */
+body.amd-lms-sidebar-collapsed .amd-lms-user-dash-sidebar {
+    width: var(--amd-lms-sidebar-collapsed-width);
+}
+
+body.amd-lms-sidebar-collapsed .amd-lms-user-dash-logo {
+    opacity: 0;
+    visibility: hidden;
+}
+
+body.amd-lms-sidebar-collapsed .amd-lms-user-dash-nav-item a>span,
+body.amd-lms-sidebar-collapsed .amd-lms-user-dash-nav-item .badge {
+    opacity: 0;
+    visibility: hidden;
+}
+
+body.amd-lms-sidebar-collapsed .amd-lms-user-dash-sidebar-toggle i {
+    transform: rotate(180deg);
+}
+
+body.amd-lms-sidebar-collapsed .amd-lms-user-dash-main-container {
+    padding-left: var(--amd-lms-sidebar-collapsed-width);
+}
+
+
+
+
+/* breadcrum div  */
+.amd-lms-user-dash-breadcrumb {
+    background: #f8f9fa;
+    /* Light background */
+    padding: 12px 20px;
+    /* border-radius: 8px; */
+    margin-bottom: 20px;
+    box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
+    font-family: var(--amd-lms-font-family, 'Poppins', sans-serif);
+}
+
+.amd-lms-user-dash-breadcrumb .breadcrumb {
+    margin-bottom: 0;
+    background: transparent;
+    padding: 0;
+    font-size: 14px;
+    color: var(--amd-lms-primary-color);
+    /* Primary LMS color */
+}
+
+.amd-lms-user-dash-breadcrumb .breadcrumb-item a {
+    color: var(--amd-lms-primary-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.amd-lms-user-dash-breadcrumb .breadcrumb-item a:hover {
+    color: #2a237a;
+    /* Darker shade on hover */
+    text-decoration: underline;
+}
+
+.amd-lms-user-dash-breadcrumb .breadcrumb-item.active {
+    color: var(--amd-lms-text-muted);
+    /* Secondary text color */
+    font-weight: 600;
+    cursor: default;
+}
+
+
+/* this is the main content css ************************ */
+/* ================== Main Content & Header ================== */
+.amd-lms-user-dash-main-container {
+    width: 100%;
+    padding-left: var(--amd-lms-sidebar-width);
+    transition: padding-left 0.3s ease-in-out;
+}
+
+.amd-lms-user-dash-header {
+    background-color: #fff;
+    padding: 1rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.amd-lms-user-dash-header .amd-lms-user-dash-greeting {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.amd-lms-user-dash-header .amd-lms-user-dash-subgreeting {
+    color: var(--amd-lms-text-muted);
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.amd-lms-user-dash-profile {
+    cursor: pointer;
+}
+
+.amd-lms-user-dash-profile-text {
+    line-height: 1.2;
+}
+
+.amd-lms-user-dash-profile-text strong {
+    font-size: 0.9rem;
+    display: block;
+}
+
+.amd-lms-user-dash-profile-text span {
+    font-size: 0.75rem;
+    color: var(--amd-lms-text-muted);
+}
+
+/* profile dropdowns menu */
+.amd-lms-profile-menu {
+    border-radius: 0 !important;
+    background: var(--amd-lms-primary-light);
+}
+
+.amd-lms-profile-menu .amd-dropdown-item {
+    padding: 8px 14px;
+    color: var(--amd-lms-text-dark) !important;
+    transition: 0.2s ease;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.amd-dropdown-item.text-danger {
+    color: red !important;
+}
+
+.amd-lms-profile-menu .amd-dropdown-item:hover {
+    background: var(--amd-lms-primary-fade);
+    transform: translateX(3px);
+}
+
+.amd-lms-profile-menu .amd-dropdown-item i {
+    font-size: 16px;
+}
+
+.amd-lms-profile-menu {
+
+    padding: 10px 8px;
+    width: 180px;
+}
+
+/* porfile dropdowns menu end */
+.amd-lms-user-dash-header-icons i {
+    cursor: pointer;
+}
+
+.amd-lms-user-dash-main-content {
+    padding: 1rem;
+}
+
+/* General Cards and Widgets Styling */
+.amd-lms-user-dash-section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.amd-lms-user-dash-folder-btn {
+    background-color: #fff;
+    border: 1px solid var(--amd-lms-border-color);
+    font-weight: 500;
+}
+
+.amd-lms-user-dash-card {
+    background-color: var(--amd-lms-card-bg);
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    padding: 0.7rem;
+    height: auto;
+}
+
+.amd-lms-user-dash-card-body {
+    padding: 0.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.amd-lms-user-dash-card-body p {
+    position: relative;
+    left: 0px;
+    top: -14px;
+}
+
+.amd-lms-user-dash-card-header {
+    padding: 1rem;
+    background: none;
+    border-bottom: 1px solid var(--amd-lms-border-color);
+    margin: -1rem -1rem 1rem -1rem;
+}
+
+.amd-lms-user-dash-card-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0;
+}
+
+.amd-lms-user-dash-stat-card-courses {
+    background-color: var(--amd-lms-courses-bg);
+}
+
+.amd-lms-user-dash-stat-card-attendance {
+    background-color: var(--amd-lms-attendance-bg);
+}
+
+.amd-lms-user-dash-stat-card-grade {
+    background-color: var(--amd-lms-grade-bg);
+}
+
+.amd-lms-user-dash-stat-card-leaderboard {
+    background-color: var(--amd-lms-leaderboard-bg);
+}
+
+.amd-lms-user-dash-stat-card-body p {
+    margin-bottom: 0.25rem;
+    font-weight: 500;
+    color: #555;
+}
+
+.amd-lms-user-dash-stat-card-body h3 {
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.amd-lms-user-dash-stat-icon {
+    position: absolute;
+    right: 15px;
+    bottom: -1px;
+    height: 80px;
+    opacity: 0.8;
+}
+
+.amd-lms-user-dash-grade-chart {
+    transform: rotate(-90deg);
+}
+
+.amd-lms-user-dash-circle-bg {
+    fill: none;
+    stroke: #eee;
+    stroke-width: 3.8;
+}
+
+.amd-lms-user-dash-circle {
+    fill: none;
+    stroke: url(#amd-lms-grade-gradient);
+    stroke-width: 4;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 1.5s ease-out;
+}
+
+.amd-lms-user-dash-percentage {
+    font-size: 11px;
+    font-weight: bold;
+    text-anchor: middle;
+    transform: rotate(90deg);
+    transform-origin: 18px 18px;
+    fill: var(--amd-lms-text-dark);
+}
+
+.amd-lms-user-dash-event-item {
+    display: flex;
+    gap: 1rem;
+}
+
+.amd-lms-user-dash-event-item img {
+    width: 200px;
+    height: 130px;
+    object-fit: cover;
+
+}
+
+.amd-lms-user-dash-event-info h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 13px;
+}
+
+.amd-lms-user-dash-event-info p {
+    margin-bottom: 0.25rem;
+    color: var(--amd-lms-text-muted);
+    font-size: 0.9rem;
+}
+
+.amd-lms-user-dash-event-controls {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.amd-lms-user-dash-event-controls .btn-primary {
+    background-color: var(--amd-lms-primary-color);
+    border: none;
+    font-weight: 500;
+    border-radius: 0 !important;
+}
+
+.amd-lms-user-dash-event-slider-nav a {
+    cursor: pointer;
+    color: var(--amd-lms-text-muted);
+}
+
+.amd-lms-user-dash-event-slider-nav span {
+    margin: 0 0.5rem;
+}
+
+.amd-lms-user-dash-leaderboard-header,
+.amd-lms-user-dash-leaderboard-row {
+    display: grid;
+    grid-template-columns: 50px 1fr 100px;
+    padding: 0.75rem 1rem;
+    align-items: center;
+    border-bottom: 1px solid var(--amd-lms-border-color);
+    font-size: 0.9rem;
+}
+
+.amd-lms-user-dash-leaderboard-header {
+    font-weight: 600;
+    color: var(--amd-lms-text-muted);
+}
+
+.amd-lms-user-dash-leaderboard-row:last-child {
+    border-bottom: none;
+}
+
+.amd-lms-user-dash-leaderboard-row.current-user {
+    background-color: var(--amd-lms-primary-light);
+    color: var(--amd-lms-primary-color);
+    font-weight: 600;
+
+}
+
+.amd-lms-user-dash-assignment-list li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--amd-lms-border-color);
+    font-size: 0.9rem;
+}
+
+.amd-lms-user-dash-assignment-list li:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.amd-lms-user-dash-assignment-list i {
+    font-size: 1.25rem;
+    color: var(--amd-lms-primary-color) !important;
+    margin-right: 1rem;
+}
+
+.amd-lms-user-dash-assignment-list p {
+    margin-top: 15px;
+
+    font-weight: 500;
+    margin-bottom: 0;
+}
+
+.amd-lms-user-dash-assignment-list small {
+    color: var(--amd-lms-text-muted);
+    font-size: 0.8rem;
+}
+
+.amd-lms-user-dash-community-list li {
+    font-weight: 500;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--amd-lms-border-color);
+}
+
+.amd-lms-user-dash-community-list li:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.amd-lms-user-dash-community-list li i {
+    color: var(--amd-lms-text-muted);
+    cursor: pointer;
+}
+
+/* ================== Search Overlay ================== */
+.amd-lms-search-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(33, 37, 41, 0.75);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    z-index: 1050;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 15vh;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
+}
+
+body.amd-lms-search-active .amd-lms-search-overlay {
+    opacity: 1;
+    visibility: visible;
+}
+
+.amd-lms-search-container {
+    width: 90%;
+    max-width: 600px;
+    position: relative;
+}
+
+#amd-lms-search-input {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    font-size: 1.2rem;
+
+    border: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+#amd-lms-search-close-btn {
+    position: absolute;
+    top: -46px;
+    right: -9px;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 2.5rem;
+}
+
+/* ================== Responsive Adjustments ================== */
+@media (max-width: 991.98px) {
+    .amd-lms-user-dash-main-container {
+        padding-left: 0;
+    }
+
+    .amd-lms-user-dash-sidebar {
+        transform: translateX(-100%);
+    }
+
+    body.amd-lms-sidebar-collapsed .amd-lms-user-dash-main-container {
+        padding: 0;
+    }
+
+    body.amd-lms-sidebar-collapsed .amd-lms-user-dash-sidebar {
+        width: 0;
+        padding: 20px 0;
+    }
+
+    body.amd-lms-sidebar-mobile-open .amd-lms-user-dash-sidebar {
+
+        transform: translateX(0);
+        box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    /* .amd-lms-user-dash-mobile-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.4);
+        z-index: 999;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease;
+    }
+
+    body.amd-lms-sidebar-mobile-open .amd-lms-user-dash-mobile-overlay {
+        opacity: 1;
+        visibility: visible;
+    } */
+}
+
+@media (max-width: 768px) {
+    .amd-lms-user-dash-header {
+        padding: 1rem;
+    }
+
+    .amd-lms-user-dash-greeting {
+        display: none;
+    }
+
+    .amd-lms-user-dash-main-content {
+        padding: 0.5rem;
+    }
+
+    .amd-lms-user-dash-event-item {
+        flex-direction: column;
+    }
+
+    .amd-lms-user-dash-event-item img {
+        width: 100%;
+        height: auto;
+    }
+}
+
+/* main content end ***************************************** */
+
+
+
+/* user course list 1 css************************************ */
+
+
+
+
+.amd-lms-course-list-design-container h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--amd-lms-text-dark);
+    margin-bottom: 1rem;
+}
+
+/* --- Tab Navigation --- */
+.amd-lms-course-list-design-tabs {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--amd-lms-border-color);
+}
+
+.amd-lms-course-list-design-tabs a {
+    padding: 0.75rem 0.25rem;
+    text-decoration: none;
+    color: var(--amd-lms-text-muted);
+    font-weight: 600;
+    position: relative;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    /* To overlap the main border */
+    transition: color 0.3s ease;
+}
+
+.amd-lms-course-list-design-tabs a.active {
+    color: var(--amd-lms-primary-color);
+    border-bottom-color: var(--amd-lms-primary-color);
+}
+
+.amd-lms-course-list-design-tabs a:not(.active):hover {
+    color: var(--amd-lms-text-dark);
+}
+
+/* --- Course Cards Grid --- */
+.amd-lms-course-list-design-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(236px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 4rem;
+}
+
+.amd-lms-course-list-design-cards-grid .view-all-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 9999;
+    background-color: var(--amd-lms-primary-color);
+    color: var(--amd-lms-text-light);
+    padding: 3px 6px;
+    font-size: 0.9rem;
+    text-decoration: none;
+    font-weight: 400;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s ease;
+}
+
+/* --- Course Card --- */
+.amd-lms-course-list-design-card {
+    background-color: #fff;
+
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+}
+
+.amd-lms-course-list-design-card__image-wrapper {
+    position: relative;
+    margin-bottom: 1rem;
+
+    overflow: hidden;
+}
+
+.amd-lms-course-list-design-card__image {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+}
+
+.amd-lms-course-list-design-card__level {
+    position: absolute;
+    bottom: 0.75rem;
+    left: 0.75rem;
+    padding: 0.25rem 0.75rem;
+
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(5px);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.amd-lms-course-list-design-card__level i {
+    font-size: 0.9rem;
+}
+
+.amd-lms-course-list-design-card__level--intermediate {
+    background-color: rgba(253, 126, 20, 0.7);
+}
+
+.amd-lms-course-list-design-card__level--beginner {
+    background-color: rgba(40, 167, 69, 0.7);
+}
+
+.amd-lms-course-list-design-card__level--master {
+    background-color: rgba(220, 53, 69, 0.7);
+}
+
+.amd-lms-course-list-design-card__title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--amd-lms-text-dark);
+    margin-bottom: 0.5rem;
+}
+
+.amd-lms-course-list-design-card__author {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--amd-lms-text-muted);
+    margin-bottom: 1rem;
+}
+
+.amd-lms-course-list-design-card__author img {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+}
+
+.amd-lms-course-list-design-card__meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    color: var(--amd-lms-text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.amd-lms-course-list-design-card__meta span {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.amd-lms-course-list-design-card__progress-wrapper {
+    /* background-color: var(--amd-lms-border-color); */
+    height: 6px;
+    margin-bottom: 0.6rem;
+}
+
+.amd-lms-course-list-design-card__progress-bar {
+    background-color: var(--amd-lms-text-dark);
+    height: 7px;
+    width: 100%;
+    border-radius: 3px !important;
+}
+
+.amd-lms-course-list-design-card__footer {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: var(--amd-lms-text-muted);
+}
+
+.amd-lms-course-list-design-card__footer .resume-btn {
+
+    padding: 4px 7px;
+    background-color: #4caf50;
+    border: none;
+
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+
+.amd-lms-course-list-design-card__footer .start-btn {
+    padding: 4px 7px;
+    background-color: #a3a107;
+    border: none;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* --- Course Listing Table Section --- */
+.amd-lms-course-list-design-listing-section {
+    background-color: #fff;
+    padding: 2rem;
+
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.amd-lms-course-list-design-listing-section h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--amd-lms-text-dark);
+    margin-bottom: 2rem;
+}
+
+.amd-lms-course-list-design-table {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr 1fr;
+    gap: 1rem;
+    font-size: 0.9rem;
+}
+
+.amd-lms-course-list-design-table__header {
+    display: contents;
+    /* Makes children act as grid items */
+}
+
+.amd-lms-course-list-design-table__header>div {
+    font-weight: 600;
+    color: var(--amd-lms-text-muted);
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--amd-lms-border-color);
+}
+
+.amd-lms-course-list-design-table__row {
+    display: contents;
+    /* Makes children act as grid items */
+}
+
+.amd-lms-course-list-design-table__row>div {
+    padding: 1rem 0;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--amd-lms-border-color);
+}
+
+.amd-lms-course-list-design-table .level-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+}
+
+.amd-lms-course-list-design-table .level-tag i {
+    font-size: 1.2rem;
+}
+
+.amd-lms-course-list-design-table .level-tag--beginner {
+    color: var(--amd-level-beginner);
+}
+
+.amd-lms-course-list-design-table .level-tag--intermediate {
+    color: var(--amd-level-intermediate);
+}
+
+.amd-lms-course-list-design-table .level-tag--advance {
+    color: var(--amd-level-advance);
+}
+
+.amd-lms-course-list-design-table .points {
+    font-weight: 600;
+}
+
+.amd-lms-course-list-design-table .points--green {
+    color: var(--amd-level-beginner);
+}
+
+.amd-lms-course-list-design-table .points--red {
+    color: var(--amd-level-master);
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 1200px) {
+    .amd-lms-course-list-design-table-wrapper {
+        overflow-x: auto;
+    }
+
+    .amd-lms-course-list-design-table {
+        width: 1000px;
+        /* Force table to be wide enough to scroll */
+    }
+}
+
+@media (max-width: 768px) {
+
+    .amd-lms-course-list-design-container h1 {
+        font-size: 2rem;
+    }
+
+    .amd-lms-course-list-design-tabs {
+        gap: 1.5rem;
+    }
+}
+
+/* course list 1 css end ******************************************* */
+
+
+
+/* course list 2 css ************************************************ */
+/* Start of Custom CSS for the Course List */
+.amd-user-course-list2-main-title {
+
+    font-size: 1.5rem;
+
+    color: var(--amd-lms-text-dark);
+}
+
+/* Tabs Styling */
+.amd-user-course-list2-tabs {
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.amd-user-course-list2-tabs .nav-link {
+    border: none;
+    color: var(--amd-lms-text-muted);
+    font-weight: 500;
+    padding-bottom: 1rem;
+    margin-bottom: -2px;
+    /* Pull link down to cover parent border */
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+}
+
+.amd-user-course-list2-tabs .nav-link.active {
+    color: var(--amd-lms-text-muted);
+    border-bottom: 2px solid var(--amd-lms-text-muted);
+    background-color: transparent;
+}
+
+.amd-user-course-list2-tabs .badge {
+    border: 1px solid #e2e8f0;
+    color: var(--amd-lms-primary-color);
+    padding: 0.25rem 0.5rem;
+}
+
+/* Controls Styling */
+.amd-user-course-list2-controls .btn-light {
+    background-color: var(--amd-lms-border-color);
+    border-color: #e2e8f0;
+}
+
+.amd-user-course-list2-view-toggle .btn {
+    padding: 0.375rem 0.75rem;
+}
+
+.amd-user-course-list2-view-toggle .btn.active {
+    background-color: #edf2f7;
+    border-color: #e2e8f0;
+}
+
+/* --- LIST VIEW STYLES (DEFAULT) --- */
+.amd-user-course-list2-list-header {
+    display: grid;
+    grid-template-columns: 3fr 1fr 1fr 1fr;
+    gap: 1.5rem;
+    padding: 0 1.5rem;
+    margin-bottom: 0.75rem;
+    color: #718096;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.amd-user-course-list2-item {
+    background-color: #fff;
+    border: 1px solid #e2e8f0;
+
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    display: grid;
+    grid-template-columns: 3fr 1fr 1fr 1fr;
+    gap: 1.5rem;
+    align-items: center;
+    transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.amd-user-course-list2-item:hover {
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    transform: translateY(-2px);
+}
+
+.amd-user-course-list2-item-main {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.amd-user-course-list2-item-thumb {
+    width: 200px;
+    height: auto;
+    object-fit: cover;
+
+    flex-shrink: 0;
+}
+
+.amd-user-course-list2-item-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 0.25rem;
+}
+
+.amd-user-course-list2-item-meta {
+    font-size: 0.875rem;
+    color: #718096;
+    margin-bottom: 0.75rem;
+}
+
+.amd-user-course-list2-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 0.25rem 0.6rem;
+
+}
+
+.amd-user-course-list2-status-published {
+    background-color: #e6fffa;
+    color: #2c7a7b;
+}
+
+.amd-user-course-list2-status-drafted {
+    background-color: #fff5f5;
+    color: #c53030;
+}
+
+.amd-user-course-list2-level-icon {
+    font-size: 1.1rem;
+    color: #4a5568;
+    vertical-align: middle;
+    margin-right: 0.25rem;
+    transform: translateY(-1px);
+}
+
+.amd-user-course-list2-item-details {
+    color: #4a5568;
+    font-weight: 500;
+}
+
+.amd-user-course-list2-item-details span::before {
+    content: '';
+    display: none;
+}
+
+/* --- GRID VIEW STYLES --- */
+.amd-user-course-list2-content.grid-view {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.amd-user-course-list2-content.grid-view .amd-user-course-list2-list-header {
+    display: none;
+}
+
+.amd-user-course-list2-content.grid-view .amd-user-course-list2-item {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.amd-user-course-list2-content.grid-view .amd-user-course-list2-item-main {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem 1rem 0 1rem;
+}
+
+.amd-user-course-list2-content.grid-view .amd-user-course-list2-item-thumb {
+    width: 100%;
+    height: 160px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.amd-user-course-list2-content.grid-view .amd-user-course-list2-item-details {
+    padding: 0.5rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid #e2e8f0;
+    width: 100%;
+}
+
+.amd-user-course-list2-content.grid-view .amd-user-course-list2-item-details:first-of-type {
+    padding-top: 1rem;
+    border-top: 1px solid #e2e8f0;
+}
+
+.amd-user-course-list2-content.grid-view .amd-user-course-list2-item-details span::before {
+    content: attr(data-label) ": ";
+    font-weight: 600;
+    color: #2d3748;
+    margin-right: 0.5rem;
+    display: inline;
+}
+
+/* --- RESPONSIVE STYLES FOR LIST VIEW --- */
+@media (max-width: 991.98px) {
+    .amd-user-course-list2-list-header {
+        display: none;
+    }
+
+    .amd-user-course-list2-item {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .amd-user-course-list2-item-details {
+        padding-left: calc(80px + 1.5rem);
+        display: flex;
+    }
+
+    .amd-user-course-list2-item-details span::before {
+        content: attr(data-label) ": ";
+        font-weight: 600;
+        color: #2d3748;
+        margin-right: 0.5rem;
+        display: inline;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .amd-user-course-list2-item-main {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .amd-user-course-list2-item-details {
+        padding-left: 0;
+    }
+}
+
+/* course list 2 css end ************************************* */
+
+/* course list detail page css */
+.amd-course-list-detail-card {
+    border: 1px solid #d6d6d6;
+}
+
+/* course list detail page css end */
+
+/* message page css */
+
+
+/* --- Main Header & Controls --- */
+.amd-lms-messages-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.amd-lms-messages-header h1 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--amd-lms-text-dark);
+    margin: 0;
+}
+
+.amd-lms-messages-top-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    width: 100%;
+}
+
+@media (min-width: 992px) {
+    .amd-lms-messages-top-controls {
+        width: auto;
+    }
+}
+
+.amd-lms-search-wrapper {
+    flex-grow: 1;
+    position: relative;
+}
+
+.amd-lms-search-wrapper .bi-search {
+    position: absolute;
+    top: 50%;
+    left: 0.75rem;
+    transform: translateY(-50%);
+    color: var(--amd-lms-text-muted);
+}
+
+.amd-lms-search-wrapper .form-control {
+    border-radius: 0 !important;
+    padding-left: 2.25rem;
+    background-color: var(--amd-lms-card-bg);
+    border-color: var(--amd-lms-border-color);
+}
+
+.amd-lms-messages-filter .form-select {
+    border-radius: 0 !important;
+    background-color: var(--amd-lms-card-bg);
+    border-color: var(--amd-lms-border-color);
+}
+
+/* --- Live Call Banner --- */
+.amd-lms-live-call-banner {
+    display: flex;
+    align-items: center;
+    padding: 1rem 0.5rem;
+    background: linear-gradient(90deg, var(--amd-lms-gradient-start), var(--amd-lms-gradient-end));
+    color: var(--amd-lms-text-light);
+    margin-bottom: 2rem;
+    box-shadow: var(--amd-lms-soft-shadow);
+    gap: 1rem;
+}
+
+.amd-lms-live-call-banner .avatar {
+    width: 50px;
+    height: 50px;
+
+    border: 2px solid var(--amd-lms-text-light);
+    object-fit: cover;
+    flex-shrink: 0;
+    filter: grayscale(100%);
+}
+
+.amd-lms-live-call-banner-info {
+    flex-grow: 1;
+}
+
+.amd-lms-live-call-banner-info h5 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.amd-lms-live-call-banner-info p {
+    font-size: 0.8rem;
+    margin: 0;
+    opacity: 0.9;
+}
+
+.amd-lms-participant-stack {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}
+
+.amd-lms-participant-stack .p-avatar {
+    width: 32px;
+    height: 32px;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    margin-left: -12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.amd-lms-live-call-banner .invite-status {
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin: 0 1.5rem;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.25rem 0.75rem;
+}
+
+.amd-lms-live-call-banner .btn-join {
+    background-color: var(--amd-lms-card-bg);
+    color: var(--amd-lms-text-dark);
+    font-weight: 600;
+    border: none;
+    border-radius: 0 !important;
+    flex-shrink: 0;
+    padding: 0.6rem 1.2rem;
+}
+
+/* --- Stats Grid --- */
+.amd-lms-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.amd-lms-stat-card {
+    display: flex;
+    align-items: center;
+    background-color: var(--amd-lms-card-bg);
+    padding: 0.8rem;
+    border: 1px solid var(--amd-lms-border-color);
+    box-shadow: var(--amd-lms-soft-shadow);
+}
+
+.amd-lms-stat-card-icon {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--amd-lms-primary-fade);
+    margin-right: 1rem;
+    flex-shrink: 0;
+}
+
+.amd-lms-stat-card-icon i {
+    font-size: 1.5rem;
+    color: var(--amd-lms-primary-color);
+}
+
+.amd-lms-stat-card-info h3 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--amd-lms-text-dark);
+    margin: 0;
+}
+
+.amd-lms-stat-card-info p {
+    font-size: 0.9rem;
+    color: var(--amd-lms-text-muted);
+    margin: 0;
+}
+
+.amd-lms-stat-card-info h3 span {
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--amd-lms-text-muted);
+    margin-left: 0.5rem;
+}
+
+
+/* --- Message List & Actions --- */
+.amd-lms-message-list-container {
+    background-color: var(--amd-lms-card-bg);
+    border: 1px solid var(--amd-lms-border-color);
+
+    overflow: hidden;
+}
+
+.amd-lms-message-list-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 0.5rem;
+    border-bottom: 1px solid var(--amd-lms-border-color);
+    background-color: var(--amd-lms-body-bg);
+}
+
+
+@media (min-width: 768px) {
+    .amd-lms-message-list-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.75rem 1.5rem;
+        border-bottom: 1px solid var(--amd-lms-border-color);
+        background-color: var(--amd-lms-body-bg);
+    }
+}
+
+.amd-lms-message-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--amd-lms-border-color);
+    transition: background-color 0.2s;
+}
+
+.amd-lms-message-item:hover {
+    background-color: var(--amd-lms-body-bg);
+}
+
+.amd-lms-message-item.selected {
+    background-color: var(--amd-lms-primary-fade);
+}
+
+.amd-lms-message-item .amd-lms-message-main-content {
+    cursor: pointer;
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    min-width: 0;
+}
+
+.amd-lms-message-item .avatar,
+.amd-lms-message-item .avatar-initials {
+    width: 40px;
+    height: 40px;
+    margin: 0 1rem;
+    flex-shrink: 0;
+    object-fit: cover;
+}
+
+.amd-lms-message-item .avatar-initials {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+}
+
+.amd-lms-message-content-wrapper {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    flex-wrap: wrap;
+    min-width: 0;
+}
+
+.amd-lms-message-sender {
+    font-weight: 600;
+    margin-right: 1rem;
+}
+
+.amd-lms-message-tag {
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.2rem 0.6rem;
+    background-color: var(--amd-lms-border-color);
+    margin-right: 1rem;
+}
+
+@media (max-width:768px) {
+    .amd-lms-message-item {
+        padding: 5px 8px;
+    }
+
+    .amd-lms-message-tag {
+        padding: 0;
+        margin-right: 0;
+    }
+}
+
+.amd-lms-message-preview {
+    color: var(--amd-lms-text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-grow: 1;
+    min-width: 100px;
+}
+
+/* --- Contextual Delete Buttons Styling & Logic --- */
+.amd-lms-message-actions {
+    margin-left: auto;
+    color: var(--amd-lms-text-muted);
+    padding-left: 1rem;
+    position: relative;
+}
+
+.amd-lms-single-delete-btn,
+.amd-lms-bulk-delete-btn {
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Show single delete button on selected item, hide dots */
+.amd-lms-message-item.selected .amd-lms-message-actions .bi-three-dots-vertical {
+    display: none;
+}
+
+.amd-lms-message-item.selected .amd-lms-single-delete-btn {
+    display: inline-flex;
+    border-radius: 0 !important;
+}
+
+
+/* Show bulk delete button when header has active class */
+.amd-lms-message-list-header.bulk-actions-active .amd-lms-bulk-delete-btn {
+    display: inline-flex;
+    border-radius: 0 !important;
+}
+
+/* --- Custom Modal Styling --- */
+.modal-content {
+    border: none;
+    border-radius: 0 !important;
+    background-color: var(--amd-lms-card-bg);
+}
+
+.amd-lms-modal-header {
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--amd-lms-border-color);
+}
+
+.amd-lms-modal-sender-avatar {
+    width: 40px;
+    height: 40px;
+    margin-right: 1rem;
+    object-fit: cover;
+}
+
+.amd-lms-modal-sender-initials {
+    width: 40px;
+    height: 40px;
+    margin-right: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+}
+
+.amd-lms-modal-sender-name {
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.modal-body {
+    padding: 1.5rem;
+    line-height: 1.6;
+    color: var(--amd-lms-text-dark);
+}
+
+.modal-footer {
+    background-color: var(--amd-lms-body-bg);
+    border-top: 1px solid var(--amd-lms-border-color);
+}
+
+.modal-footer .btn-secondary {
+    border-radius: 0 !important;
+}
+
+.modal-footer .btn-primary {
+    border-radius: 0 !important;
+    background-color: var(--amd-lms-primary-color);
+    border-color: var(--amd-lms-primary-color);
+}
+
+/* message page css end */
+
+
+
+/* certificate 1 page css */
+
+
+/* Header */
+.amd-lms-certificate .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 18px
+}
+
+.amd-lms-certificate .breadcrumb-custom {
+    color: var(--amd-lms-text-dark);
+    font-size: 13px
+}
+
+.amd-lms-certificate .page-title {
+    font-weight: 700;
+    font-size: 22px
+}
+
+/* Summary cards */
+.amd-lms-certificate .summary-card {
+    background: var(--amd-lms-card-bg);
+    padding: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.amd-lms-certificate .summary-card h5 {
+    margin: 0;
+    font-size: 13px;
+    color: var(--amd-lms-text-dark);
+    font-weight: 500
+}
+
+.amd-lms-certificate .summary-card .value {
+    font-size: 20px;
+    font-weight: 700;
+    margin-top: 6px
+}
+
+/* Search & Filter */
+.amd-lms-certificate .controls {
+    display: flex;
+    gap: 10px;
+    align-items: center
+}
+
+.amd-lms-certificate .controls .form-control,
+.amd-lms-certificate .controls .form-select {
+    background: transparent;
+    border: 1px solid var(--amd-lms-border-color);
+    border-radius: 0 !important;
+}
+
+/* Grid Cards */
+.amd-lms-certificate .amd-lms-cert-card {
+    background-color: var(--amd-lms-card-bg);
+    padding: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: transform .28s ease, box-shadow .28s ease;
+}
+
+.amd-lms-certificate .amd-lms-cert-card:hover {
+    transform: translateY(-6px);
+}
+
+.amd-lms-certificate .cert-thumb {
+    height: 200px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    overflow: hidden
+}
+
+.amd-lms-certificate .cert-body {
+    padding-top: 10px
+}
+
+.amd-lms-certificate .cert-title {
+    font-weight: 600;
+    font-size: 15px
+}
+
+.amd-lms-certificate .cert-meta {
+    font-size: 13px;
+    color: var(--amd-lms-text-dark);
+    margin-top: 6px
+}
+
+.amd-lms-certificate .badge-completed {
+    background: linear-gradient(90deg, #1eb910b6, #32470075);
+    color: #fff;
+    padding: 6px 8px;
+
+    font-size: 12px
+}
+
+.amd-lms-certificate .cert-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px
+}
+
+/* Slide-in viewer */
+.amd-lms-certificate .viewer-panel {
+    position: fixed;
+    right: -420px;
+    top: 0;
+    height: 100%;
+    width: 420px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+    backdrop-filter: blur(6px);
+    box-shadow: 23px 0 37px rgba(2, 6, 23, 0.6);
+    z-index: 1050;
+    padding: 22px;
+    border-left: 1px solid rgba(255, 255, 255, 0.03);
+    transition: right .36s cubic-bezier(.22, 1, .36, 1)
+}
+
+.amd-lms-certificate .viewer-panel.open {
+    overflow-y: auto;
+    right: 0
+}
+
+.amd-lms-certificate .viewer-preview {
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    overflow: hidden;
+    background: #fff;
+    padding: 6px;
+    text-align: center
+}
+
+.amd-lms-certificate .viewer-preview img {
+    max-width: 100%;
+    display: block
+}
+
+.amd-lms-certificate .viewer-meta {
+    margin-top: 12px;
+    color: var(--amd-lms-text-dark)
+}
+
+/* small responsive tweaks */
+@media (max-width: 991px) {
+    .amd-lms-certificate .viewer-panel {
+        position: fixed;
+        right: -100%;
+        width: 100%;
+    }
+
+
+
+    .page-header-div {
+        display: none;
+    }
+
+
+}
+
+@media (max-width:768px) {
+    .amd-lms-certificate .controls {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+}
+
+/* utility tweaks */
+.amd-lms-certificate .muted {
+    color: var(--amd-lms-text-dark)
+}
+
+.amd-lms-certificate .btn-ghost {
+    background: transparent;
+    border: 1px solid var(--amd-lms-border-color);
+    color: inherit
+}
+
+.amd-lms-certificate .rounded-14 {}
+
+/* certificate 1 page css end */
+
+
+
+
+
+/* course detail page css */
+/* --- Main Container & Layout --- */
+.amd-lms-course-detail-container {
+    padding: 3rem 0;
+}
+
+.amd-lms-course-detail-back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    color: #333;
+    text-decoration: none;
+    font-weight: 600;
+
+}
+
+.amd-lms-course-detail-back-btn i {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--amd-lms-border-color);
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+
+}
+
+.amd-lms-course-detail-back-btn:hover i {
+    background-color: var(--amd-lms-border-color);
+}
+
+.amd-lms-course-detail-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2.5rem;
+    align-items: flex-start;
+}
+
+/* --- Main Content Column (Left) --- */
+.amd-lms-course-detail-main {
+    padding: 0 5px;
+    background-color: #fff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.amd-lms-course-detail-main__image {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+}
+
+.amd-lms-course-detail-main__content-wrapper {
+    padding: 2.5rem;
+}
+
+.amd-lms-course-detail-main__title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--amd-lms-text-dark);
+    line-height: 1.2;
+}
+
+.amd-lms-course-detail-main__author {
+    color: var(--amd-lms-text-light);
+    margin-bottom: 2rem;
+}
+
+.amd-lms-course-detail-section h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--amd-lms-text-dark);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--amd-lms-border-color);
+}
+
+.amd-lms-course-detail-section {
+    text-align: justify;
+    margin-bottom: 3rem;
+}
+
+/* NEW: What You'll Learn Section */
+.amd-lms-course-detail-learn-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    list-style: none;
+}
+
+.amd-lms-course-detail-learn-grid li {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+}
+
+.amd-lms-course-detail-learn-grid i {
+    color: var(--amd-lms-primary-color);
+    margin-top: 4px;
+    font-size: 1.1rem;
+}
+
+/* NEW: Requirements Section */
+.amd-lms-course-detail-requirements ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.amd-lms-course-detail-requirements li {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.amd-lms-course-detail-requirements i {
+    color: var(--amd-lms-primary-color);
+}
+
+/* --- Accordion (Course Contents & FAQ) --- */
+.amd-lms-course-detail-accordion__item {
+    border: 1px solid var(--amd-lms-border-color);
+
+    margin-bottom: 1rem;
+    overflow: hidden;
+}
+
+.amd-lms-course-detail-accordion__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background-color: var(--amd-lms-text-light);
+    cursor: pointer;
+    list-style: none;
+    font-weight: 600;
+    color: #333;
+}
+
+.amd-lms-course-detail-accordion__header::-webkit-details-marker {
+    display: none;
+}
+
+.amd-lms-course-detail-accordion__header-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.amd-lms-course-detail-accordion__header-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--amd-lms-text-dark);
+}
+
+.amd-lms-course-detail-accordion__header-meta .chevron {
+    transition: transform 0.3s ease;
+}
+
+.amd-lms-course-detail-accordion__item[open] .amd-lms-course-detail-accordion__header-meta .chevron {
+    transform: rotate(180deg);
+}
+
+.amd-lms-course-detail-accordion__body {
+    list-style: none;
+    background-color: #fff;
+}
+
+.amd-lms-course-detail-accordion__body-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--amd-lms-border-color);
+    font-size: 0.95rem;
+}
+
+.amd-lms-course-detail-accordion__body-item .lesson-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--amd-lms-text-muted);
+}
+
+.amd-lms-course-detail-accordion__body-item .lesson-duration {
+    color: var(--amd-lms-text-light);
+}
+
+.amd-lms-course-detail-accordion__body-item i {
+    color: var(--amd-lms-primary-color);
+}
+
+/* NEW: FAQ Body Style */
+.amd-lms-course-detail-accordion__faq-body {
+    padding: 1.5rem;
+    border-top: 1px solid var(--amd-lms-border-color);
+}
+
+/* NEW: Student Feedback Section */
+.amd-lms-course-detail-reviews__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.amd-lms-course-detail-review-card {
+    border: 1px solid var(--amd-lms-border-color);
+
+    padding: 1.5rem;
+}
+
+.amd-lms-course-detail-review-card__header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.amd-lms-course-detail-review-card__header img {
+    width: 45px;
+    height: 45px;
+
+}
+
+.amd-lms-course-detail-review-card__header-info .name {
+    font-weight: 600;
+    color: #333;
+}
+
+.amd-lms-course-detail-review-card__stars {
+    color: #f7d200 !important;
+}
+
+.amd-lms-course-detail-review-card__text {
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+/* --- Sidebar Column (Right) --- */
+.amd-lms-course-detail-sidebar {
+    position: sticky;
+    top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.amd-lms-course-detail-sidebar-card {
+    background-color: #fff;
+
+    padding: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.amd-lms-course-detail-sidebar-card h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--amd-lms-text-dark);
+    margin-bottom: 1rem;
+}
+
+.amd-lms-course-detail-meta ul {
+    list-style: none;
+}
+
+.amd-lms-course-detail-meta li {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+}
+
+.amd-lms-course-detail-meta li i {
+    font-size: 1.2rem;
+    color: var(--amd-lms-primary-color);
+    width: 20px;
+}
+
+.amd-lms-course-detail-meta li .meta-label {
+    color: var(--amd-lms-text-dark);
+}
+
+.amd-lms-course-detail-meta li .meta-value {
+    color: #333;
+    font-weight: 500;
+    margin-left: auto;
+}
+
+.amd-lms-course-detail-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.amd-lms-course-detail-actions .btn {
+    flex-grow: 1;
+    padding: 0.8rem;
+
+    text-decoration: none;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.amd-lms-course-detail-actions .btn--primary {
+    background-color: var(--amd-lms-primary-color);
+    color: #fff;
+}
+
+.amd-lms-course-detail-actions .btn--primary:hover {
+    background-color: #264bcf;
+}
+
+.amd-lms-course-detail-actions .btn--secondary {
+    background-color: #fff;
+    color: var(--amd-lms-primary);
+    border: 1px solid var(--amd-lms-border);
+}
+
+.amd-lms-course-detail-actions .btn--secondary:hover {
+    background-color: var(--amd-lms-text-muted);
+}
+
+.amd-lms-course-detail-author__header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.amd-lms-course-detail-author__header img {
+    width: 50px;
+    height: 50px;
+
+    object-fit: cover;
+}
+
+.amd-lms-course-detail-author__header-info .name {
+    font-weight: 600;
+    color: #333;
+}
+
+.amd-lms-course-detail-author__header-info .email {
+    font-size: 0.85rem;
+    color: var(--amd-lms-text-muted);
+}
+
+.amd-lms-course-detail-author p {
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+}
+
+.amd-lms-course-detail-social-links {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.amd-lms-course-detail-social-links a {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+
+    font-size: 1.1rem;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+}
+
+.amd-lms-course-detail-social-links a:hover {
+    opacity: 0.8;
+}
+
+.amd-lms-course-detail-social-links .facebook {
+    background-color: #1877F2;
+    color: #fff;
+}
+
+.amd-lms-course-detail-social-links .instagram {
+    background-color: #E4405F;
+    color: #fff;
+}
+
+.amd-lms-course-detail-social-links .linkedin {
+    background-color: #0A66C2;
+    color: #fff;
+}
+
+.amd-lms-course-detail-social-links .twitter {
+    background-color: #1DA1F2;
+    color: #fff;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 1200px) {
+    .amd-lms-course-detail-grid {
+        grid-template-columns: 1.5fr 1fr;
+    }
+}
+
+@media (max-width: 992px) {
+    .amd-lms-course-detail-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .amd-lms-course-detail-sidebar {
+        position: static;
+    }
+
+    .amd-lms-course-detail-learn-grid,
+    .amd-lms-course-detail-reviews__grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .amd-lms-course-detail-container {
+        /* padding: 0 1rem; */
+        /* margin: 1rem auto; */
+    }
+
+    .amd-lms-course-detail-main__content-wrapper {
+        padding: 0rem;
+    }
+
+    .amd-lms-course-detail-main__image {
+        height: 250px;
+    }
+}
+
+/* lms btns  */
+.amd-lms-btn-register {
+    background-color: var(--amd-lms-primary-color);
+    border-color: var(--amd-lms-primary-color);
+    padding: 0.6rem 1.5rem;
+    color: var(--amd-lms-text-light);
+    border-radius: 0 !important;
+    font-weight: 600;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    font-size: 0.8rem;
+    text-decoration: none;
+}
+
+/* Hover effect for register button */
+.amd-lms-btn-register:hover {
+    color: var(--amd-lms-text-dark);
+    background: transparent;
+    border: 1px solid var(--amd-lms-primary-color);
+    filter: brightness(0.9);
+
+}
+
+/* course detail page css end */
+
+
+
+
+/* settings profile notification accout tabs page css */
+
+.btn,
+.form-control,
+.form-select,
+.card,
+.progress,
+.modal-content,
+.toast,
+.list-group-item,
+.amd-lms-setting-container,
+.amd-lms-profile-header img,
+.amd-lms-setting-tabs .nav-link.active {
+    border-radius: 0 !important;
+}
+
+/* --- Main Container --- */
+.amd-lms-setting-container {
+    padding: 20px 10px;
+    background-color: var(--amd-lms-card-bg);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--amd-lms-border-color);
+}
+
+.amd-lms-page-title {
+    font-family: var(--amd-title-font-family);
+    font-weight: 700;
+}
+
+/* --- Tabs Component --- */
+.amd-lms-setting-tabs .nav-tabs {
+    border-bottom-color: var(--amd-lms-border-color);
+}
+
+.amd-lms-setting-tabs .nav-link {
+    border: none;
+    color: var(--amd-lms-text-dark);
+    font-weight: 500;
+    padding: 0.75rem 0;
+    margin-right: 2rem;
+    border-bottom: 3px solid transparent;
+}
+
+.amd-lms-setting-tabs .nav-link.active,
+.amd-lms-setting-tabs .nav-link:hover {
+    color: var(--amd-lms-primary-color) !important;
+    background: none;
+}
+
+.amd-lms-setting-tabs .nav-link.active {
+    border-bottom-color: var(--amd-lms-primary-color);
+}
+
+/* --- Profile Header Component --- */
+.amd-lms-profile-header {
+    position: relative;
+    margin-bottom: 70px;
+}
+
+.amd-lms-profile-header .cover-photo {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+
+@media (max-width:768px) {
+    .amd-lms-profile-header .cover-photo {
+        height: 180px;
+    }
+}
+
+.amd-lms-profile-header .avatar-wrapper {
+    position: absolute;
+    bottom: -60px;
+    left: 40px;
+    width: 120px;
+    height: 120px;
+    cursor: pointer;
+}
+
+.amd-lms-profile-header .avatar {
+    width: 100%;
+    height: 100%;
+    border: 4px solid var(--amd-lms-card-bg);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.amd-lms-profile-header .avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.amd-lms-profile-header .avatar-overlay {
+    position: absolute;
+    inset: 4px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    display: grid;
+    place-items: center;
+    font-size: 1.75rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.amd-lms-profile-header .avatar-wrapper:hover .avatar-overlay {
+    opacity: 1;
+}
+
+.amd-lms-profile-header .cover-actions {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+}
+
+/* --- Form & Card Components --- */
+
+.amd-lms-delete-modal-header {
+    border-radius: 0 !important;
+}
+
+.amd-lms-account-card {
+    border-radius: 14px;
+    border: none;
+    background: #ffffff;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+    transition: transform .2s ease, box-shadow .2s ease;
+
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Body fills remaining space */
+.amd-lms-account-card .card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.amd-lms-account-card .card-header {
+    border-radius: 0 !important;
+}
+
+/* Push button to the bottom */
+.amd-lms-account-card .card-body .btn {
+    margin-top: auto;
+}
+
+.amd-lms-setting-form-section h5 {
+    font-family: var(--amd-title-font-family);
+    font-weight: 700;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--amd-lms-primary-color);
+    box-shadow: 0 0 0 0.2rem color-mix(in oklch, var(--amd-lms-primary-color) 25%, transparent);
+}
+
+.input-group-text {
+    background-color: var(--amd-lms-card-bg);
+    border-color: var(--amd-lms-border-color);
+}
+
+
+/* --- Other Components --- */
+.amd-progress-wrapper {
+    height: 12px;
+    border-radius: 12px !important;
+    overflow: hidden;
+}
+
+.amd-progress-wrapper .progress-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.amd-progress-range {
+    width: 100%;
+    height: 100%;
+    appearance: none;
+    background: var(--amd-lms-primary-color);
+    position: absolute;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+}
+
+/* Thumb style */
+.amd-progress-range::-webkit-slider-thumb {
+    appearance: none;
+    width: 16px;
+    height: 12px;
+}
+
+.form-switch .form-check-input {
+    width: 48px;
+    height: 24px;
+    cursor: pointer;
+    background-position: 0;
+}
+
+.form-switch .form-check-input:checked {
+    background-color: var(--amd-lms-primary-color);
+    border-color: var(--amd-lms-primary-color);
+    background-position: 100%;
+}
+
+.amd-lms-account-toast-container {
+    z-index: 1100;
+}
+
+/* settings profile notification accout tabs page css end */
