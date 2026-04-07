@@ -12,7 +12,7 @@ if (isloggedin() && !isguestuser()) {
 
     if (!empty($courses)) {
         // Student / normal user dashboard
-        redirect(new moodle_url('/theme/mytheme/pages/dashboard.php'));
+redirect(new moodle_url('/theme/mytheme/layout/dashboard.php'));
     } else {
         // No course enrolment (admin / new user / empty user)
         redirect(new moodle_url('/my/'));

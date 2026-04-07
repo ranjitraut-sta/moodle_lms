@@ -327,10 +327,10 @@ function theme_mytheme_get_general_context(): array {
         'userfullname'   => $isloggedin ? fullname($fulluser) : '',
         'useravatar'     => $isloggedin ? (new moodle_url('/user/pix.php/' . $USER->id . '/f1.jpg'))->out(false) : '',
         'profileurl'     => $isloggedin ? (new moodle_url('/user/profile.php', ['id' => $USER->id]))->out(false) : '',
-'dashboardurl'   => (new moodle_url('/theme/mytheme/pages/dashboard.php'))->out(false),
+        'dashboardurl'   => (new moodle_url('/theme/mytheme/layout/dashboard.php'))->out(false),
         'adminurl'       => (new moodle_url('/admin/index.php'))->out(false),
         'logouturl'      => $isloggedin ? (new moodle_url('/login/logout.php', ['sesskey' => sesskey()]))->out(false) : '',
-'loginurl'       => (new moodle_url('/theme/mytheme/pages/login_redirect.php'))->out(false),
+        'loginurl'       => (new moodle_url('/theme/mytheme/pages/login_redirect.php'))->out(false),
         'wwwroot'        => (new moodle_url('/'))->out(false),
         'mycourses'      => $mycourses ?: null,
         'categories'     => $categories ?: null,
@@ -367,3 +367,4 @@ function theme_mytheme_pluginfile($course, $cm, $context, $filearea, $args, $for
     }
     return false;
 }
+?>

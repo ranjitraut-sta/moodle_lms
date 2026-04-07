@@ -2,32 +2,36 @@
 // pages/dashboard.php - Moodle dashboard page
 require_once('../../../config.php');
 require_login();
-
 $PAGE->set_context(context_system::instance());
 
-$PAGE->set_url('/theme/mytheme/pages/dashboard.php');
+$PAGE->set_url('/theme/mytheme/layout/dashboard.php');
 $PAGE->set_pagelayout('dashboard');
 $PAGE->set_title('Dashboard');
 $PAGE->set_heading(fullname($USER));
 
+// Load CSS
+$PAGE->requires->css('/theme/mytheme/styles/user-dash.css');
+$PAGE->requires->js('/theme/mytheme/amd/src/user-dash.js', array('type' => 'on-demand'));
+
 // Dynamic data (mock/hardcoded now; replace with real Moodle queries later)
-// ४. डेटा तयार गर्ने (Namespace प्रयोग गरेर कल गर्ने)
 $dashboard_preparer = new \theme_mytheme\StudentDashboard\DashboardDataPrepare($USER);
 $data = $dashboard_preparer->getData();
 
-// Load dashboard renderer
+// Moodle ko default header/navbar bypass garna manual HTML suru gareko
 echo $OUTPUT->doctype();
 ?>
 <html <?php echo $OUTPUT->htmlattributes(); ?>>
 
 <head>
-    <title><?php echo $PAGE->title; ?></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LMS User Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <?php echo $OUTPUT->standard_head_html(); ?>
 </head>
 
 <body <?php echo $OUTPUT->body_attributes(); ?>>
     <?php echo $OUTPUT->standard_top_of_body_html(); ?>
-
     <?php
     $data['body_content'] = $OUTPUT->render_from_template('theme_mytheme/dashboard/pages/dashboard', $data);
     echo $OUTPUT->render_from_template('theme_mytheme/dashboard_layout', $data);

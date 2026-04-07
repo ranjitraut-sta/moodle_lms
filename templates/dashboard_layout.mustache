@@ -1,0 +1,21 @@
+{{! theme_mytheme/dashboard_layout }}
+<div class="amd-lms-user-dash-main-wrapper">
+    {{> theme_mytheme/dashboard/main/sidebar }}
+
+    <div class="amd-lms-user-dash-main-container">
+        {{> theme_mytheme/dashboard/main/header }}
+
+        <main class="amd-lms-user-dash-main-content">
+            {{{ body_content }}}
+        </main>
+    </div>
+</div>
+
+<div class="amd-lms-user-dash-mobile-overlay" id="amd-lms-mobile-overlay"></div>
+<div class="amd-lms-search-overlay" id="amd-lms-search-overlay">
+    <div class="amd-lms-search-container">
+        <button id="amd-lms-search-close-btn">&times;</button>
+        <input type="search" id="amd-lms-search-input" placeholder="Search for courses, assignments, etc...">
+    </div>
+</div>
+{{> theme_mytheme/dashboard/main/footer }}

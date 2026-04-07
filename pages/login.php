@@ -30,7 +30,7 @@ if ($user) {
         $redirecturl = new moodle_url('/admin/index.php');
     } else {
         // यदि विद्यार्थी वा सामान्य युजर हो भने तपाईंको कस्टम ड्यासबोर्डमा पठाउने
-        $redirecturl = new moodle_url('/theme/mytheme/pages/dashboard.php');
+$redirecturl = new moodle_url('/theme/mytheme/layout/dashboard.php');
     }
 
     redirect($redirecturl);

@@ -64,6 +64,11 @@ $THEME->layouts = [
         'defaultregion' => 'side-pre',
         'options' => ['nonavbar' => true, 'langmenu' => true],
     ],
+    'dashboard' => [
+        'file' => 'dashboard.php',
+        'regions' => [],
+        'options' => ['nonavbar' => true, 'nofooter' => true, 'langmenu' => true],
+    ],
     'mypublic' => [
         'file' => 'drawers.php',
         'regions' => ['side-pre'],

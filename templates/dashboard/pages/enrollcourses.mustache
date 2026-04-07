@@ -1,0 +1,12 @@
+
+<h2>Available Courses</h2>
+{{#courses}}
+<div class="card mb-3">
+    <div class="card-body">
+        <h5>{{fullname}}</h5>
+        <p>{{summary}}</p>
+        <a href="{{enrollurl}}" class="btn btn-primary">{{#str}}enroll, theme_mytheme{{/str}}</a>
+    </div>
+</div>
+{{/courses}}
+

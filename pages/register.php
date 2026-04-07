@@ -88,10 +88,11 @@ try {
         complete_user_login($user);
 
         // सफलताको मेसेजसहित ड्यासबोर्डमा पठाउने
-        redirect(new moodle_url('/theme/mytheme/pages/dashboard.php'), 'Welcome to your dashboard!', 3);
+        redirect(new moodle_url('/theme/mytheme/layout/dashboard.php'), 'Welcome to your dashboard!', 3);
     }
 
 } catch (Exception $e) {
     // केही प्राविधिक समस्या आएमा एरर देखाउने
-    redirect(new moodle_url('/theme/mytheme/pages/dashboard.php'), 'Welcome to your dashboard!', 3);
+    redirect(new moodle_url('/theme/mytheme/layout/dashboard.php'), 'Welcome to your dashboard!', 3);
 }
+?>
