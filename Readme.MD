@@ -65,3 +65,18 @@ New field add garna milxa:
 Province
 District
 Municipality
+
+# province district and mun 
+* yasko lagi aafnai plugin banako  xu jasko name location xa 
+
+<!-- database ma data pathauna  -->
+http://localhost/moodle/local/location/seed_provinces.php
+http://localhost/moodle/local/location/seed_districts.php
+http://localhost/moodle/local/location/seed_municipalities.php
+
+
+
+<!-- extension -->
+# Moodle pack 
+
+# Happy Coding 

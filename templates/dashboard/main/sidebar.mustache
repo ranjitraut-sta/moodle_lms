@@ -2,9 +2,9 @@
 
     <!-- HEADER -->
     <div class="amd-lms-user-dash-sidebar-header">
-        <div class="amd-lms-user-dash-logo">
+        <a href="{{config.wwwroot}}/?redirect=0" class="amd-lms-user-dash-logo" target="_blank">
             <span>LMS</span>
-        </div>
+        </a>
 
         <button class="amd-lms-user-dash-sidebar-toggle d-lg-flex"
                 id="amd-lms-desktop-toggle-btn"
@@ -25,33 +25,26 @@
         </li>
 
         <li class="amd-lms-user-dash-nav-item {{#is_courses}}active{{/is_courses}}">
-            <a href="{{wwwroot}}/theme/mytheme/pages/enrollcourses.php">
+            <a href="{{config.wwwroot}}/theme/mytheme/pages/enrollcourse.php">
                 <i class="bi bi-calendar-week"></i>
                 <span>Course Lists</span>
             </a>
         </li>
 
         <li class="amd-lms-user-dash-nav-item">
-            <a href="#">
+            <a href="{{config.wwwroot}}/theme/mytheme/pages/certificates.php">
                 <i class="bi bi-play-btn"></i>
-                <span>Classroom</span>
+                <span>Certificates</span>
             </a>
         </li>
 
         <li class="amd-lms-user-dash-nav-item">
-            <a href="#">
+            <a href="{{messages_url}}">
                 <i class="bi bi-chat-left-text"></i>
                 <span>
                     Messages
                     <span class="badge rounded-pill bg-primary">30</span>
                 </span>
-            </a>
-        </li>
-
-        <li class="amd-lms-user-dash-nav-item">
-            <a href="{{wwwroot}}/user/profile.php">
-                <i class="bi bi-gear"></i>
-                <span>Settings</span>
             </a>
         </li>
 

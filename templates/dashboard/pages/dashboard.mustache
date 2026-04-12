@@ -1,60 +1,35 @@
+<div class="row g-4 mt-4">
+    <div class="col-12 col-sm-6 col-md-6 col-xl-4">
+        <div class="amd-lms-user-dash-card amd-lms-user-dash-stat-card-courses">
+            <div class="amd-lms-user-dash-card-body">
+                <p>Courses</p>
+                <h3>{{completed_courses_count}}/{{enrolled_courses_count}}</h3>
+                <p class="mb-0 mt-2">Completed</p>
+                <i class="fa fa-book amd-lms-user-dash-stat-icon" aria-hidden="true"></i>
+            </div>
+        </div>
+    </div>
 
-     <div class="row g-4">
-                    <div class="col-12 col-sm-6 col-md-6 col-xl-3">
+    <div class="col-12 col-sm-6 col-md-6 col-xl-4">
+        <div class="amd-lms-user-dash-card amd-lms-user-dash-stat-card-leaderboard">
+            <div class="amd-lms-user-dash-card-body">
+                <p>Pending Assignments</p>
+                <h3>{{pending_assignments}}</h3>
+                <p class="mb-0">To be submitted</p>
+                <i class="fa fa-tasks amd-lms-user-dash-stat-icon" aria-hidden="true"></i>
+            </div>
+        </div>
+    </div>
 
-                        <div class="amd-lms-user-dash-card amd-lms-user-dash-stat-card-courses">
-                            <div class="amd-lms-user-dash-card-body">
-                                <p>Courses</p>
-                                <h3>12/30</h3>
-                                <p class="mb-0">Completed</p>
-                                <img src="asset/imgs/Untitled design (13) (1).png" alt="books icon"
-                                    class="amd-lms-user-dash-stat-icon">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-md-6 col-xl-3">
-
-                        <div class="amd-lms-user-dash-card amd-lms-user-dash-stat-card-attendance">
-                            <div class="amd-lms-user-dash-card-body">
-                                <p>Class Attendance</p>
-                                <h3>64<span class="fs-6 fw-normal"> points</span></h3>
-                                <img src="asset/imgs/calendar-svgrepo-com (1).png" alt="calendar icon"
-                                    class="amd-lms-user-dash-stat-icon">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-md-6 col-xl-3">
-
-                        <div class="amd-lms-user-dash-card amd-lms-user-dash-stat-card-grade">
-                            <div class="amd-lms-user-dash-card-body d-flex align-items-center">
-                                <div>
-                                    <p>Grade</p>
-                                    <p class="mb-0 small">Your score is<br>Keep it up! 😉</p>
-                                </div>
-                                <div class="amd-lms-user-dash-grade-chart-container ms-auto">
-                                    <svg class="amd-lms-user-dash-grade-chart" width="80" height="80"
-                                        viewBox="0 0 36 36">
-                                        <path class="amd-lms-user-dash-circle-bg"
-                                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                        <path class="amd-lms-user-dash-circle" data-score="85" stroke-dasharray="0, 100"
-                                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                        <text x="18" y="20.35" class="amd-lms-user-dash-percentage">85</text>
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-md-6 col-xl-3">
-
-                        <div class="amd-lms-user-dash-card amd-lms-user-dash-stat-card-leaderboard">
-                            <div class="amd-lms-user-dash-card-body">
-                                <p>Leaderboard</p>
-                                <h3>1st</h3>
-                                <img src="asset/imgs/trophy-cup-svgrepo-com.png" alt="trophy icon"
-                                    class="amd-lms-user-dash-stat-icon">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+    <div class="col-12 col-sm-6 col-md-6 col-xl-4">
+        <div class="amd-lms-user-dash-card amd-lms-user-dash-stat-card-attendance">
+            <div class="amd-lms-user-dash-card-body">
+                <p>Total Certificates</p>
+                <h3>{{total_certificates}}</h3>
+                <p class="mb-0">Earned</p>
+                <i class="fa fa-certificate amd-lms-user-dash-stat-icon" aria-hidden="true"></i>
+            </div>
+        </div>
+    </div>
+</div>
 

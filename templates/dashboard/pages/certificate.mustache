@@ -1,0 +1,53 @@
+<main class="amd-lms-user-dash-main-content">
+    <nav aria-label="breadcrumb" class="amd-lms-user-dash-breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{config.wwwroot}}/my/">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Certificates</li>
+        </ol>
+    </nav>
+
+    <section class="amd-lms-certificate">
+        <div class="page-header d-flex justify-content-between align-items-center mb-4">
+            <div class="page-header-div">
+                <div class="page-title h4 fw-bold">My Certificates</div>
+            </div>
+            <div class="summary-badge">
+                <span class="badge bg-primary px-3 py-2">Total: {{total_certs_count}}</span>
+            </div>
+        </div>
+
+        <div id="certGrid" class="row g-3">
+            {{#certificates}}
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 cert-item">
+                <div class="amd-lms-cert-card border rounded overflow-hidden shadow-sm">
+                    <div class="cert-thumb" style="background-image:url({{thumb_url}}); height: 160px; background-size: cover; background-position: center;">
+                    </div>
+                    
+                    <div class="cert-body p-3">
+                        <div class="cert-info mb-3">
+                            <div class="cert-title fw-bold text-truncate" title="{{course_name}}">{{course_name}}</div>
+                            <div class="cert-meta small text-muted">Issued: {{issued_date}}</div>
+                        </div>
+
+                        <div class="cert-actions amd-lms-user-dash-event-controls ">
+                            <a href="{{download_url}}" class="btn btn-sm btn-primary  view-btn" target="__blank">
+                                <i class="fa fa-eye"></i> View
+                            </a>
+                            <a href="{{download_url}}" class="btn btn-sm btn-outline-secondary" download>
+                                <i class="fa fa-download"></i> PDF
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/certificates}}
+
+            {{^certificates}}
+            <div class="col-12 text-center p-5">
+                <i class="fa fa-certificate fa-3x text-muted mb-3"></i>
+                <p class="text-secondary">No certificates earned yet.</p>
+            </div>
+            {{/certificates}}
+        </div>
+    </section>
+</main>

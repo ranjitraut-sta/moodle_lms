@@ -1,103 +1,217 @@
-<!-- Preloader -->
+<!-- ================= PRELOADER ================= -->
 <div class="amd-lms-hero-preloader d-none" id="preloader">
-    <div class="preloader-text"> L Management S</div>
+    <div class="preloader-text">LMS Management</div>
 </div>
 
 <header class="amd-lms-header" id="mainHeader">
+
+    <!-- ================= TOPBAR ================= -->
     <div class="amd-lms-topbar d-none d-lg-flex justify-content-between align-items-center">
         <div class="container d-flex justify-content-between align-items-center">
+
+            <!-- SOCIAL LINKS -->
             <div class="amd-lms-topbar-social d-flex align-items-center gap-3">
-                {{#setting.facebook}}<a href="{{{setting.facebook}}}" aria-label="Facebook" target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a>{{/setting.facebook}}
-                {{#setting.twitter}}<a href="{{{setting.twitter}}}" aria-label="Twitter" target="_blank" rel="noopener"><i class="fab fa-twitter"></i></a>{{/setting.twitter}}
-                {{#setting.instagram}}<a href="{{{setting.instagram}}}" aria-label="Instagram" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>{{/setting.instagram}}
-                {{#setting.linkedin}}<a href="{{{setting.linkedin}}}" aria-label="LinkedIn" target="_blank" rel="noopener"><i class="fab fa-linkedin-in"></i></a>{{/setting.linkedin}}
+                {{#setting.facebook}}
+                    <a href="{{{setting.facebook}}}" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                {{/setting.facebook}}
+
+                {{#setting.twitter}}
+                    <a href="{{{setting.twitter}}}" target="_blank"><i class="fab fa-twitter"></i></a>
+                {{/setting.twitter}}
+
+                {{#setting.instagram}}
+                    <a href="{{{setting.instagram}}}" target="_blank"><i class="fab fa-instagram"></i></a>
+                {{/setting.instagram}}
+
+                {{#setting.linkedin}}
+                    <a href="{{{setting.linkedin}}}" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                {{/setting.linkedin}}
             </div>
+
+            <!-- RIGHT SIDE -->
             <div class="d-flex align-items-center gap-3">
+
+                <a href="#" class="amd-lms-search-trigger">
+                    <i class="fas fa-search"></i>
+                </a>
+
+                <button id="themeToggle" class="amd-theme-toggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+
+                <!-- ================= LOGGED IN ================= -->
                 {{#setting.isloggedin}}
-                <a href="{{setting.wwwroot}}message/index.php" class="text-dark" title="Messages"><i class="bi bi-chat-dots fs-5"></i></a>
-                <div class="dropdown">
-                    <a href="#" class="d-flex align-items-center gap-2 text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="{{setting.useravatar}}" class="rounded-circle border" width="32" height="32" alt="avatar">
-                        <span class="d-none d-lg-inline fw-semibold small">{{setting.userfullname}}</span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end shadow" style="min-width: 220px;">
-                        <li class="px-3 py-2">
-                            <div class="d-flex align-items-center gap-2">
-                                <img src="{{setting.useravatar}}" class="rounded-circle" width="40" height="40">
-                                <div class="fw-bold small">{{setting.userfullname}}</div>
-                            </div>
+                <div class="amd-lms-user-dash-profile d-flex align-items-center dropdown">
+
+                    <img src="{{setting.userpicture}}" width="35" height="35" class="rounded-circle me-2">
+
+                        <div class="amd-lms-user-dash-profile-text d-none d-md-block" data-bs-toggle="dropdown">
+                            <strong class="text-dark mb-0">{{setting.username}}</strong>
+                        </div>
+
+                        <a href="#" class="ms-auto ps-2 show amd-profile-drop-arrow" data-bs-toggle="dropdown"
+                            aria-expanded="true">
+                            <i class="bi bi-chevron-down"></i>
+                        </a>
+
+                   <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 amd-lms-profile-menu"
+                            style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate3d(0px, 34px, 0px);"
+                            data-popper-placement="bottom-end">
+
+                        <li>
+                            <a class="amd-dropdown-item d-flex align-items-center gap-2" href="{{setting.dashboardurl}}">
+                                <i class="fas fa-user-circle me-2"></i> Dashboard
+                            </a>
                         </li>
+
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="{{setting.dashboardurl}}"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a></li>
-                        <li><a class="dropdown-item" href="{{setting.profileurl}}"><i class="bi bi-person me-2"></i>Profile</a></li>
-                        <li><a class="dropdown-item" href="{{setting.wwwroot}}message/index.php"><i class="bi bi-chat-dots me-2"></i>Messages</a></li>
-                        {{#setting.mycourses}}
-                        {{#-first}}<li><hr class="dropdown-divider"></li><li><h6 class="dropdown-header">My Courses</h6></li>{{/-first}}
-                        <li><a class="dropdown-item small" href="{{url}}"><i class="bi bi-book me-2"></i>{{name}}</a></li>
-                        {{/setting.mycourses}}
-                        {{#setting.isadmin}}
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="{{setting.adminurl}}"><i class="bi bi-gear me-2"></i>Admin Panel</a></li>
-                        {{/setting.isadmin}}
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item text-danger" href="{{setting.logouturl}}"><i class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
+
+                        <li>
+                            <a class="amd-dropdown-item d-flex align-items-center gap-2 text-danger" href="{{setting.logouturl}}">
+                                <i class="fas fa-sign-out-alt me-2"></i> Logout
+                            </a>
+                        </li>
+
                     </ul>
+
                 </div>
                 {{/setting.isloggedin}}
+
+                <!-- ================= GUEST ================= -->
                 {{^setting.isloggedin}}
-                <a href="{{setting.loginurl}}" class="btn btn-sm amd-lms-btn-login">Login</a>
+                <a href="{{setting.loginurl}}" class="btn btn-sm amd-lms-btn-login">
+                    Login
+                </a>
                 {{/setting.isloggedin}}
+
             </div>
         </div>
     </div>
 
+
+    <!-- ================= NAVBAR ================= -->
     <nav class="navbar navbar-expand-lg amd-lms-navbar">
         <div class="container">
-            <div class="amd-lms-main-nav-wrapper">
-                <a class="navbar-brand amd-lms-brand" href="{{setting.wwwroot}}">
-                    <img src="{{setting.logo}}" alt="Site Logo" height="80px">
-                </a>
 
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span><i class="fa-solid fa-bars"></i></span>
-                </button>
+            <!-- LOGO -->
+            <a class="navbar-brand" href="{{setting.wwwroot}}">
+                <img src="{{setting.logo}}" alt="Logo" height="80">
+            </a>
 
-                <div class="collapse navbar-collapse" id="mainNav">
-                    <ul class="navbar-nav mx-auto amd-lms-nav">
+            <!-- MOBILE TOGGLER -->
+            <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#mainNav">
+                <i class="fa fa-bars"></i>
+            </button>
 
-                        {{#setting.custommenu}}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{url}}" {{#newtab}}target="_blank"{{/newtab}}>{{label}}</a>
-                        </li>
-                        {{/setting.custommenu}}
+            <!-- MENU -->
+            <div class="collapse navbar-collapse" id="mainNav">
 
-                        {{#setting.isloggedin}}
+                <ul class="navbar-nav mx-auto">
+                    <!-- HOME -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{wwwroot}}/?redirect=0">
+                            <i class="fas fa-home me-1"></i> Home
+                        </a>
+                    </li>
+
+                    <!-- CUSTOM MENU -->
+                    {{#setting.custommenu}}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{url}}" {{#newtab}}target="_blank"{{/newtab}}>
+                            {{label}}
+                        </a>
+                    </li>
+                    {{/setting.custommenu}}
+
+                    <!-- MY COURSES -->
+                    {{#setting.isloggedin}}
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+
+                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                                 My Courses
                             </a>
-                            <ul class="dropdown-menu amd-lms-dropdown-menu">
+
+                            <ul class="dropdown-menu">
+
                                 {{#setting.mycourses}}
-                                <li><a class="dropdown-item" href="{{url}}">{{name}}</a></li>
+                                <li>
+                                    <a class="dropdown-item" href="{{url}}">
+                                        {{name}}
+                                    </a>
+                                </li>
                                 {{/setting.mycourses}}
+
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="{{setting.wwwroot}}course/index.php">All Courses</a></li>
+
+                                <li>
+                                    <a class="dropdown-item" href="{{setting.wwwroot}}/course/index.php">
+                                        All Courses
+                                    </a>
+                                </li>
+
                             </ul>
-                        </li>
-                        {{/setting.isloggedin}}
 
-                        <li class="nav-item d-lg-none">
-                            {{#setting.isloggedin}}
-                            <a class="nav-link text-danger" href="{{setting.logouturl}}"><i class="bi bi-box-arrow-right me-1"></i>Logout</a>
-                            {{/setting.isloggedin}}
-                            {{^setting.isloggedin}}
-                            <a class="nav-link" href="{{setting.loginurl}}">Login</a>
-                            {{/setting.isloggedin}}
                         </li>
+                    {{/setting.isloggedin}}
 
-                    </ul>
+                </ul>
+
+                <!-- RIGHT ACTIONS -->
+                <div class="d-flex gap-2 align-items-center">
+
+                    <!-- MOBILE LOGIN/LOGOUT -->
+                    {{#setting.isloggedin}}
+                        <a class="nav-link text-danger d-lg-none" href="{{setting.logouturl}}">
+                            Logout
+                        </a>
+                    {{/setting.isloggedin}}
+
+                    {{^setting.isloggedin}}
+                        <a class="nav-link d-lg-none" href="{{setting.loginurl}}">
+                            Login
+                        </a>
+                    {{/setting.isloggedin}}
+
+                    <a href="{{setting.contacturl}}" class="btn amd-lms-btn-register">
+                        Contact
+                    </a>
+
                 </div>
+
             </div>
         </div>
     </nav>
+
 </header>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    document.querySelectorAll('[data-bs-toggle="dropdown"]').forEach(function (el) {
+
+        el.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            let parent = el.closest('.dropdown');
+            let menu = parent.querySelector('.dropdown-menu');
+
+            // toggle class
+            menu.classList.toggle('show');
+
+        });
+
+    });
+
+    // click outside to close
+    document.addEventListener('click', function (e) {
+
+        document.querySelectorAll('.dropdown-menu').forEach(function (menu) {
+            if (!menu.closest('.dropdown').contains(e.target)) {
+                menu.classList.remove('show');
+            }
+        });
+
+    });
+
+});
+</script>

@@ -9,6 +9,7 @@ $PAGE->set_pagelayout('dashboard');
 $PAGE->set_title('Dashboard');
 $PAGE->set_heading(fullname($USER));
 
+
 // Load CSS
 $PAGE->requires->css('/theme/mytheme/styles/user-dash.css');
 $PAGE->requires->js('/theme/mytheme/amd/src/user-dash.js', array('type' => 'on-demand'));
@@ -18,8 +19,16 @@ $PAGE->requires->js('/theme/mytheme/amd/src/user-dash.js', array('type' => 'on-d
 // Dynamic data (mock/hardcoded now; replace with real Moodle queries later)
 $dashboard_preparer = new \theme_mytheme\StudentDashboard\DashboardDataPrepare($USER);
 $data = $dashboard_preparer->getData();
+
+// echo '<pre>';
+// print_r($data);
+// echo '</pre>';
+// exit;
+
 $data['logout_url'] =
     (new moodle_url('/login/logout.php', ['sesskey' => sesskey()]))->out(false);
+$data['messages_url'] = (new moodle_url('/message/index.php'))->out(false);
+
 // echo '<pre>';
 // print_r($data);
 // echo '</pre>';

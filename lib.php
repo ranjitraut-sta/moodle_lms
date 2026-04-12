@@ -6,7 +6,8 @@ require_once(__DIR__ . '/locallib.php');
 /**
  * Helper: Get image URL from plugin file area
  */
-function theme_mytheme_get_file_url(string $filearea, int $itemid = 0, string $component = 'theme_mytheme'): string {
+function theme_mytheme_get_file_url(string $filearea, int $itemid = 0, string $component = 'theme_mytheme'): string
+{
     $context = context_system::instance();
     $fs = get_file_storage();
     $files = $fs->get_area_files($context->id, $component, $filearea, $itemid, 'id DESC', false);
@@ -29,24 +30,30 @@ function theme_mytheme_get_file_url(string $filearea, int $itemid = 0, string $c
 /**
  * Get course list context with optional category filter
  */
-function theme_mytheme_get_course_list_context(int $categoryid = 0): array {
+function theme_mytheme_get_course_list_context(int $categoryid = 0): array
+{
     global $DB;
 
     $where = ['visible' => 1];
-    if ($categoryid) $where['category'] = $categoryid;
+    if ($categoryid)
+        $where['category'] = $categoryid;
 
     $courselist = $DB->get_records('course', $where, 'sortorder ASC');
     $courses = [];
 
     foreach ($courselist as $course) {
-        if ($course->id == SITEID) continue;
+        if ($course->id == SITEID)
+            continue;
         $course_obj = new core_course_list_element($course);
         $courseimage = '';
         foreach ($course_obj->get_course_overviewfiles() as $file) {
             $courseimage = moodle_url::make_pluginfile_url(
-                $file->get_contextid(), $file->get_component(),
-                $file->get_filearea(), $file->get_itemid(),
-                $file->get_filepath(), $file->get_filename()
+                $file->get_contextid(),
+                $file->get_component(),
+                $file->get_filearea(),
+                $file->get_itemid(),
+                $file->get_filepath(),
+                $file->get_filename()
             )->out(false);
             break;
         }
@@ -60,13 +67,13 @@ function theme_mytheme_get_course_list_context(int $categoryid = 0): array {
         $teacher = reset($teachers);
 
         $courses[] = [
-            'id'           => $course->id,
-            'fullname'     => format_string($course->fullname),
-            'image'        => $courseimage ?: 'https://images.pexels.com/photos/267885/pexels-photo-267885.jpeg',
-            'url'          => (new moodle_url('/theme/mytheme/pages/course.php', ['id' => $course->id]))->out(false),
-            'enrolledcount'=> $enrolledcount,
-            'category'     => $category ? format_string($category->name) : 'General',
-            'teachername'  => $teacher ? fullname($teacher) : null,
+            'id' => $course->id,
+            'fullname' => format_string($course->fullname),
+            'image' => $courseimage ?: 'https://images.pexels.com/photos/267885/pexels-photo-267885.jpeg',
+            'url' => (new moodle_url('/theme/mytheme/pages/course.php', ['id' => $course->id]))->out(false),
+            'enrolledcount' => $enrolledcount,
+            'category' => $category ? format_string($category->name) : 'General',
+            'teachername' => $teacher ? fullname($teacher) : null,
         ];
     }
 
@@ -75,36 +82,61 @@ function theme_mytheme_get_course_list_context(int $categoryid = 0): array {
     $categories = [];
     foreach ($catlist as $cat) {
         $categories[] = [
-            'id'       => $cat->id,
-            'name'     => format_string($cat->name),
+            'id' => $cat->id,
+            'name' => format_string($cat->name),
             'selected' => ($cat->id == $categoryid),
         ];
     }
 
     return [
-        'courses'      => $courses,
+        'courses' => $courses,
         'totalcourses' => count($courses),
-        'categories'   => $categories,
-        'wwwroot'      => (new moodle_url('/'))->out(false),
+        'categories' => $categories,
+        'wwwroot' => (new moodle_url('/'))->out(false),
     ];
 }
 
 /**
  * Get frontpage courses
  */
-function theme_mytheme_get_courses(int $limit = 6): array {
+function theme_mytheme_get_courses(int $limit = 6): array
+{
     global $DB, $CFG;
 
+    require_once($CFG->libdir . '/filelib.php');
+
     $courses = [];
-    $courselist = $DB->get_records('course', ['visible' => 1], 'sortorder ASC', '*', 0, $limit);
+
+    $courselist = $DB->get_records(
+        'course',
+        ['visible' => 1],
+        'sortorder ASC',
+        '*',
+        0,
+        $limit
+    );
 
     foreach ($courselist as $course) {
-        if ($course->id == SITEID) continue;
 
-        $course_obj = new core_course_list_element($course);
+        if ($course->id == SITEID) {
+            continue;
+        }
+
+        $courseobj = new core_course_list_element($course);
+
+        // =========================
+        // COURSE IMAGE
+        // =========================
         $courseimage = '';
-        
-        foreach ($course_obj->get_course_overviewfiles() as $file) {
+
+        $files = $courseobj->get_course_overviewfiles();
+
+        foreach ($files as $file) {
+
+            if (!$file->is_valid_image()) {
+                continue;
+            }
+
             $courseimage = moodle_url::make_pluginfile_url(
                 $file->get_contextid(),
                 $file->get_component(),
@@ -113,19 +145,32 @@ function theme_mytheme_get_courses(int $limit = 6): array {
                 $file->get_filepath(),
                 $file->get_filename()
             )->out(false);
+
             break;
         }
 
+        // fallback image
+        if (empty($courseimage)) {
+            $courseimage = $CFG->wwwroot . '/theme/mytheme/pix/default-course.jpg';
+        }
+
+        // =========================
+        // ENROL COUNT
+        // =========================
         $enrol = $DB->get_record('enrol', ['courseid' => $course->id], '*', IGNORE_MULTIPLE);
         $enrolledcount = $enrol ? $DB->count_records('user_enrolments', ['enrolid' => $enrol->id]) : 0;
 
+        // =========================
+        // CATEGORY
+        // =========================
         $category = $DB->get_record('course_categories', ['id' => $course->category]);
+
         $courses[] = [
             'id' => $course->id,
             'fullname' => format_string($course->fullname),
             'shortname' => format_string($course->shortname),
             'summary' => strip_tags(format_text($course->summary, FORMAT_HTML)),
-            'image' => $courseimage ?: 'https://images.pexels.com/photos/267885/pexels-photo-267885.jpeg',
+            'image' => $courseimage,
             'url' => (new moodle_url('/theme/mytheme/pages/course.php', ['id' => $course->id]))->out(false),
             'enrolledcount' => $enrolledcount,
             'category' => $category ? format_string($category->name) : 'General',
@@ -138,12 +183,14 @@ function theme_mytheme_get_courses(int $limit = 6): array {
 /**
  * Get sliders data
  */
-function theme_mytheme_get_sliders_data(): array {
+function theme_mytheme_get_sliders_data(): array
+{
     $sliders = [];
     for ($i = 1; $i <= 3; $i++) {
         $title = get_config('theme_mytheme', "slide{$i}_title");
         $desc = get_config('theme_mytheme', "slide{$i}_desc");
-        if (empty($title) && empty($desc)) continue;
+        if (empty($title) && empty($desc))
+            continue;
 
         $sliders[] = [
             'title' => $title ?: 'Welcome to Our Platform',
@@ -162,7 +209,8 @@ function theme_mytheme_get_sliders_data(): array {
 /**
  * Get about section data
  */
-function theme_mytheme_get_about_data(): array {
+function theme_mytheme_get_about_data(): array
+{
     $stats = [];
     for ($i = 1; $i <= 3; $i++) {
         $number = get_config('theme_mytheme', "stat{$i}_number");
@@ -186,11 +234,12 @@ function theme_mytheme_get_about_data(): array {
 /**
  * Get frontpage template context
  */
-function theme_mytheme_get_frontpage_context(): array {
+function theme_mytheme_get_frontpage_context(): array
+{
     global $SITE, $OUTPUT;
 
     $socials = theme_mytheme_get_social_links();
-    
+
     return [
         'sitename' => format_string($SITE->shortname),
         'output' => $OUTPUT,
@@ -209,7 +258,8 @@ function theme_mytheme_get_frontpage_context(): array {
 }
 
 // footer template context
-function theme_mytheme_get_footer_context(): array {
+function theme_mytheme_get_footer_context(): array
+{
     global $SITE, $OUTPUT;
 
     $theme = theme_config::load('mytheme');
@@ -241,12 +291,13 @@ function theme_mytheme_get_footer_context(): array {
 }
 
 // jumbotoron content
-function theme_mytheme_get_jumbotron_context(): array {
+function theme_mytheme_get_jumbotron_context(): array
+{
     $theme = theme_config::load('mytheme');
 
     return [
         'heading' => $theme->settings->jumbotronheading ?? 'Welcome to Our Learning Platform',
-        'desc'    => $theme->settings->jumbotrondesc ?? 'Start your learning journey today',
+        'desc' => $theme->settings->jumbotrondesc ?? 'Start your learning journey today',
         'btntext' => $theme->settings->jumbotronbtntext ?? 'Get Started',
         'btnlink' => $theme->settings->jumbotronbtnlink ?? '#',
     ];
@@ -255,16 +306,18 @@ function theme_mytheme_get_jumbotron_context(): array {
 /**
  * Get base context (setting + jumbotron + footer) - use everywhere
  */
-function theme_mytheme_get_base_context(): array {
+function theme_mytheme_get_base_context(): array
+{
     return [
-        'setting'  => theme_mytheme_get_general_context(),
-        'jumbotron'=> theme_mytheme_get_jumbotron_context(),
-        'footer'   => theme_mytheme_get_footer_context(),
+        'setting' => theme_mytheme_get_general_context(),
+        'jumbotron' => theme_mytheme_get_jumbotron_context(),
+        'footer' => theme_mytheme_get_footer_context(),
     ];
 }
 
 // general setting
-function theme_mytheme_get_general_context(): array {
+function theme_mytheme_get_general_context(): array
+{
     global $USER, $DB;
     $theme = theme_config::load('mytheme');
     $socials = theme_mytheme_get_social_links();
@@ -280,9 +333,9 @@ function theme_mytheme_get_general_context(): array {
         $courses = enrol_get_my_courses(null, 'fullname ASC', 5);
         foreach ($courses as $course) {
             $mycourses[] = [
-                'id'   => $course->id,
+                'id' => $course->id,
                 'name' => format_string($course->fullname),
-                'url'  => (new moodle_url('/theme/mytheme/pages/course.php', ['id' => $course->id]))->out(false),
+                'url' => (new moodle_url('/theme/mytheme/pages/course.php', ['id' => $course->id]))->out(false),
             ];
         }
     }
@@ -291,58 +344,60 @@ function theme_mytheme_get_general_context(): array {
     $catlist = $DB->get_records('course_categories', ['visible' => 1, 'parent' => 0], 'sortorder ASC', 'id,name', 0, 8);
     foreach ($catlist as $cat) {
         $categories[] = [
-            'id'   => $cat->id,
+            'id' => $cat->id,
             'name' => format_string($cat->name),
-            'url'  => (new moodle_url('/course/index.php', ['categoryid' => $cat->id]))->out(false),
+            'url' => (new moodle_url('/course/index.php', ['categoryid' => $cat->id]))->out(false),
         ];
     }
 
     // Custom menu from theme menu settings
     $custommenu = [];
-    $menucount  = (int)(get_config('theme_mytheme', 'menucount') ?: 5);
+    $menucount = (int) (get_config('theme_mytheme', 'menucount') ?: 5);
     for ($i = 1; $i <= $menucount; $i++) {
-        $label  = get_config('theme_mytheme', "menulabel{$i}");
-        $url    = get_config('theme_mytheme', "menuurl{$i}");
+        $label = get_config('theme_mytheme', "menulabel{$i}");
+        $url = get_config('theme_mytheme', "menuurl{$i}");
         $newtab = get_config('theme_mytheme', "menunewtab{$i}");
-        if (empty($label)) continue;
+        if (empty($label))
+            continue;
         $custommenu[] = [
-            'label'  => $label,
-            'url'    => $url ?: '#',
+            'label' => $label,
+            'url' => $url ?: '#',
             'newtab' => !empty($newtab),
         ];
     }
 
     return [
-        'logo'           => theme_mytheme_get_file_url('logo'),
-        'favicon'        => theme_mytheme_get_file_url('favicon'),
-        'facebook'       => $socials['facebook'],
-        'twitter'        => $socials['twitter'],
-        'instagram'      => $socials['instagram'],
-        'linkedin'       => $socials['linkedin'],
-        'primarycolor'   => $theme->settings->primarycolor ?? '#0f6cbf',
+        'logo' => theme_mytheme_get_file_url('logo'),
+        'favicon' => theme_mytheme_get_file_url('favicon'),
+        'facebook' => $socials['facebook'],
+        'twitter' => $socials['twitter'],
+        'instagram' => $socials['instagram'],
+        'linkedin' => $socials['linkedin'],
+        'primarycolor' => $theme->settings->primarycolor ?? '#0f6cbf',
         'secondarycolor' => $theme->settings->secondarycolor ?? '#6c757d',
-        'preloader'      => !empty($theme->settings->preloader),
-        'isloggedin'     => $isloggedin ? true : null,
-        'isadmin'        => $isadmin ? true : null,
-        'userfullname'   => $isloggedin ? fullname($fulluser) : '',
-        'useravatar'     => $isloggedin ? (new moodle_url('/user/pix.php/' . $USER->id . '/f1.jpg'))->out(false) : '',
-        'profileurl'     => $isloggedin ? (new moodle_url('/user/profile.php', ['id' => $USER->id]))->out(false) : '',
-        'dashboardurl'   => (new moodle_url('/theme/mytheme/layout/dashboard.php'))->out(false),
-        'adminurl'       => (new moodle_url('/admin/index.php'))->out(false),
-        'logouturl'      => $isloggedin ? (new moodle_url('/login/logout.php', ['sesskey' => sesskey()]))->out(false) : '',
-        'loginurl'       => (new moodle_url('/theme/mytheme/pages/login_redirect.php'))->out(false),
-        'wwwroot'        => (new moodle_url('/'))->out(false),
-        'mycourses'      => $mycourses ?: null,
-        'categories'     => $categories ?: null,
-        'custommenu'     => $custommenu ?: null,
+        'preloader' => !empty($theme->settings->preloader),
+        'isloggedin' => $isloggedin ? true : null,
+        'isadmin' => $isadmin ? true : null,
+        'userfullname' => $isloggedin ? fullname($fulluser) : '',
+        'useravatar' => $isloggedin ? (new moodle_url('/user/pix.php/' . $USER->id . '/f1.jpg'))->out(false) : '',
+        'profileurl' => $isloggedin ? (new moodle_url('/user/profile.php', ['id' => $USER->id]))->out(false) : '',
+        'dashboardurl' => (new moodle_url('/theme/mytheme/layout/dashboard.php'))->out(false),
+        'adminurl' => (new moodle_url('/admin/index.php'))->out(false),
+        'logouturl' => $isloggedin ? (new moodle_url('/login/logout.php', ['sesskey' => sesskey()]))->out(false) : '',
+        'loginurl' => (new moodle_url('/theme/mytheme/pages/login_redirect.php'))->out(false),
+        'wwwroot' => (new moodle_url('/'))->out(false),
+        'mycourses' => $mycourses ?: null,
+        'categories' => $categories ?: null,
+        'custommenu' => $custommenu ?: null,
     ];
 }
 
 // Social Links Decode
-function theme_mytheme_get_social_links(): array {
+function theme_mytheme_get_social_links(): array
+{
     $theme = theme_config::load('mytheme');
 
-    $socials = ['facebook','twitter','instagram','linkedin'];
+    $socials = ['facebook', 'twitter', 'instagram', 'linkedin'];
     $result = [];
 
     foreach ($socials as $s) {
@@ -360,7 +415,8 @@ function theme_mytheme_get_social_links(): array {
 /**
  * Serve theme plugin files
  */
-function theme_mytheme_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options = []): bool {
+function theme_mytheme_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options = []): bool
+{
     if ($context->contextlevel === CONTEXT_SYSTEM) {
         $theme = theme_config::load('mytheme');
         return $theme->setting_file_serve($filearea, $args, $forcedownload, $options);

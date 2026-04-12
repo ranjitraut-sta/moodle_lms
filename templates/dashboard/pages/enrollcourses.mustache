@@ -1,12 +1,79 @@
+<main class="amd-lms-user-dash-main-content">
+    <nav aria-label="breadcrumb" class="amd-lms-user-dash-breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{config.wwwroot}}/my/">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page">My Enrolled Courses</li>
+        </ol>
+    </nav>
 
-<h2>Available Courses</h2>
-{{#courses}}
-<div class="card mb-3">
-    <div class="card-body">
-        <h5>{{fullname}}</h5>
-        <p>{{summary}}</p>
-        <a href="{{enrollurl}}" class="btn btn-primary">{{#str}}enroll, theme_mytheme{{/str}}</a>
+    <div class="amd-user-course-list2">
+        <header class="d-flex flex-wrap align-items-center justify-content-between pb-4 mb-4 border-bottom">
+            <h1 class="amd-user-course-list2-main-title">My Courses</h1>
+        </header>
+
+        <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
+            <ul class="nav nav-tabs amd-user-course-list2-tabs">
+                <li class="nav-item">
+                </li>
+            </ul>
+
+            <div class="d-flex align-items-center gap-3 amd-user-course-list2-controls mt-3 mt-md-0">
+                <div class="dropdown">
+                    <button id="filter-btn" class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        All
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#" data-filter="all">All</a></li>
+                        <li><a class="dropdown-item" href="#" data-filter="running">Running</a></li>
+                        <li><a class="dropdown-item" href="#" data-filter="completed">Completed</a></li>
+                    </ul>
+                </div>
+                <div id="view-toggle" class="amd-user-course-list2-view-toggle btn-group" role="group">
+                    <button type="button" class="btn btn-light active" data-view="list"><i class="bi bi-list-ul"></i></button>
+                    <button type="button" class="btn btn-light" data-view="grid"><i class="bi bi-grid-fill"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <main id="course-list-container" class="amd-user-course-list2-content">
+            <div class="amd-user-course-list2-list-header">
+                <div>COURSE</div>
+                <div>STATUS</div>
+                <div>ACTION</div>
+            </div>
+
+            {{#enrolled_courses}}
+            <div class="amd-user-course-list2-item" data-status="{{status}}">
+                <div class="amd-user-course-list2-item-main">
+                    <img src="{{image}}" alt="{{fullname}}" class="amd-user-course-list2-item-thumb">
+                    <div>
+                        <h5 class="amd-user-course-list2-item-title">{{fullname}}</h5>
+                        <p class="amd-user-course-list2-item-meta">Shortname: {{shortname}}</p>
+                        
+                        <div class="amd-user-course-list2-status amd-user-course-list2-status-{{status}}">
+                            {{#completed_on}}
+                                <i class="bi bi-check-circle-fill"></i> Completed
+                            {{/completed_on}}
+                            {{^completed_on}}
+                                <i class="bi bi-play-circle-fill"></i> {{status}}
+                            {{/completed_on}}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="amd-user-course-list2-item-details">
+                    <span data-label="Status" class="text-capitalize">{{status}}</span>
+                </div>
+
+                <div class="amd-user-course-list2-item-details">
+                    <a href="{{course_link}}" class="btn btn-sm btn-outline-primary">Go to Course</a>
+                </div>
+            </div>
+            {{/enrolled_courses}}
+
+            {{^enrolled_courses}}
+            <div class="alert alert-info">You are not enrolled in any courses yet.</div>
+            {{/enrolled_courses}}
+        </main>
     </div>
-</div>
-{{/courses}}
-
+</main>

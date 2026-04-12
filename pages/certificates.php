@@ -1,36 +1,48 @@
 <?php
-// pages/certificates.php - Certificates page
+// pages/dashboard.php - Moodle dashboard page
 require_once('../../../config.php');
 require_login();
-
 $PAGE->set_context(context_system::instance());
 
-$PAGE->set_url('/theme/mytheme/pages/certificates.php');
-$PAGE->set_pagelayout('dashboard'); 
-$PAGE->set_title('Certificates');
-$PAGE->set_heading('Certificates');
+$PAGE->set_url('/theme/mytheme/layout/certificates.php');
+$PAGE->set_pagelayout('dashboard');
+$PAGE->set_title('Certificate');
+$PAGE->set_heading(fullname($USER));
 
-$cert_data = [
-    'certificates' => [], // Add certificates logic
-];
 
+// Load CSS
+$PAGE->requires->css('/theme/mytheme/styles/user-dash.css');
+$PAGE->requires->js('/theme/mytheme/amd/src/user-dash.js', array('type' => 'on-demand'));
+
+// Dynamic data (mock/hardcoded now; replace with real Moodle queries later)
+$certificates = new \theme_mytheme\StudentDashboard\EarnCertificate();
+$data = $certificates->getData();
+
+// echo '<pre>';
+// print_r($data);
+// echo '</pre>';
+// exit;
+
+// Moodle ko default header/navbar bypass garna manual HTML suru gareko
 echo $OUTPUT->doctype();
 ?>
 <html <?php echo $OUTPUT->htmlattributes(); ?>>
+
 <head>
-    <title><?php echo $PAGE->title; ?></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LMS User Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <?php echo $OUTPUT->standard_head_html(); ?>
 </head>
+
 <body <?php echo $OUTPUT->body_attributes(); ?>>
-<?php echo $OUTPUT->standard_top_of_body_html(); ?>
+    <?php echo $OUTPUT->standard_top_of_body_html(); ?>
+    <?php
+    $data['body_content'] = $OUTPUT->render_from_template('theme_mytheme/dashboard/pages/certificate', $data);
+    echo $OUTPUT->render_from_template('theme_mytheme/dashboard_layout', $data);
 
-<?php
-// १. पहिले सर्टिफिकेटको मुख्य सामग्री रेन्डर गर्ने
-$cert_data['body_content'] = $OUTPUT->render_from_template('theme_mytheme/dashboard/pages/certificates', $cert_data);
-
-// २. अब एउटै लेआउट टेम्प्लेट कल गर्ने जसले सबै कुरा मिलाउँछ
-echo $OUTPUT->render_from_template('theme_mytheme/dashboard_layout', $cert_data);
-
-echo $OUTPUT->standard_end_of_body_html(); ?>
+    echo $OUTPUT->standard_end_of_body_html(); ?>
 </body>
+
 </html>
