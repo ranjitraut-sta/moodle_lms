@@ -1,29 +1,19 @@
 <?php
-// pages/dashboard.php - Moodle dashboard page
+// pages/certificates.php - Certificates page
 require_once('../../../config.php');
 require_login();
 
 $PAGE->set_context(context_system::instance());
+
 $PAGE->set_url('/theme/mytheme/pages/enrollcourses.php');
 $PAGE->set_pagelayout('dashboard'); 
-$PAGE->set_title('Dashboard');
-$PAGE->set_heading(fullname($USER));
+$PAGE->set_title('Enroll Courses');
+$PAGE->set_heading('Enroll Courses');
 
-// Load CSS
-$PAGE->requires->css('/theme/mytheme/styles/user-dash.css');
-$PAGE->requires->js(new moodle_url('/theme/mytheme/amd/src/user-dash.js'));
+$cert_data = [
+    'certificates' => [], // Add certificates logic
+];
 
-// Dynamic data (mock/hardcoded now; replace with real Moodle queries later)
-// ४. डेटा तयार गर्ने (Namespace प्रयोग गरेर कल गर्ने)
-$dashboard_preparer = new \theme_mytheme\StudentDashboard\EnrollCourses($USER);
-$data = $dashboard_preparer->getData();
-
-// echo "<pre>";
-// var_dump($data);
-// echo "</pre>";
-
-// die("DEBUG STOP");
-// Load dashboard renderer
 echo $OUTPUT->doctype();
 ?>
 <html <?php echo $OUTPUT->htmlattributes(); ?>>
@@ -35,13 +25,11 @@ echo $OUTPUT->doctype();
 <?php echo $OUTPUT->standard_top_of_body_html(); ?>
 
 <?php
-echo $OUTPUT->render_from_template('theme_mytheme/dashboard/main/header', $data);
-echo $OUTPUT->render_from_template('theme_mytheme/dashboard/main/sidebar', $data);
+// १. पहिले सर्टिफिकेटको मुख्य सामग्री रेन्डर गर्ने
+$cert_data['body_content'] = $OUTPUT->render_from_template('theme_mytheme/dashboard/pages/enrollcourses', $cert_data);
 
-// Render dashboard using mustache templates
-echo $OUTPUT->render_from_template('theme_mytheme/dashboard/pages/enrollcourses', $data);
-
-echo $OUTPUT->render_from_template('theme_mytheme/dashboard/main/footer', $data);
+// २. अब एउटै लेआउट टेम्प्लेट कल गर्ने जसले सबै कुरा मिलाउँछ
+echo $OUTPUT->render_from_template('theme_mytheme/dashboard_layout', $cert_data);
 
 echo $OUTPUT->standard_end_of_body_html(); ?>
 </body>

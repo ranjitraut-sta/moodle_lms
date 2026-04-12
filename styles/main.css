@@ -3,16 +3,17 @@
 /* ---------------------------------- */
 :root {
     /* Fonts */
-    --amd-font-family: 'Lato', sans-serif;
-    --amd-tittle-font-family: 'Lato', sans-serif;
+    --amd-font-family: 'BoldItalic';
+    --amd-tittle-font-family: 'BlackItalic';
 
     /* Background */
-    --amd-body-bg: #040216d4;
+    --amd-body-bg: #020011d4;
+    --amd-body-light-bg: #ffff;
 
     /* =========================================
        PRIMARY COLOR SYSTEM (AUTO GENERATED)
     ========================================== */
-    --amd-primary: #cacaca;
+    --amd-primary: #ffffff;
     /* Change only this */
     --amd-primary-light: color-mix(in oklch, var(--amd-primary) 60%, white);
     --amd-fade-primary: color-mix(in oklch, var(--amd-primary) 12%, transparent);
@@ -20,11 +21,12 @@
     /* =========================================
        SECONDARY COLOR SYSTEM (AUTO GENERATED)
     ========================================== */
-    --amd-secondary: #090089a6;
+    --amd-secondary: #002a7c;
     /* Change only this */
     --amd-secondary-light: color-mix(in oklch, var(--amd-secondary) 70%, white);
-    --amd-fade-secondary: color-mix(in oklch, var(--amd-secondary) 25%, transparent);
+    --amd-fade-secondary: color-mix(in oklch, var(--amd-secondary) 30%, transparent);
 
+    --accent-color: #d32f2f;
     /* =========================================
        OTHER COLORS (NO CHANGE)
     ========================================== */
@@ -34,32 +36,132 @@
     --amd-dark-light: color-mix(in oklch, var(--amd-dark) 40%, white);
 
     --amd-light: #ffffff;
-    --amd-border: #d1d5db;
+    --amd-border: #999ca1;
     --amd-muted: #acacac;
 
-    --amd-navbar-top-bg: #2d3436;
+    --amd-navbar-top-bg: var(--amd-body-light-bg);
     --amd-navbar-top-text: #0e0e0e;
     --amd-nav-menu-bg: #424242;
     --amd-nav-menu-text: #f1f1f1;
+
+
+
+}
+
+/* ---------------------------------- */
+/* --- AMD-LMS Dark Theme Override --- */
+/* ---------------------------------- */
+[data-theme="dark"] {
+
+    /* Background */
+    --amd-body-bg: #060027d4;
+    --amd-body-light-bg: #000000;
+
+    /* Primary */
+    --amd-primary: #ffffff;
+    --amd-primary-light: color-mix(in oklch, var(--amd-primary) 60%, white);
+    --amd-fade-primary: color-mix(in oklch, var(--amd-primary) 12%, transparent);
+
+    /* Secondary */
+    --amd-secondary: #002a7c;
+    --amd-secondary-light: color-mix(in oklch, var(--amd-secondary) 70%, white);
+    --amd-fade-secondary: color-mix(in oklch, var(--amd-secondary) 30%, transparent);
+
+    /* Other Colors */
+    --amd-preload: #000000;
+
+    --amd-dark: #ebebeb;
+    --amd-dark-light: color-mix(in oklch, var(--amd-dark) 40%, white);
+
+    --amd-light: #dfdfdf;
+    --amd-border: #c5c5c5;
+    --amd-muted: #94a3b8;
+
+    /* Navbar */
+    --amd-navbar-top-bg: #020617;
+    --amd-navbar-top-text: #ffffff;
+    --amd-nav-menu-bg: #0f172a;
+    --amd-nav-menu-text: #e2e8f0;
 }
 
 
-/* ---------------------------------- */
-/* --- Custom AMD-LMS Stylesheet --- */
-/* ---------------------------------- */
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;0,900;1,400;1,700&display=swap');
 
-/* Apply fonts */
+/* Toggle Button */
+.amd-theme-toggle {
+    border: none;
+    background: #eee;
+    width: 28px;
+    height: 28px;
+    /* border-radius: 50%; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.3s;
+}
 
+.amd-theme-toggle:hover {
+    background: #ddd;
+}
 
+/* Dark mode button style */
+body.dark-mode .amd-theme-toggle {
+    background: #1e293b;
+    color: #fff;
+}
 
 /* Body styling */
 body {
     font-family: var(--amd-font-family);
     line-height: 1.5;
+    background: var(--amd-body-light-bg);
+    color: var(--amd-dark);
     /* Padding top adjusted for fixed header bars */
     /* padding-top: 125px; */
 }
+
+/* ---------------------------------- */
+/* --- Custom AMD-LMS Stylesheet --- */
+/* ---------------------------------- */
+/* Montserrat Regular */
+@font-face {
+    font-family: 'Italic';
+    src: url('../fonts/Lato-Italic.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Montserrat Bold */
+@font-face {
+    font-family: 'BoldItalic';
+
+    src: url('../fonts/Lato-BoldItalic.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Open Sans Regular */
+@font-face {
+    font-family: 'BlackItalic';
+    src: url('../fonts/Lato-BlackItalic.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Open Sans Bold */
+@font-face {
+    font-family: 'Bold';
+    src: url('../fonts/Lato-Bold.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Apply fonts */
+
 
 h1,
 h2,
@@ -83,7 +185,8 @@ a {
 /* --- Smooth Header Scroll Animation (AMD-LMS) --- */
 /* --------------------------------------------------- */
 #mainHeader {
-    background: #fffefe;
+    border-bottom: .5px solid var(--amd-border);
+    /* background: #fffefe; */
     position: fixed;
     top: 0;
     width: 100%;
@@ -146,7 +249,7 @@ a {
 
 /* --- Top Bar Styling --- */
 .amd-lms-topbar {
-    /* background-color: var(--amd-navbar-top-bg); */
+    background-color: var(--amd-navbar-top-bg);
     padding: 6px 0px 6px 0;
     font-size: 0.8rem;
     border-bottom: 1px solid var(--amd-muted);
@@ -159,6 +262,46 @@ a {
     justify-content: flex-end;
     gap: 1.5rem;
 }
+
+/* profile dropdowns menu */
+.amd-lms-profile-menu {
+    border-radius: 0 !important;
+    border: 1px solid var(--amd-border) !important;
+    background: var(--amd-light) !important;
+}
+
+.amd-user-dashboard-icon {
+    color: var(--amd-secondary) !important;
+}
+
+.amd-lms-profile-menu .amd-dropdown-item {
+    padding: 8px 14px;
+    color: var(--amd-lms-text-dark) !important;
+    transition: 0.2s ease;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.amd-dropdown-item.text-danger {
+    color: red !important;
+}
+
+.amd-lms-profile-menu .amd-dropdown-item:hover {
+    background: var(--amd-lms-primary-fade);
+    transform: translateX(3px);
+}
+
+.amd-lms-profile-menu .amd-dropdown-item i {
+    font-size: 16px;
+}
+
+.amd-lms-profile-menu {
+
+    padding: 10px 8px;
+    width: 180px;
+}
+
+/* porfile dropdowns menu end */
 
 /* Links and dropdown toggle styles inside topbar */
 .amd-lms-search-trigger {
@@ -181,6 +324,10 @@ a {
     transition: color 0.2s ease;
 }
 
+.amd-profile-drop-arrow {
+    color: var(--amd-dark) !important;
+}
+
 /* Hover effect for links/dropdown toggle */
 .amd-lms-topbar a:hover,
 .amd-lms-topbar .dropdown-toggle:hover {
@@ -191,6 +338,10 @@ a {
 /* Remove default dropdown arrow */
 .amd-lms-topbar .dropdown-toggle::after {
     display: none;
+}
+
+.amd-lms-topbar-social {
+    gap: 7px !important;
 }
 
 .amd-lms-topbar-social a {
@@ -214,24 +365,24 @@ a {
 /* Login button styling */
 .amd-lms-btn-login {
     background: var(--amd-secondary);
-
     border-radius: 0 !important;
     padding: 0.2rem 0.8rem;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     font-weight: 500;
 }
 
 /* Hover effect for login button */
 .amd-lms-btn-login:hover {
-    background-color: var(--amd-primary);
+    background-color: transparent;
+    border: 1px solid var(--amd-secondary);
     color: var(--amd-dark) !important;
 }
 
 /* --- Main Navbar Styling --- */
 .amd-lms-navbar {
-    /* background-color: var(--amd-navbar-top-bg); */
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+    background-color: var(--amd-navbar-top-bg);
+    /* padding-top: 1rem;
+    padding-bottom: 1rem; */
     font-size: 0.9rem;
 }
 
@@ -317,6 +468,12 @@ a {
     border: 1px solid var(--amd-secondary);
     filter: brightness(0.9);
 
+}
+
+@media (max-width: 991.98px) {
+    .amd-lms-btn-register {
+        margin-top: 10px;
+    }
 }
 
 /* Dropdown menu styling */
@@ -532,7 +689,7 @@ a {
 /* -------------------------------------------- */
 
 
-/* ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¸ Active Link Icon Color */
+/* ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¦ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¸ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¸ Active Link Icon Color */
 .amd-lms-link-active i {
     color: var(--amd-secondary) !important;
     transition: color 0.3s ease-in-out;
@@ -558,6 +715,10 @@ a {
 /* Custom hamburger icon for toggler */
 .navbar-toggler-icon {
     /* background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28251, 251, 251, 0.8%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e"); */
+}
+
+.amd-hamburger {
+    color: var(--amd-dark);
 }
 
 /* --- Responsive styles --- */
@@ -600,7 +761,7 @@ a {
     }
 
     .amd-lms-navbar {
-        background: rgb(255 255 255 / 27%);
+        /* background: rgb(255 255 255 / 27%); */
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
@@ -934,6 +1095,27 @@ a {
     color: var(--amd-light);
 }
 
+.navbar-brand.amd-lms-brand img {
+    height: 60px;
+    width: 100%;
+}
+
+@media (max-width: 768.98px) {
+    .navbar-brand.amd-lms-brand img {
+        height: 55px;
+    }
+}
+
+@media (max-width: 576.98px) {
+    .navbar-brand.amd-lms-brand img {
+        height: 45px;
+    }
+}
+
+[data-theme="dark"] .navbar-brand.amd-lms-brand img {
+    filter: brightness(30.2) contrast(1.1) drop-shadow(0 0 0px rgba(259, 255, 255, 0.8));
+}
+
 .amd-lms-hero-navbar .navbar-nav .nav-link {
     color: var(--amd-light);
     opacity: 0.8;
@@ -1017,7 +1199,7 @@ a {
     transform: scale(1);
 }
 
-/* ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¨ Smooth Hover Effect */
+/* ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¦ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¨ Smooth Hover Effect */
 .amd-lms-hero-side-links a:hover .arrow-icon {
     background-color: var(--amd-fade-primary);
     color: var(--amd-light);
@@ -1232,17 +1414,20 @@ a {
 /* lms about section************************************** */
 /* --- COMPONENT: amd-lms-about --- */
 .amd-lms-about {
-    padding-top: 5rem;
+    padding-top: 7rem;
     padding-bottom: 5rem;
     overflow: hidden;
-    background: var(--amd-light);
+    /* background: var(--amd-body-bg); */
 }
 
 /* --- Hero Section Elements --- */
 .amd-lms-about-section {
     padding-bottom: 5rem;
+    padding-top: 5rem;
     /* Space between hero and achievements */
 }
+
+
 
 /* Image Wrapper and Decorations */
 .amd-lms-about-section-image-wrapper {
@@ -1252,7 +1437,7 @@ a {
 .amd-lms-about-section-image {
     /* border-radius: 20px; */
     width: 100%;
-    max-width: 398px;
+    max-width: 280px;
     display: block;
     margin: 0 auto;
 }
@@ -1315,7 +1500,7 @@ a {
 .amd-lms-about__pre-title {
     font-size: 0.9rem;
     font-weight: 600;
-    color: #0d6efd;
+    color: var(--amd-secondary);
     display: inline-block;
     position: relative;
     padding-left: 35px;
@@ -1330,14 +1515,14 @@ a {
     transform: translateY(-50%);
     width: 25px;
     height: 2px;
-    background-color: #ef4444;
+    background-color: var(--accent-color);
 }
 
 .amd-lms-about__title {
     font-size: 3.2rem;
     font-weight: 800;
     line-height: 1.2;
-    color: #1e293b;
+    color: var(--amd-dark);
 }
 
 .amd-lms-about__title-sparkle {
@@ -1351,6 +1536,11 @@ a {
     margin-top: 1.5rem;
     max-width: 450px;
 }
+
+
+/* small course cards  */
+
+
 
 /* Feature List & Info Cards */
 .amd-lms-about__feature-list {
@@ -1380,25 +1570,32 @@ a {
 }
 
 .amd-lms-about__info-card {
-    background-color: var(--amd-light);
+    /* background-color: var(--amd-light); */
     border: 1px solid #e2e8f0;
-    border-radius: 12px;
+    /* border-radius: 12px; */
     padding: 0.6rem;
     flex: 1;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 1rem;
+    transition: all 0.3s ease;
+}
+
+.amd-lms-about__info-card:hover {
+    border-color: var(--accent-color);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+    transform: translateY(-2px);
 }
 
 .amd-lms-about__info-card-icon {
     font-size: 1.5rem;
-    color: #ef4444;
+    color: var(--accent-color);
 }
 
 .amd-lms-about__info-card-title {
     margin-bottom: 0.25rem;
     font-weight: 600;
-    color: #1e293b;
+    color: var(--amd-dark);
 }
 
 .amd-lms-about__info-card-desc {
@@ -1427,7 +1624,7 @@ a {
     text-align: center;
     margin-bottom: 2.5rem;
     font-weight: 600;
-    color: #334155;
+    color: var(--amd-dark);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1451,7 +1648,7 @@ a {
 .amd-lms-about__stat-number {
     font-size: 3rem;
     font-weight: 700;
-    color: #1e293b;
+    color: var(--amd-secondary);
 }
 
 .amd-lms-about__stat-description {
@@ -1465,6 +1662,11 @@ a {
     .amd-lms-about-section {
         text-align: center;
         padding-bottom: 3rem;
+        padding-top: 1rem;
+    }
+
+    .amd-lms-about {
+        padding-bottom: 2rem;
     }
 
     .amd-lms-about-section-content {
@@ -1477,6 +1679,7 @@ a {
         max-width: 100%;
         margin-left: auto;
         margin-right: auto;
+        font-size: 1rem !important;
     }
 
     .amd-lms-about__feature-list {
@@ -1516,11 +1719,17 @@ a {
         font-size: 2.5rem;
     }
 
+
+    .amd-lms-about__stat-number {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 458.98px) {
     .amd-lms-about__info-cards-container {
         flex-direction: column;
     }
 }
-
 
 /* ---------------------------------- */
 /*  lms course section*****************************************/
@@ -1529,44 +1738,17 @@ a {
 /* Main Block */
 .amd-lms-course-section {
     position: relative;
-    padding-top: 5rem;
-    padding-bottom: 5rem;
+    padding-top: 3rem;
+    padding-bottom: 0rem;
     overflow: hidden;
-    background: var(--amd-body-bg);
+    border-top: 1px solid var(--amd-border);
+    /* background: var(--amd-body-bg); */
     /* background: linear-gradient(135deg, var(--amd-secondary) 50%, var(--amd-primary) 100%); */
     backdrop-filter: blur(4px);
     z-index: 0;
 }
 
-/* Overlay for smooth blur + shine animation */
-.amd-lms-course-section::before {
-    content: "";
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    /* background: linear-gradient(270deg,
-                    rgba(61, 13, 173, 0.218) 0%,
-                    rgba(221, 255, 0, 0.226) 50%,
-                    rgba(106, 13, 173, 0.167) 100%); */
-    filter: blur(10px);
-    animation: shineMove 8s linear infinite;
-    z-index: -1;
-    pointer-events: none;
-    border-radius: 1rem;
-}
 
-/* Shine animation moves the gradient smoothly */
-@keyframes shineMove {
-    0% {
-        transform: translateX(-50%) translateY(0);
-    }
-
-    100% {
-        transform: translateX(50%) translateY(0);
-    }
-}
 
 /* Content inside should be above the shine */
 .amd-lms-course-section>* {
@@ -1575,16 +1757,27 @@ a {
 }
 
 
-/* Element: Header */
 .amd-lms-course-section__header {
     margin-bottom: 3rem;
+    display: flex;
+    justify-content: space-between;
+    /* center everything */
+    align-items: center;
+    gap: 20px;
+    /* space between title & button */
+    flex-wrap: wrap;
+    /* mobile friendly */
+    text-align: center;
 }
+
+
+
 
 .amd-lms-course-section__title {
     font-family: var(--amd-tittle-font-family);
     font-size: 2.5rem;
     font-weight: 700;
-    color: var(--amd-light);
+    color: var(--amd-dark);
 }
 
 .amd-lms-course-section__subtitle {
@@ -1595,6 +1788,7 @@ a {
 .amd-lms-course-section__filters .dropdown .btn {
     background-color: var(--amd-primary-light);
     color: var(--amd-dark);
+    border: 1px solid var(--amd-secondary);
     border-radius: 0 !important;
     border: none;
     font-weight: 600;
@@ -1627,7 +1821,7 @@ a {
 .amd-lms-course-section__card {
     border: 1px solid var(--amd-border);
     /* border-radius: 10px; */
-    background-color: var(--amd-fade-secondary);
+    background-color: var(--amd-secondary);
     transition: all 0.3s ease;
     height: 100%;
 }
@@ -1655,7 +1849,7 @@ a {
     position: absolute;
     top: 1rem;
     left: 1rem;
-    color: var(--amd-dark);
+    color: var(--amd-secondary);
     font-weight: 600;
     background-color: var(--amd-primary-light);
     padding: 0.25rem 0.75rem;
@@ -1779,7 +1973,7 @@ a {
     }
 
     .amd-lms-course-section__title {
-        font-size: 1.7rem;
+        font-size: 1.5rem;
     }
 
     .amd-lms-course-section__card-body {
@@ -2084,7 +2278,7 @@ a {
 .amd-lms-contact-section__form-wrapper h2 {
     font-size: 1.8rem;
     font-weight: 700;
-    color: var(--amd-dark);
+    color: rgb(54, 54, 54);
     margin-bottom: 0.5rem;
 }
 
@@ -2211,20 +2405,21 @@ a {
 /* --- 1. The Overlapping Promo Card --- */
 .amd-lms-footer-promo-card {
     position: absolute;
-    top: -13rem;
+    top: -10rem;
     /* Pulls the card up, creating the overlap */
     left: 50%;
     transform: translateX(-50%);
     z-index: 10;
     width: 90%;
     max-width: 1200px;
-    height: 380px;
+    height: auto;
     /* Fixed height for consistency */
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    padding: 3rem;
-    background-image: linear-gradient(#2a1a81c2), url('../imgs/Navy\ and\ White\ Illustration\ Paper\ Plane\ Sky\ Quotes\ Phone\ Wallpaper\ \(1\).png');
+    padding: 1rem;
+    background: var(--amd-secondary);
+    /* background-image: linear-gradient(#2a1a81c2), url('../imgs/Navy\ and\ White\ Illustration\ Paper\ Plane\ Sky\ Quotes\ Phone\ Wallpaper\ \(1\).png'); */
     background-size: cover;
     background-position: center;
 }
@@ -2232,7 +2427,7 @@ a {
 .amd-lms-footer-promo-card__content {
     padding: 2.5rem;
     border-radius: 16px;
-    max-width: 50%;
+    /* max-width: 50%; */
 }
 
 .amd-lms-footer-promo-card__content h1 {
@@ -2298,7 +2493,7 @@ a {
     color: var(--amd-light);
     position: relative;
     /* THIS IS THE KEY: Creates space at the top for the promo card to overlap into */
-    padding-top: 198px;
+    padding-top: 210px;
     padding-bottom: 1rem;
 }
 
@@ -2380,10 +2575,20 @@ a {
 }
 
 .amd-lms-footer-main__bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     text-align: center;
-    padding-top: 2rem;
+    padding-top: 1rem;
     color: #aaa;
     font-size: 0.9rem;
+}
+
+.amd-lms-footer-main__bottom .amd-lms-footer-main__logo {
+    width: 50px;
+
+    object-fit: contain;
+
 }
 
 /* --- Responsive Adjustments --- */
@@ -2401,16 +2606,29 @@ a {
     .amd-lms-footer-main__form {
         width: 100%;
     }
+
+    .amd-lms-footer-promo-card__content {
+        padding: 1.8rem;
+    }
 }
 
 @media (max-width: 768px) {
+    .amd-lms-footer-main__bottom {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .amd-lms-footer-promo-card__content {
+        padding: 0rem;
+    }
+
     .amd-lms-footer {
-        margin-top: 15rem;
+        margin-top: 12rem;
     }
 
     .amd-lms-footer-promo-card {
-        top: -12rem;
-        padding: 1.5rem;
+        top: -7rem;
+        padding: 1rem;
     }
 
     .amd-lms-footer-promo-card__content h1 {
@@ -2418,12 +2636,27 @@ a {
     }
 
     .amd-lms-footer-main {
-        padding-top: 300px;
+        padding-top: 188px;
     }
 
     .amd-lms-footer-main__form {
         flex-direction: column;
         width: 100%;
+    }
+}
+
+@media (max-width: 576px) {
+    .amd-lms-footer-promo-card {
+        top: -11rem;
+        padding: 1rem;
+    }
+
+    .amd-lms-footer-promo-card__content h1 {
+        font-size: 1.5rem;
+    }
+
+    .amd-lms-footer-promo-card__content p {
+        font-size: 0.9rem;
     }
 }
 
@@ -2527,7 +2760,8 @@ a {
 /* --- Responsive Adjustments --- */
 @media (max-width: 768px) {
     .amd-lms-breadcum-section {
-        min-height: 300px;
+        min-height: 175px;
+        padding-top: 4rem;
     }
 
     .amd-lms-breadcum-section__content {
@@ -2535,12 +2769,13 @@ a {
     }
 
     .amd-lms-breadcum-section__title {
-        font-size: 2rem;
+        font-size: 1.2rem;
         letter-spacing: 2px;
     }
 
     .amd-lms-breadcum-nav {
         gap: 1rem;
+        margin-bottom: 0;
     }
 
     .amd-lms-breadcum-nav__item a,
@@ -2567,7 +2802,7 @@ a {
 /* --- Top Bar for Controls --- */
 .amd-lms-course-list-topbar {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
     margin-bottom: 2.5rem;
     flex-wrap: wrap;
@@ -2576,6 +2811,7 @@ a {
 
 .amd-lms-course-list-topbar__title h1 {
     font-size: 1.8rem;
+    margin: 0;
 }
 
 .amd-lms-course-list-topbar__title span {
@@ -2585,23 +2821,24 @@ a {
 
 .amd-lms-course-list-topbar__controls {
     display: grid;
-    grid-template-columns: max-content 1fr 1fr 1fr;
+    grid-template-columns: max-content 1fr 0fr 0fr;
     gap: 12px;
 }
 
 
 .amd-lms-course-list-topbar__controls select {
-    width: auto;
+    width: 100%;
     border: 1px solid var(--amd-border);
     padding: 0.5rem 1rem;
     border-radius: 0 !important;
-    background-color: #fff;
+    background-color: var(--amd-light);
     font-family: 'Poppins', sans-serif;
 }
 
 .amd-lms-course-list-view-switcher {
     display: flex;
     align-items: center;
+    width: 100%;
     background-color: #fff;
     border: 1px solid var(--amd-border);
     border-radius: 0 !important;
@@ -2637,7 +2874,7 @@ a {
 
 /* --- Course Card --- */
 .amd-lms-course-list-card {
-    background-color: #fff;
+    border: 1px solid var(--amd-border);
 
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
     overflow: hidden;
@@ -2692,7 +2929,7 @@ a {
     flex-wrap: wrap;
     gap: 1rem;
     font-size: 0.8rem;
-    color: var(--amd-muted);
+    color: var(--amd-border);
     padding-bottom: 0.75rem;
     border-bottom: 1px solid var(--amd-border);
 }
@@ -2739,7 +2976,10 @@ a {
     }
 
     .amd-lms-course-list-topbar__controls {
-        grid-template-columns: 1fr 1fr;
+        /* grid-template-columns: 7fr 1fr; */
+        display: flex;
+        flex-wrap: wrap;
+        /* width: max-content; */
     }
 }
 
@@ -2800,9 +3040,16 @@ a {
 /* --- Main Content Column (Left) --- */
 .amd-lms-course-detail-main {
     padding: 0 5px;
-    background-color: #fff;
+    background-color: var(--amd-light);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
     overflow: hidden;
+}
+
+[data-theme="dark"] .amd-lms-course-detail-main,
+[data-theme="dark"] .amd-lms-course-detail-accordion__body,
+[data-theme="dark"] .amd-lms-course-detail-sidebar-card {
+    background-color: transparent;
+    border: 1px solid var(--amd-border);
 }
 
 .amd-lms-course-detail-main__image {
@@ -2988,7 +3235,7 @@ a {
 
 .amd-lms-course-detail-review-card__header-info .name {
     font-weight: 600;
-    color: #333;
+    color: var(--amd-dark);
 }
 
 .amd-lms-course-detail-review-card__stars {
@@ -3046,7 +3293,7 @@ a {
 }
 
 .amd-lms-course-detail-meta li .meta-value {
-    color: #333;
+    color: var(--amd-dark);
     font-weight: 500;
     margin-left: auto;
 }
@@ -3055,6 +3302,28 @@ a {
     display: flex;
     gap: 1rem;
 }
+
+.amd-lms-course-detail-actions {
+    position: relative;
+}
+
+@media (max-width: 768px) {
+    .amd-lms-course-detail-actions .amd-lms-btn-register.enroll-sticky-mobile {
+        position: fixed;
+        bottom: 20px;
+        /* left: 20px; */
+        right: 20px;
+        z-index: 95;
+        margin: 0;
+        border-radius: 8px;
+        box-shadow: 0 8px 25px rgba(0, 42, 124, 0.3);
+    }
+
+    body.enroll-sticky-open {
+        padding-bottom: 100px;
+    }
+}
+
 
 .amd-lms-course-detail-actions .btn {
     flex-grow: 1;
@@ -3068,6 +3337,7 @@ a {
     gap: 0.5rem;
     transition: all 0.3s ease;
 }
+
 
 .amd-lms-course-detail-actions .btn--primary {
     background-color: var(--amd-primary);
@@ -3104,7 +3374,7 @@ a {
 
 .amd-lms-course-detail-author__header-info .name {
     font-weight: 600;
-    color: #333;
+    color: var(--amd-dark);
 }
 
 .amd-lms-course-detail-author__header-info .email {
@@ -3182,7 +3452,7 @@ a {
 @media (max-width: 768px) {
     .amd-lms-course-detail-container {
         /* padding: 0 1rem; */
-        /* margin: 1rem auto; */
+        margin: -1rem auto;
     }
 
     .amd-lms-course-detail-main__content-wrapper {
@@ -3833,115 +4103,3 @@ a {
 }
 
 /* blog detail page css end */
-
-/* course tags */
-.amd-lms-course-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-}
-.amd-lms-course-tag {
-    background: var(--amd-fade-secondary);
-    color: var(--amd-secondary);
-    border: 1px solid var(--amd-secondary-light);
-    padding: 0.3rem 0.9rem;
-    font-size: 0.82rem;
-    font-weight: 600;
-    border-radius: 2px;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.3rem;
-}
-/* course tags end */
-
-/* folder module */
-.amd-folder-filelist {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-.amd-folder-file-item {
-    border: 1px solid var(--amd-border);
-    border-radius: 4px;
-    transition: background 0.2s ease;
-}
-.amd-folder-file-item:hover {
-    background: var(--amd-fade-secondary);
-}
-.amd-folder-file-link {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.75rem 1rem;
-    text-decoration: none;
-    color: var(--amd-dark);
-    font-size: 0.95rem;
-}
-.amd-folder-file-link i {
-    font-size: 1.3rem;
-}
-/* folder module end */
-
-/* customcert module */
-.amd-module-customcert {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 60vh;
-}
-.amd-cert-wrap {
-    text-align: center;
-    padding: 3rem;
-    border: 2px solid #f6c90e;
-    border-radius: 8px;
-    max-width: 480px;
-    background: linear-gradient(135deg, #fffdf0, #fff8d6);
-}
-.amd-cert-icon {
-    font-size: 4rem;
-    color: #f6c90e;
-    margin-bottom: 1rem;
-}
-.amd-cert-wrap h3 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 0.75rem;
-}
-.amd-cert-wrap p {
-    color: #666;
-    margin-bottom: 1.5rem;
-}
-/* customcert module end */
-
-/* ========================================
-   MOODLE FILE PICKER FIXES (Step 5)
-   ======================================== */
-.theme-modal-open {
-    overflow: hidden;
-}
-
-body.theme-modal-open .modal-backdrop {
-    z-index: 1040 !important;
-}
-
-.fp-repo,
-.fp-repo-selector,
-.filepicker,
-[data-filepicker],
-.moodle-dialogue,
-.yui-panel,
-#filemanager_container ~ .fp-dialog {
-    z-index: 1060 !important;
-}
-
-.filepicker .fp-dialog {
-    z-index: 1070 !important;
-}
-
-/* Prevent theme modals blocking picker */
-#qOverlay,
-#modalBackdrop,
-#reviewModal {
-    z-index: 1055 !important;
-}
-

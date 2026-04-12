@@ -13,9 +13,17 @@ $PAGE->set_heading(fullname($USER));
 $PAGE->requires->css('/theme/mytheme/styles/user-dash.css');
 $PAGE->requires->js('/theme/mytheme/amd/src/user-dash.js', array('type' => 'on-demand'));
 
+
+
 // Dynamic data (mock/hardcoded now; replace with real Moodle queries later)
 $dashboard_preparer = new \theme_mytheme\StudentDashboard\DashboardDataPrepare($USER);
 $data = $dashboard_preparer->getData();
+$data['logout_url'] =
+    (new moodle_url('/login/logout.php', ['sesskey' => sesskey()]))->out(false);
+// echo '<pre>';
+// print_r($data);
+// echo '</pre>';
+// exit;
 
 // Moodle ko default header/navbar bypass garna manual HTML suru gareko
 echo $OUTPUT->doctype();

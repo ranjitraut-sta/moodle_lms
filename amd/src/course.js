@@ -104,7 +104,6 @@ document.querySelectorAll(".amd-course-chapter-header").forEach(header => {
     }
 
 
-
     // Next, Previous, and Review buttons alerts
     const nextBtn = document.getElementById("nextLessonBtn");
     if (nextBtn) nextBtn.addEventListener("click", () => alert("Next lesson clicked (static demo)"));
@@ -163,74 +162,3 @@ document.querySelectorAll(".amd-course-chapter-header").forEach(header => {
     });
 })();
 
-
-
-// video fullscreen toggle login 
-// Get the video element and fullscreen button
-document.querySelector('.amd-course-video-fullscreen-btn').addEventListener('click', () => {
-    const container = document.querySelector('.amd-lesson-video-area');
-
-    if (!document.fullscreenElement &&
-        !document.webkitFullscreenElement &&
-        !document.mozFullScreenElement &&
-        !document.msFullscreenElement) {
-
-        if (container.requestFullscreen) {
-            container.requestFullscreen();
-        } else if (container.mozRequestFullScreen) {
-            container.mozRequestFullScreen();
-        } else if (container.webkitRequestFullscreen) {
-            container.webkitRequestFullscreen();
-        } else if (container.msRequestFullscreen) {
-            container.msRequestFullscreen();
-        }
-    } else {
-        if (document.exitFullscreen) {
-            document.exitFullscreen();
-        } else if (document.mozCancelFullScreen) {
-            document.mozCancelFullScreen();
-        } else if (document.webkitExitFullscreen) {
-            document.webkitExitFullscreen();
-        } else if (document.msExitFullscreen) {
-            document.msExitFullscreen();
-        }
-    }
-});
-// fullscreen toggle end
-
-
-// lms tooltip position js  
-document.addEventListener('DOMContentLoaded', () => {
-    // Initialize Bootstrap tooltips for all elements with [data-bs-toggle="tooltip"]
-    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    tooltipTriggerList.forEach(el => {
-        new bootstrap.Tooltip(el);
-    });
-
-    // Blur the sidebar toggle button on click to hide tooltip immediately
-    const toggleBtn = document.getElementById('amdcoursesidebarToggle');
-    if (toggleBtn) {
-        toggleBtn.addEventListener('click', () => {
-            toggleBtn.blur();
-        });
-    }
-});
-
-
-
-// tooltip end
-
-
-// progress bar scroll top sticky bg change
-// document.addEventListener('DOMContentLoaded', () => {
-//     const lessonProgress = document.querySelector('.amd-lesson-top-progress');
-
-//     window.addEventListener('scroll', () => {
-//         if (window.scrollY > 0) {
-//             lessonProgress.classList.add('sticky-active');
-//         } else {
-//             lessonProgress.classList.remove('sticky-active');
-//         }
-//     });
-// });
-// progress bar video inner scroll sticky and bg color change

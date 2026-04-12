@@ -9,7 +9,7 @@
     /* =========================================
        PRIMARY COLOR SYSTEM (AUTO GENERATED)
     ========================================== */
-    --amd-primary: #cacaca;
+    --amd-primary: #ffffff;
     /* Change only this */
     --amd-primary-light: color-mix(in oklch, var(--amd-primary) 60%, white);
     --amd-fade-primary: color-mix(in oklch, var(--amd-primary) 12%, transparent);
@@ -17,7 +17,7 @@
     /* =========================================
        SECONDARY COLOR SYSTEM (AUTO GENERATED)
     ========================================== */
-    --amd-secondary: #090089a6;
+    --amd-secondary: #002a7c;
     /* Change only this */
     --amd-secondary-light: color-mix(in oklch, var(--amd-secondary) 70%, white);
     --amd-fade-secondary: color-mix(in oklch, var(--amd-secondary) 25%, transparent);
@@ -32,7 +32,7 @@
 
     --amd-light: #ffffff;
     --amd-border: #d1d5db;
-    --amd-muted: #acacac;
+    --amd-muted: #636363;
 
     --amd-navbar-top-bg: #2d3436;
     --amd-navbar-top-text: #fbfbfb;
@@ -54,25 +54,39 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: var(--amd-body-bg);
+    /* background-image: url(https://media.istockphoto.com/id/1919863292/photo/e-learning-education-internet-lessons-and-online-learning-with-webinars-video-tutorials.jpg?s=612x612&w=0&k=20&c=zWAqp6FGH-zm6b0Os_CssxubtrgKh1MyFeMgelFZbOg=); */
+    background-size: cover;
+    background-position: center;
     color: var(--amd-light);
-    background-image:
-        radial-gradient(circle at 5% 15%, var(--amd-fade-primary), transparent 40%),
-        radial-gradient(circle at 95% 85%, var(--amd-fade-secondary), transparent 40%);
     overflow-x: hidden;
+    position: relative;
+    z-index: 1;
 }
 
-a{
+/* 🔥 Dark Overlay + Blur */
+body::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    /* background: rgba(0, 0, 0, 0.5); 
+    backdrop-filter: blur(6px);     */
+
+    z-index: -1;
+}
+
+a {
     text-decoration: none;
 }
+
 /* Main Container for the two-column layout */
 .amd-lms-login-main-container {
     display: flex;
     width: 70vw;
     max-width: 1100px;
-    min-height: 75vh;
+    min-height: 100vh;
     max-height: 650px;
-
+    margin: auto;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
     overflow: hidden;
     transition: width 0.3s ease, height 0.3s ease;
@@ -81,13 +95,13 @@ a{
 /* Left Side: Form Container Styling */
 .amd-lms-login-form-container {
     flex: 1;
-    padding: 50px 40px;
+    /* padding-bottom: 40px; */
     display: flex;
     flex-direction: column;
-    background: color-mix(in srgb, var(--amd-secondary) 20%, transparent);
+    /* background: #3c5a96; */
+    /* background: color-mix(in srgb, var(--amd-secondary) 20%, transparent); */
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-
 }
 
 /* Right Side: Image Container */
@@ -110,14 +124,14 @@ a{
 .amd-lms-login-form-controls {
     display: flex;
     justify-content: center;
-    margin-bottom: 30px;
-    border-bottom: 1px solid color-mix(in srgb, var(--amd-border) 25%, transparent);
+    /* margin-bottom: 30px; */
+    /* border-bottom: 1px solid color-mix(in srgb, var(--amd-border) 25%, transparent); */
 }
 
 .amd-lms-login-control-btn {
     background: none;
     border: none;
-    color: var(--amd-muted);
+    color: #a5a5a5;
     font-size: 1.1rem;
     font-weight: 500;
     font-family: var(--amd-font-family);
@@ -147,6 +161,11 @@ a{
 
 }
 
+ .amd-login-top-part{
+        background: #002a7c;
+        padding: 50px 30px 0px 30px;
+    }
+
 /* Forms Wrapper and Individual Forms */
 .amd-lms-login-forms-wrapper {
     flex-grow: 1;
@@ -169,22 +188,101 @@ a{
     transform: translateY(-120%);
     transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.4s ease-in-out;
 }
-
+.amd-ethnicity-group label{
+    margin-right: 10px;
+    color: var(--amd-dark);
+}
 .amd-lms-login-form.amd-lms-login-active {
     opacity: 1;
     transform: translateY(0);
+    /* margin-top: 25px; */
+    padding: 20px 20px;
+}
+
+/* CSS Grid Layout for Form Fields */
+.grid-container {
+  display: grid;
+  gap: 0rem;
+  grid-template-columns: 1fr;
+}
+
+.grid-row {
+  display: grid;
+  gap: .7rem;
+}
+
+.grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.grid-1 {
+  grid-template-columns: 1fr;
+}
+
+/* Responsive Grid */
+/* @media (min-width: 992px) and (max-width: 1199px) {
+  .grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1200px) {
+  .grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+} */
+
+@media (max-width: 668px) {
+  .grid-3, .grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
+/* Override max-width for grid items to fill columns */
+.grid-row .amd-lms-login-input-group {
+  max-width: none;
+  width: 100%;
+}
+
+
+/* Thin scrollbar for register form */
+.amd-lms-login-form::-webkit-scrollbar {
+    width: 6px;
+}
+
+.amd-lms-login-form::-webkit-scrollbar-track {
+    background: var(--amd-dark-light);
+    border-radius: 10px;
+}
+
+.amd-lms-login-form::-webkit-scrollbar-thumb {
+    background: var(--amd-muted);
+    border-radius: 10px;
+}
+
+.amd-lms-login-form::-webkit-scrollbar-thumb:hover {
+    background: var(--amd-primary);
+}
+
+.amd-lms-login-form {
+    scrollbar-width: thin;
+    scrollbar-color: var(--amd-secondary) var(--amd-dark-light);
 }
 
 .amd-lms-login-form h2 {
     font-family: var(--amd-tittle-font-family);
     margin-bottom: 10px;
     font-weight: 600;
+    color: var(--amd-dark);
 }
 
 .amd-lms-login-form p {
     color: var(--amd-muted);
     font-size: 0.9rem;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 /* Input Group and Floating Label */
@@ -195,14 +293,28 @@ a{
     margin-bottom: 25px;
 }
 
-.amd-lms-login-input-group input {
+.amd-lms-login-input-group input,
+.amd-lms-login-input-group select {
     width: 100%;
     padding: 12px 15px;
-    background: var(--amd-dark);
+    background: #ffffff36;
     border: 1px solid var(--amd-primary-light);
-    color: var(--amd-light);
+    border: 1px solid #00164578;
+    color: var(--amd-dark);
+    font-weight: bold;
     font-size: 1.1rem;
     font-family: var(--amd-font-family);
+}
+
+.amd-lms-login-input-group select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23acacac' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 16px;
+    padding-right: 45px;
 }
 
 .amd-lms-login-input-group label {
@@ -214,22 +326,31 @@ a{
     transition: all 0.3s ease;
 }
 
-.amd-lms-login-input-group input:focus+label,
-.amd-lms-login-input-group input:not(:placeholder-shown)+label {
-    top: -19px;
+.amd-lms-login-input-group input:focus + label,
+.amd-lms-login-input-group input:not(:placeholder-shown) + label,
+.amd-lms-login-input-group select:focus + label,
+.amd-lms-login-input-group select:not([value=""]) + label {
+    top: -8px;
     left: 10px;
     font-size: 0.8rem;
     padding: 0 5px;
-    background: var(--amd-dark);
-    border-top: 1px solid var(--amd-primary-light);
-    border-left: 1px solid var(--amd-primary-light);
+    background: #ffffff;
+    /* border-top: 1px solid var(--amd-primary-light); */
+    /* border-left: 1px solid var(--amd-primary-light); */
     border-right: 1px solid var(--amd-primary-light);
-    color: var(--amd-primary);
+    color: #000741;
 }
 
-.amd-lms-login-input-group input:focus {
+.amd-lms-login-input-group input:focus,
+.amd-lms-login-input-group select:focus {
     outline: none;
-    border-color: var(--amd-primary);
+    border-color: rgb(0, 9, 141);
+}
+
+.amd-lms-login-input-group select option {
+    background: var(--amd-dark);
+    color: var(--amd-light);
+    padding: 10px;
 }
 
 /* Submit Button */
@@ -254,9 +375,20 @@ a{
     color: var(--amd-dark);
 }
 
+
+.amd-lms-login-image-container{
+    background:#ffffff;
+    border-left: 1px solid color-mix(in srgb, var(--amd-secondary) 15%, transparent);
+    padding: 0 20px 20px 20px;
+}
+.amd-right-side-content{
+    margin-top: 40px;
+}
 /* ================================================================ */
 /* ==== UPDATED! RESPONSIVE STYLES FOR TABLET AND MOBILE ==== */
 /* ================================================================ */
+
+
 @media (max-width: 992px) {
 
     /* Hide the form container on small screens, showing only the image */
@@ -268,77 +400,17 @@ a{
     .amd-lms-login-main-container {
         width: 95vw;
         max-width: 400px;
-        height: 80vh;
+        height: 100vh;
         max-height: 600px;
         margin: 20px 0;
+    }
+    .amd-lms-login-main-container-register{
+        
+        max-width: 670px !important;
+      
     }
 }
 
 .amd-eye-toggle:hover {
     color: var(--amd-primary);
-}
-
-/* ── New Auth Card (Login + Register tabs) ── */
-.amd-auth-wrap {
-    background-color: var(--amd-body-bg);
-    background-image:
-        radial-gradient(circle at 5% 15%, var(--amd-fade-primary), transparent 40%),
-        radial-gradient(circle at 95% 85%, var(--amd-fade-secondary), transparent 40%);
-    min-height: 100vh;
-}
-
-.amd-auth-card {
-    background: color-mix(in srgb, var(--amd-secondary) 15%, #0d0d1a);
-    backdrop-filter: blur(14px);
-    border: 1px solid color-mix(in srgb, var(--amd-primary) 20%, transparent);
-    border-radius: 16px;
-    padding: 2.5rem 2rem;
-    width: 100%;
-    max-width: 460px;
-    color: var(--amd-light);
-    overflow-y: auto;
-    max-height: 95vh;
-}
-
-.amd-auth-tabs {
-    background: rgba(255,255,255,0.05);
-    border-radius: 10px;
-    padding: 4px;
-}
-
-.amd-auth-tabs .nav-link {
-    color: var(--amd-muted);
-    border-radius: 8px;
-    font-weight: 600;
-    transition: all 0.2s;
-}
-
-.amd-auth-tabs .nav-link.active {
-    background: var(--amd-secondary);
-    color: #fff;
-}
-
-.amd-auth-card .form-label { color: var(--amd-muted); font-size: 0.85rem; }
-.amd-auth-card .form-control {
-    background: rgba(255,255,255,0.07);
-    border: 1px solid rgba(255,255,255,0.12);
-    color: #fff;
-}
-.amd-auth-card .form-control:focus {
-    background: rgba(255,255,255,0.1);
-    border-color: var(--amd-primary);
-    color: #fff;
-    box-shadow: none;
-}
-.amd-auth-card .form-control::placeholder { color: rgba(255,255,255,0.3); }
-.amd-auth-card .input-group-text {
-    background: rgba(255,255,255,0.07);
-    border: 1px solid rgba(255,255,255,0.12);
-    color: var(--amd-muted);
-}
-.amd-auth-card h5 { color: #fff; }
-.amd-auth-card .form-check-label { color: var(--amd-muted); }
-
-@media (max-width: 480px) {
-    .amd-auth-card { padding: 1.5rem 1rem; }
 }

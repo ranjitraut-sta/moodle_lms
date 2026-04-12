@@ -10,9 +10,6 @@ $PAGE->set_pagelayout('dashboard');
 $PAGE->set_title('Certificates');
 $PAGE->set_heading('Certificates');
 
-$PAGE->requires->css('/theme/mytheme/styles/user-dash.css');
-$PAGE->requires->js(new moodle_url('/theme/mytheme/amd/src/user-dash.js'));
-
 $cert_data = [
     'certificates' => [], // Add certificates logic
 ];

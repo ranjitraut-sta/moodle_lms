@@ -10,11 +10,6 @@ $PAGE->set_pagelayout('dashboard');
 $PAGE->set_title('Dashboard');
 $PAGE->set_heading(fullname($USER));
 
-// Dynamic data (mock/hardcoded now; replace with real Moodle queries later)
-// ४. डेटा तयार गर्ने (Namespace प्रयोग गरेर कल गर्ने)
-$dashboard_preparer = new \theme_mytheme\StudentDashboard\DashboardDataPrepare($USER);
-$data = $dashboard_preparer->getData();
-
 // Load dashboard renderer
 echo $OUTPUT->doctype();
 ?>

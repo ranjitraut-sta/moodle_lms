@@ -51,3 +51,17 @@ c:\xampp\php\php.exe admin/cli/scheduled_task.php --execute="\core\task\h5p_get_
 # certificate custom plugin version
 
 - - mod_customcert_moodle45_2024042217
+
+
+
+✅ Best Practice  User Table ma Field thapne
+
+Moodle le already solution deko xa:
+Site administration → Users → Accounts → User profile fields
+
+Tyaha bata:
+
+New field add garna milxa:
+Province
+District
+Municipality
