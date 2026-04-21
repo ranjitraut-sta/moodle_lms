@@ -53,11 +53,6 @@ echo $OUTPUT->doctype();
             <!-- This entire container is now hidden on small screens -->
             <div class="amd-lms-login-form-container">
                 <div class="amd-login-top-part">
-                    <a href="index2.html" class="amd-lms-course-detail-back-btn text-white">
-                        <i class="fas fa-arrow-left"></i>
-                        <span>Back</span>
-                    </a>
-
                     <!-- Form Controls (Buttons) -->
                     <div class="amd-lms-login-form-controls">
                         <a href="?login=1"><button class="amd-lms-login-control-btn amd-lms-login-active-btn"

@@ -20,16 +20,19 @@ class DashboardDataPrepare
     public function getData(): array
     {
         return [
-            'user_fullname'           => fullname($this->user),
-            'user_firstname'          => $this->user->firstname,
-            'user_profile_pix'        => $this->get_user_picture(),
-            'enrolled_courses_count'  => $this->getEnrolledCoursesCount(),
+            'user_fullname' => fullname($this->user),
+            'user_firstname' => $this->user->firstname,
+            'user_profile_pix' => $this->get_user_picture(),
+            'enrolled_courses_count' => $this->getEnrolledCoursesCount(),
             'completed_courses_count' => $this->getCompletedCoursesCount(),
-            'total_certificates'      => $this->getTotalCertificates(),
-            'pending_assignments'     => $this->getPendingAssignmentsCount(),
-            'running_courses'         => $this->getRunningCourses(),
-            'enrolled_courses'        => $this->getEnrolledCourses(),
-            'recent_courses'          => $this->getRecentCourses(),
+            'total_certificates' => $this->getTotalCertificates(),
+            'pending_assignments' => $this->getPendingAssignmentsCount(),
+            'running_courses' => $this->getRunningCourses(),
+            'enrolled_courses' => $this->getEnrolledCourses(),
+            'recent_courses' => $this->getRecentCourses(),
+            'course_progress' => $this->getCourseProgressChart(),
+            'assignment' => $this->getAssignmentChart(),
+            'activity' => $this->getWeeklyActivity(),
         ];
     }
 
@@ -137,7 +140,7 @@ class DashboardDataPrepare
                 WHERE ul.userid = ? AND c.id != 1
                 ORDER BY ul.timeaccess DESC";
         $records = $DB->get_records_sql($sql, [$this->user->id], 0, 3);
-        
+
         foreach ($records as &$course) {
             $course->course_link = (new \moodle_url('/course/view.php', ['id' => $course->id]))->out(false);
         }
@@ -151,5 +154,64 @@ class DashboardDataPrepare
     {
         global $OUTPUT;
         return $OUTPUT->user_picture($this->user, array('size' => 100, 'link' => false));
+    }
+
+    // 1. Course Progress (Pie)
+    protected function getCourseProgressChart(): array
+    {
+        $completed = $this->getCompletedCoursesCount();
+        $total = $this->getEnrolledCoursesCount();
+        $running = max($total - $completed, 0);
+
+        return [
+            'labels' => ['Completed', 'Running'],
+            'data' => [$completed, $running],
+        ];
+    }
+
+    // 2. Assignment Chart (Bar)
+    protected function getAssignmentChart(): array
+    {
+        global $DB;
+
+        $submitted = $DB->count_records('assign_submission', [
+            'userid' => $this->user->id,
+            'status' => 'submitted'
+        ]);
+
+        $pending = $this->getPendingAssignmentsCount();
+
+        return [
+            'labels' => ['Submitted', 'Pending'],
+            'data' => [$submitted, $pending],
+        ];
+    }
+
+    // 3. Weekly Activity (Line)
+    protected function getWeeklyActivity(): array
+    {
+        global $DB;
+
+        $labels = [];
+        $data = [];
+
+        for ($i = 6; $i >= 0; $i--) {
+            $start = strtotime("-$i days midnight");
+            $end = strtotime("-$i days 23:59:59");
+
+            $count = $DB->count_records_select(
+                'logstore_standard_log',
+                "userid = ? AND timecreated BETWEEN ? AND ?",
+                [$this->user->id, $start, $end]
+            );
+
+            $labels[] = date('D', $start);
+            $data[] = $count;
+        }
+
+        return [
+            'labels' => $labels,
+            'data' => $data,
+        ];
     }
 }

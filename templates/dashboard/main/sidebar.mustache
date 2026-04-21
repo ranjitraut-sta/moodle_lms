@@ -8,8 +8,7 @@
 
         <button class="amd-lms-user-dash-sidebar-toggle d-lg-flex"
                 id="amd-lms-desktop-toggle-btn"
-                type="button"
-                aria-label="Toggle sidebar">
+                type="button">
             <i class="bi bi-chevron-left"></i>
         </button>
     </div>
@@ -17,28 +16,32 @@
     <!-- MAIN MENU -->
     <ul class="amd-lms-user-dash-nav-list list-unstyled">
 
-        <li class="amd-lms-user-dash-nav-item {{#is_dashboard}}active{{/is_dashboard}}">
+        <!-- DASHBOARD -->
+        <li class="amd-lms-user-dash-nav-item {{#active.dashboard}}active{{/active.dashboard}}">
             <a href="{{config.wwwroot}}/theme/mytheme/layout/dashboard.php">
                 <i class="bi bi-grid-fill"></i>
                 <span>Dashboard</span>
             </a>
         </li>
 
-        <li class="amd-lms-user-dash-nav-item {{#is_courses}}active{{/is_courses}}">
+        <!-- COURSES -->
+        <li class="amd-lms-user-dash-nav-item {{#active.courses}}active{{/active.courses}}">
             <a href="{{config.wwwroot}}/theme/mytheme/pages/enrollcourse.php">
                 <i class="bi bi-calendar-week"></i>
                 <span>Course Lists</span>
             </a>
         </li>
 
-        <li class="amd-lms-user-dash-nav-item">
+        <!-- CERTIFICATES -->
+        <li class="amd-lms-user-dash-nav-item {{#active.certificates}}active{{/active.certificates}}">
             <a href="{{config.wwwroot}}/theme/mytheme/pages/certificates.php">
-                <i class="bi bi-play-btn"></i>
+                <i class="bi bi-patch-check"></i>
                 <span>Certificates</span>
             </a>
         </li>
 
-        <li class="amd-lms-user-dash-nav-item">
+        <!-- MESSAGES -->
+        <li class="amd-lms-user-dash-nav-item {{#active.messages}}active{{/active.messages}}">
             <a href="{{messages_url}}">
                 <i class="bi bi-chat-left-text"></i>
                 <span>
@@ -50,21 +53,14 @@
 
     </ul>
 
-    <!-- FOOTER MENU -->
+    <!-- FOOTER -->
     <ul class="amd-lms-user-dash-nav-list list-unstyled mt-auto">
 
         <li class="amd-lms-user-dash-nav-item">
-            <a href="#">
-                <i class="bi bi-question-circle"></i>
-                <span>Help Center</span>
+            <a href="{{logout_url}}">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Logout</span>
             </a>
-        </li>
-
-        <li class="amd-lms-user-dash-nav-item">
-        <a href="{{logout_url}}">
-            <i class="bi bi-box-arrow-right"></i>
-            <span>Logout</span>
-        </a>
         </li>
 
     </ul>

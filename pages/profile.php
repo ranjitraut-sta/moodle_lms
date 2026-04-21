@@ -4,9 +4,9 @@ require_once('../../../config.php');
 require_login();
 $PAGE->set_context(context_system::instance());
 
-$PAGE->set_url('/theme/mytheme/layout/dashboard.php');
+$PAGE->set_url('/theme/mytheme/layout/profile.php');
 $PAGE->set_pagelayout('dashboard');
-$PAGE->set_title('Dashboard');
+$PAGE->set_title('Profile');
 $PAGE->set_heading(fullname($USER));
 
 
@@ -14,20 +14,14 @@ $PAGE->set_heading(fullname($USER));
 $PAGE->requires->css('/theme/mytheme/styles/user-dash.css');
 $PAGE->requires->js('/theme/mytheme/amd/src/user-dash.js', array('type' => 'on-demand'));
 
-
-
 // Dynamic data (mock/hardcoded now; replace with real Moodle queries later)
-$dashboard_preparer = new \theme_mytheme\StudentDashboard\DashboardDataPrepare($USER);
-$data = $dashboard_preparer->getData();
+$profile = new \theme_mytheme\StudentDashboard\ProfileData();
+$data = $profile->getData();
 
 // echo '<pre>';
 // print_r($data);
 // echo '</pre>';
 // exit;
-
-$data['logout_url'] =
-    (new moodle_url('/login/logout.php', ['sesskey' => sesskey()]))->out(false);
-$data['messages_url'] = (new moodle_url('/message/index.php'))->out(false);
 
 
 // Moodle ko default header/navbar bypass garna manual HTML suru gareko
@@ -46,7 +40,7 @@ echo $OUTPUT->doctype();
 <body <?php echo $OUTPUT->body_attributes(); ?>>
     <?php echo $OUTPUT->standard_top_of_body_html(); ?>
     <?php
-    $data['body_content'] = $OUTPUT->render_from_template('theme_mytheme/dashboard/pages/dashboard', $data);
+    $data['body_content'] = $OUTPUT->render_from_template('theme_mytheme/dashboard/pages/profile', $data);
     echo $OUTPUT->render_from_template('theme_mytheme/dashboard_layout', $data);
 
     echo $OUTPUT->standard_end_of_body_html(); ?>

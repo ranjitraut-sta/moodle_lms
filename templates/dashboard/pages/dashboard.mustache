@@ -33,3 +33,68 @@
     </div>
 </div>
 
+<div class="row mt-5">
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm p-3">
+            <h6 class="fw-bold mb-3 small">Course Progress</h6>
+            <div style="height: 250px;"><canvas id="courseChart"></canvas></div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm p-3">
+            <h6 class="fw-bold mb-3 small">Weekly Activity</h6>
+            <div style="height: 250px;"><canvas id="activityChart"></canvas></div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+// Wait for DOM to load
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // 1. Course Progress (Doughnut)
+    const courseCtx = document.getElementById('courseChart').getContext('2d');
+    new Chart(courseCtx, {
+        type: 'doughnut',
+        data: {
+            labels: [{{#course_progress.labels}}"{{.}}",{{/course_progress.labels}}],
+            datasets: [{
+                data: [{{#course_progress.data}}{{.}},{{/course_progress.data}}],
+                backgroundColor: ['#28a745', '#ffc107'],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { position: 'bottom' } }
+        }
+    });
+
+
+    // 3. Activity (Line)
+    const activityCtx = document.getElementById('activityChart').getContext('2d');
+    new Chart(activityCtx, {
+        type: 'line',
+        data: {
+            labels: [{{#activity.labels}}"{{.}}",{{/activity.labels}}],
+            datasets: [{
+                label: 'Activity',
+                data: [{{#activity.data}}{{.}},{{/activity.data}}],
+                borderColor: '#6f42c1',
+                backgroundColor: 'rgba(111, 66, 193, 0.1)',
+                fill: true,
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } }
+        }
+    });
+});
+</script>
