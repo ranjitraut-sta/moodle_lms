@@ -18,6 +18,7 @@ $templatecontext = array_merge(
 echo $OUTPUT->doctype();
 ?>
 <html <?php echo $OUTPUT->htmlattributes(); ?>>
+
 <head>
     <title><?php echo $OUTPUT->page_title(); ?></title>
     <link rel="shortcut icon" href="<?php echo $OUTPUT->favicon(); ?>" />
@@ -27,16 +28,28 @@ echo $OUTPUT->doctype();
     <link rel="stylesheet" href="<?php echo new moodle_url('/theme/mytheme/styles/bootstrap-icons.min.css'); ?>">
     <link rel="stylesheet" href="<?php echo new moodle_url('/theme/mytheme/styles/all.min.css'); ?>">
     <link rel="stylesheet" href="<?php echo new moodle_url('/theme/mytheme/styles/main.css'); ?>">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+        rel="stylesheet">
 </head>
+
 <body <?php echo $OUTPUT->body_attributes(); ?>>
-<?php echo $OUTPUT->standard_top_of_body_html(); ?>
+    <?php echo $OUTPUT->standard_top_of_body_html(); ?>
 
-<?php
-echo $OUTPUT->render_from_template('theme_mytheme/header', $templatecontext);
-echo $OUTPUT->render_from_template('theme_mytheme/course_list', $templatecontext);
-echo $OUTPUT->render_from_template('theme_mytheme/footer', $templatecontext);
-?>
+    <?php
+    echo $OUTPUT->render_from_template('theme_mytheme/header', $templatecontext);
+    echo $OUTPUT->render_from_template('theme_mytheme/course_list', $templatecontext);
+    echo $OUTPUT->render_from_template('theme_mytheme/footer', $templatecontext);
+    ?>
 
-<?php echo $OUTPUT->standard_end_of_body_html(); ?>
+    <?php echo $OUTPUT->standard_end_of_body_html(); ?>
 </body>
+
 </html>

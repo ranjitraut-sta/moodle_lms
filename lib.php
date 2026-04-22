@@ -145,13 +145,7 @@ function theme_mytheme_get_courses(int $limit = 6): array
                 $file->get_filepath(),
                 $file->get_filename()
             )->out(false);
-
             break;
-        }
-
-        // fallback image
-        if (empty($courseimage)) {
-            $courseimage = $CFG->wwwroot . '/theme/mytheme/pix/default-course.jpg';
         }
 
         // =========================
@@ -170,7 +164,7 @@ function theme_mytheme_get_courses(int $limit = 6): array
             'fullname' => format_string($course->fullname),
             'shortname' => format_string($course->shortname),
             'summary' => strip_tags(format_text($course->summary, FORMAT_HTML)),
-            'image' => $courseimage,
+            'image' => $courseimage ?: 'https://images.pexels.com/photos/267885/pexels-photo-267885.jpeg',
             'url' => (new moodle_url('/theme/mytheme/pages/course.php', ['id' => $course->id]))->out(false),
             'enrolledcount' => $enrolledcount,
             'category' => $category ? format_string($category->name) : 'General',
@@ -423,4 +417,3 @@ function theme_mytheme_pluginfile($course, $cm, $context, $filearea, $args, $for
     }
     return false;
 }
-?>
