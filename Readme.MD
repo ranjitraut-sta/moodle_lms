@@ -75,8 +75,12 @@ http://localhost/moodle/local/location/seed_districts.php
 http://localhost/moodle/local/location/seed_municipalities.php
 
 
-
 <!-- extension -->
 # Moodle pack 
+
+# new role banaune tarike 
+--- user-permission-define roles -- 
+
+# role banauda System context enable garepaxi matra user lai role assign garna milxa 
 
 # Happy Coding 

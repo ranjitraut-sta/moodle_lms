@@ -14,7 +14,21 @@ $password = optional_param('password', '', PARAM_RAW);
 // ३. युजर अथेन्टिकेसन
 $user = authenticate_user_login($username, $password);
 
+
 if ($user) {
+
+    // 👇 role check यता सार
+    $roles = get_user_roles(context_system::instance(), $user->id);
+
+    $isreportuser = false;
+
+    foreach ($roles as $role) {
+        if ($role->shortname === 'report_user') {
+            $isreportuser = true;
+            break;
+        }
+    }
+
     // खाता सस्पेन्ड वा डिलिट छ कि चेक गर्ने
     if (isguestuser($user) || $user->suspended || $user->deleted) {
         redirect(new moodle_url('/login/index.php'), "Your account is disabled.", 5);
@@ -28,6 +42,9 @@ if ($user) {
     if (is_siteadmin($user)) {
         // यदि एडमिन हो भने मडलको डिफोल्ट एडमिन पेजमा पठाउने
         $redirecturl = new moodle_url('/admin/index.php');
+    } else if ($isreportuser) {
+        // यदि  Report युजर हो भने
+        $redirecturl = new moodle_url('/theme/mytheme/layout/reportdashboard.php');
     } else {
         // यदि विद्यार्थी वा सामान्य युजर हो भने तपाईंको कस्टम ड्यासबोर्डमा पठाउने
         $redirecturl = new moodle_url('/theme/mytheme/layout/dashboard.php');

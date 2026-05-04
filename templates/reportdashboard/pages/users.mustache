@@ -1,0 +1,127 @@
+<main class="amd-lms-user-dash-main-content">
+    <div class="container-fluid mt-4">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white border-0 py-3 d-flex justify-content-between align-items-center">
+                <h5 class="fw-bold mb-0">System Users Report</h5>
+                <button id="exportUserCsv" class="btn btn-primary btn-sm shadow-sm">
+                    <i class="fa fa-download me-1"></i> Export CSV
+                </button>
+            </div>
+            
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0" id="userReportTable">
+                        <thead class="table-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>Full Name</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>PAN No</th>
+                                <th>NID No</th>
+                                <th>Province</th>
+                                <th>District</th>
+                                <th>Municipality</th>
+                                <th>Ward</th>
+                                <th>Tole</th>
+                                <th>Gender</th>
+                                <th>Ethnicity</th>
+                                <th>Organization</th>
+                                <th>Qualification</th>
+                                <th>Designation</th>
+                                <th>Expertise</th>
+                                <th>Years Experience</th>
+                                <th>Joined On</th>
+                                <th>Last Access</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#users}}
+                            <tr>
+                                <td data-field="id">{{id}}</td>
+                                <td data-field="fullname">{{fullname}}</td>
+                                <td data-field="username">{{username}}</td>
+                                <td data-field="email">{{email}}</td>
+                                <td data-field="phone">{{phone}}</td>
+                                <td data-field="pan_no">{{pan_no}}</td>
+                                <td data-field="nid_no">{{nid_no}}</td>
+                                <td data-field="province">{{province}}</td>
+                                <td data-field="district">{{district}}</td>
+                                <td data-field="municipality">{{municipality}}</td>
+                                <td data-field="ward">{{ward}}</td>
+                                <td data-field="tole">{{tole}}</td>
+                                <td data-field="gender">{{gender}}</td>
+                                <td data-field="ethnicity">{{ethnicity}}</td>
+                                <td data-field="organization_name">{{organization_name}}</td>
+                                <td data-field="qualification">{{qualification}}</td>
+                                <td data-field="designation">{{designation}}</td>
+                                <td data-field="expertise">{{expertise}}</td>
+                                <td data-field="years_experience">{{years_experience}}</td>
+                                <td data-field="joined_on">{{joined_on}}</td>
+                                <td data-field="last_access">{{last_access}}</td>
+                            </tr>
+                            {{/users}}
+                            {{^users}}
+                            <tr>
+                                <td colspan="21" class="text-center py-4 text-muted">No users found in the system.</td>
+                            </tr>
+                            {{/users}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+function escapeCSV(str) {
+    if (str === null || str === undefined) {
+        return '';
+    }
+    
+    str = str.toString().trim();
+    
+    // Comma, double-quote, या newline छ भने quotes मा हाल
+    if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+        str = '"' + str.replace(/"/g, '""') + '"';
+    }
+    
+    return str;
+}
+
+document.getElementById('exportUserCsv').addEventListener('click', function() {
+    let csv = [];
+    let rows = document.querySelectorAll("#userReportTable tr");
+    
+    for (let i = 0; i < rows.length; i++) {
+        let row = [];
+        let cols = rows[i].querySelectorAll("td, th");
+        
+        for (let j = 0; j < cols.length; j++) {
+            let data = cols[j].innerText.trim();
+            row.push(escapeCSV(data));
+        }
+        
+        csv.push(row.join(","));
+    }
+
+    // CSV string बनाएर download गर
+    let csvContent = csv.join("\n");
+    
+    // UTF-8 BOM add गर ताकि Excel मा Nepali/दोस्रो भाषा सही देखिरहोस्
+    let BOM = "\uFEFF";
+    let blob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8;' });
+    
+    let link = document.createElement("a");
+    let url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", "moodle_user_report_" + new Date().getTime() + ".csv");
+    link.style.visibility = 'hidden';
+    
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+});
+</script>

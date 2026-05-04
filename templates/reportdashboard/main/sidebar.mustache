@@ -1,0 +1,57 @@
+<nav class="amd-lms-user-dash-sidebar">
+
+    <!-- HEADER -->
+    <div class="amd-lms-user-dash-sidebar-header">
+        <a href="{{config.wwwroot}}/?redirect=0" class="amd-lms-user-dash-logo" target="_blank">
+            <span>LMS</span>
+        </a>
+
+        <button class="amd-lms-user-dash-sidebar-toggle d-lg-flex" id="amd-lms-desktop-toggle-btn" type="button">
+            <i class="bi bi-chevron-left"></i>
+        </button>
+    </div>
+
+    <!-- MAIN MENU -->
+    <ul class="amd-lms-user-dash-nav-list list-unstyled">
+
+        <!-- DASHBOARD -->
+        <li class="amd-lms-user-dash-nav-item {{#active.dashboard}}active{{/active.dashboard}}">
+            <a href="{{config.wwwroot}}/theme/mytheme/layout/reportdashboard.php">
+                <i class="bi bi-grid-fill"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
+
+        <!-- REPORTS -->
+        <li class="amd-lms-user-dash-nav-item {{#active.reports}}active{{/active.reports}}">
+            <a href="{{config.wwwroot}}/theme/mytheme/pages/coursereport.php">
+                <i class="bi bi-bar-chart-line"></i>
+                <span>
+                   Course Reports
+                </span>
+            </a>
+        </li>
+
+             <!-- REPORTS -->
+        <li class="amd-lms-user-dash-nav-item {{#active.userReport}}active{{/active.userReport}}">
+            <a href="{{config.wwwroot}}/theme/mytheme/pages/userreport.php">
+                <i class="bi bi-bar-chart-line"></i>
+                <span>
+                   User Exports
+                </span>
+            </a>
+        </li>
+
+    </ul>
+
+    <!-- FOOTER -->
+    <ul class="amd-lms-user-dash-nav-list list-unstyled mt-auto">
+        <li class="amd-lms-user-dash-nav-item">
+            <a href="{{logout_url}}">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Logout</span>
+            </a>
+        </li>
+    </ul>
+
+</nav>
