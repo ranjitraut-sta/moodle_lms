@@ -51,7 +51,7 @@ function theme_mytheme_get_course_list_context(int $categoryid = 0): array
                 $file->get_contextid(),
                 $file->get_component(),
                 $file->get_filearea(),
-                $file->get_itemid(),
+                null, // Pass null to omit itemid from URL
                 $file->get_filepath(),
                 $file->get_filename()
             )->out(false);
@@ -141,12 +141,14 @@ function theme_mytheme_get_courses(int $limit = 6): array
                 $file->get_contextid(),
                 $file->get_component(),
                 $file->get_filearea(),
-                $file->get_itemid(),
+                null, // Pass null to omit itemid from URL
                 $file->get_filepath(),
                 $file->get_filename()
             )->out(false);
             break;
         }
+
+
 
         // =========================
         // ENROL COUNT
@@ -219,8 +221,13 @@ function theme_mytheme_get_about_data(): array
 
     return [
         'heading' => get_config('theme_mytheme', 'aboutheading') ?: 'About Us',
+        'tagline' => get_config('theme_mytheme', 'abouttagline') ?: 'LMS',
+        'statheading' => get_config('theme_mytheme', 'statheading') ?: 'Stat Heading',
         'desc' => get_config('theme_mytheme', 'aboutdesc') ?: 'Welcome to our platform',
         'imageurl' => theme_mytheme_get_file_url('aboutimage'),
+        'tutorimage' => theme_mytheme_get_file_url('tutor_img'),
+        'tutortitle' => get_config('theme_mytheme', 'tutor_title') ?: 'Tutor Finder',
+        'tutordesc' => get_config('theme_mytheme', 'tutor_desc') ?: 'Find the best instructor now...',
         'stats' => $stats,
     ];
 }
@@ -239,6 +246,7 @@ function theme_mytheme_get_frontpage_context(): array
         'output' => $OUTPUT,
         'year' => date('Y'),
         'courses' => theme_mytheme_get_courses(20),
+        'aboutCourses' => theme_mytheme_get_courses(3),
         'wwwroot' => (new moodle_url('/'))->out(false),
         'facebook' => $socials['facebook'],
         'twitter' => $socials['twitter'],
@@ -247,42 +255,12 @@ function theme_mytheme_get_frontpage_context(): array
         'sliders' => theme_mytheme_get_sliders_data(),
         'about' => theme_mytheme_get_about_data(),
         'jumbotron' => theme_mytheme_get_jumbotron_context(),
+        'footer' => theme_mytheme_get_footer_context(),
         'setting' => theme_mytheme_get_general_context(),
     ];
 }
 
-// footer template context
-function theme_mytheme_get_footer_context(): array
-{
-    global $SITE, $OUTPUT;
 
-    $theme = theme_config::load('mytheme');
-    $sociallinks = theme_mytheme_get_social_links();
-
-    $socials = [];
-    $num = $theme->settings->numofsocialmedia ?? 4;
-    for ($i = 1; $i <= $num; $i++) {
-        $socials[] = [
-            'icon' => $theme->settings->{"socialmedia{$i}_icon"} ?? 'fa-facebook',
-            'url' => $theme->settings->{"socialmedia{$i}_url"} ?? '#',
-            'color' => $theme->settings->{"socialmedia{$i}_color"} ?? '#fff',
-        ];
-    }
-
-    return [
-        'sitename' => format_string($SITE->shortname),
-        'year' => date('Y'),
-        'wwwroot' => (new moodle_url('/'))->out(false),
-        'facebook' => $sociallinks['facebook'],
-        'twitter' => $sociallinks['twitter'],
-        'instagram' => $sociallinks['instagram'],
-        'linkedin' => $sociallinks['linkedin'],
-        'footerlogo' => theme_mytheme_get_file_url('footerlogo'),
-        'footerbgimg' => theme_mytheme_get_file_url('footerbgimg'),
-        'footercopyright' => $theme->settings->footercopyright ?? '',
-        'socials' => $socials
-    ];
-}
 
 // jumbotoron content
 function theme_mytheme_get_jumbotron_context(): array
@@ -295,6 +273,74 @@ function theme_mytheme_get_jumbotron_context(): array
         'btntext' => $theme->settings->jumbotronbtntext ?? 'Get Started',
         'btnlink' => $theme->settings->jumbotronbtnlink ?? '#',
     ];
+}
+
+/**
+ * Get footer context for Mustache template.
+ *
+ * @return array
+ */
+function theme_mytheme_get_footer_context(): array
+{
+    $theme = theme_config::load('mytheme');
+
+    // Base settings
+    $context = [
+        'footercopyright' => $theme->settings->footercopyright ?? '© 2026 All rights reserved',
+        'poweredby_name' => $theme->settings->poweredby_name ?? 'A.M.D. Soft & Services Pvt. Ltd.',
+        'poweredby_url' => $theme->settings->poweredby_url ?? 'https://amdsoft.com.np',
+        'opening_weekdays' => $theme->settings->opening_weekdays ?? '',
+        'opening_weekends' => $theme->settings->opening_weekends ?? '',
+        'address' => $theme->settings->address ?? '',
+        'footeremail' => $theme->settings->footeremail ?? '',
+        'phoneno' => $theme->settings->phoneno ?? '',
+        'footnote' => format_text($theme->settings->footnote ?? '', FORMAT_HTML),
+        'year' => date('Y'),
+    ];
+
+    // Footer Main Logo URL
+    if (!empty($theme->settings->footerlogo)) {
+        $context['footerlogo'] = $theme->setting_file_url('footerlogo', 'footerlogo');
+    } else {
+        // Default logo yadi setting ma chhaina bhane
+        $context['footerlogo'] = "https://amdsoft.com.np/storage/media-library/1771920089_COcKWWxnfc.png";
+    }
+
+    // Supported By Logos (Looping through 3 logos)
+    $supported = [];
+    for ($i = 1; $i <= 3; $i++) {
+        $logoname = "supported_logo_{$i}";
+        $urlname = "supported_url_{$i}";
+
+        $logo_url = $theme->setting_file_url($logoname, $logoname);
+
+        if ($logo_url) {
+            $supported[] = [
+                'image' => $logo_url,
+                'url' => $theme->settings->$urlname ?? '#'
+            ];
+        }
+    }
+    $context['supported_logos'] = $supported;
+
+    // Social Media Icons
+    $socials = [];
+    for ($i = 1; $i <= 4; $i++) {
+        $icon = "socialmedia{$i}_icon";
+        $link = "socialmedia{$i}_url";
+        $color = "socialmedia{$i}_color";
+
+        if (!empty($theme->settings->$link)) {
+            $socials[] = [
+                'icon' => $theme->settings->$icon ?? 'fa-facebook',
+                'url' => $theme->settings->$link,
+                'color' => $theme->settings->$color ?? '#ffffff'
+            ];
+        }
+    }
+    $context['social_icons'] = $socials;
+
+    return $context;
 }
 
 /**

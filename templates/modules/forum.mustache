@@ -1,6 +1,329 @@
-<div class="amd-module-forum">
-    {{#forumintro}}<div class="mb-3">{{{forumintro}}}</div>{{/forumintro}}
-    <div style="width:100%;height:82vh;">
-        <iframe src="{{forumurl}}" style="width:100%;height:100%;border:none;"></iframe>
+<style>
+/* Clean, subtle typography and spacing */
+.amd-forum-container {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.55;
+}
+
+/* User avatars — aligned and crisp */
+.amd-user-avatar img,
+.amd-user-avatar .fallback-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.amd-user-avatar-sm img,
+.amd-user-avatar-sm .fallback-avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Hover animation on posts */
+.hover-animate {
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.hover-animate:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.14);
+}
+
+/* Backgrounds and shadows */
+.bg-light-subtle {
+    background-color: #fbfcfd;
+}
+.shadow-xs {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+/* Post text content */
+.post-text {
+    line-height: 1.6;
+    word-break: break-word;
+    color: #2c3e50;
+}
+.post-text p {
+    margin-bottom: 0.6rem;
+}
+.post-text p:last-child {
+    margin-bottom: 0;
+}
+
+/* Replies section design */
+.amd-replies-section {
+    background: linear-gradient(to bottom, rgba(241,243,245,0.4), transparent);
+    padding: 12px 0 4px 0;
+}
+
+/* Fallback avatar style */
+.fallback-avatar {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: #9eaabb;
+    background-color: #e9ecef;
+    border-radius: 50%;
+}
+.amd-user-avatar .fallback-avatar {
+    width: 45px;
+    height: 45px;
+    font-size: 24px;
+}
+
+/* Action icons and buttons */
+.action-icons,
+.post-header-actions,
+.reply-header-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+/* Delete / small action button */
+.delete-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #dc3545;
+    font-size: 1rem;
+    padding: 0.25rem 0.5rem;
+    line-height: 1;
+    border-radius: 6px;
+    transition: all 0.15s ease;
+    opacity: 0.75;
+}
+.delete-btn:hover {
+    opacity: 1;
+    background-color: rgba(220, 53, 69, 0.08);
+}
+.delete-btn:active {
+    transform: scale(0.98);
+}
+
+/* Forms and inputs */
+.amd-forum-container .form-control {
+    border-color: #ced4da;
+    border-radius: 10px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+.amd-forum-container .form-control:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+}
+
+/* Main discussion form area */
+#main-discussion-form {
+    background-color: #fdfefe;
+    padding: 1.2rem 1.5rem;
+    border-bottom: 1px solid #e9ecef;
+}
+#main-discussion-form label {
+    color: #2c3e50;
+}
+#main-discussion-form .form-control {
+    resize: none;
+}
+
+/* Buttons */
+.amd-forum-container .btn {
+    border-radius: 12px;
+}
+.amd-forum-container .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+.amd-forum-container .btn-primary:hover {
+    background-color: #0069d9;
+    border-color: #0062cc;
+}
+.amd-forum-container .btn-light,
+.amd-forum-container .btn-outline-secondary {
+    color: #495057;
+    border-color: #ced4da;
+}
+.amd-forum-container .btn-sm,
+.amd-forum-container .btn-sm .btn {
+    font-size: 0.825rem;
+    padding: 0.3rem 0.65rem;
+}
+
+/* Individual post card */
+.amd-forum-post .card-body {
+    padding: 1.2rem 1.5rem;
+}
+.amd-post-content .p-3.bg-white {
+    background-color: #ffffff;
+    border-left: 4px solid #007bff;
+}
+
+/* Reply section visual */
+.amd-forum-post .ms-4 {
+    border-left: 1px solid #e9ecef;
+}
+
+
+.amd-forum-post #reply-form-{{id}}.visible {
+    display: block;
+}
+
+/* Micro‑spacing and readability fixes */
+.amd-forum-post small {
+    font-size: 0.85rem;
+}
+.amd-forum-post .mb-4 {
+    margin-bottom: 1.2rem;
+}
+.amd-forum-post .border-bottom {
+    border-bottom: 1px solid #e9ecef;
+}
+
+/* Subtle card header */
+.amd-forum-container .card-header {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e9ecef;
+}
+</style>
+
+<div class="amd-forum-container card border-0 shadow-sm rounded-4 overflow-hidden" id="forum-module-{{cmid}}">
+    <!-- Header -->
+    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center border-bottom">
+        <div>
+            <h5 class="mb-0 fw-bold text-dark">{{forumname}}</h5>
+            <p class="text-muted small mb-0">
+                {{#forumintro}}{{{forumintro}}}{{/forumintro}}
+                {{^forumintro}}Join the conversation below{{/forumintro}}
+            </p>
+        </div>
+    </div>
+
+    <!-- Hidden Main Create Form -->
+    {{#canpost}}
+    <div id="main-discussion-form" class="p-4 bg-white border-bottom hidden-form">
+        <form id="forum-post-form" action="{{config.wwwroot}}/theme/mytheme/pages/submission/forum_handler.php" method="post">
+            <input type="hidden" name="sesskey" value="{{sesskey}}">
+            <input type="hidden" name="forum" value="{{forum_id}}">
+            <input type="hidden" name="action" value="adddiscussion">
+            <input type="hidden" name="post" value="1">
+            <input type="hidden" name="messageformat" value="1">
+            <input type="hidden" name="subscribe" value="0">
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Discussion Subject <span class="text-danger">*</span></label>
+                <input type="text" name="subject"
+                       class="form-control rounded-3"
+                       placeholder="Enter a clear topic title..."
+                       required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-bold">Your Message <span class="text-danger">*</span></label>
+                <textarea name="message"
+                          class="form-control rounded-3"
+                          rows="5"
+                          placeholder="Share your thoughts..."
+                          required></textarea>
+            </div>
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary rounded-pill px-4">
+                    <i class="bi bi-send me-2"></i>Post Discussion
+                </button>
+                <button type="button" class="btn btn-light rounded-pill px-4"
+                        onclick="toggleMainForm()">Cancel</button>
+            </div>
+        </form>
+    </div>
+    {{/canpost}}
+
+    <!-- Discussions List -->
+    <div class="card-body bg-light-subtle p-4">
+        {{#discussions}}
+        <div class="amd-forum-post card border-0 shadow-sm mb-4 rounded-3 hover-animate" id="post-{{id}}">
+            <div class="card-body p-4">
+                <!-- Discussion Header -->
+                <div class="d-flex align-items-center justify-content-between mb-4 pb-3 border-bottom">
+                    <div class="d-flex align-items-center gap-3 flex-grow-1">
+                        <div class="amd-user-avatar border-0 rounded-circle p-1 bg-white flex-shrink-0">
+                            <div class="fallback-avatar">
+                                <i class="bi bi-person-circle"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1">
+                            <h6 class="mb-1 fw-bold text-dark">{{name}}</h6>
+                            <small class="text-muted d-block">
+                                by <span class="text-primary fw-medium">{{user}}</span> •
+                                <span class="text-secondary">{{date}}</span>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Message Content -->
+                <div class="amd-post-content text-dark my-4 ps-md-4">
+                    <div class="p-3 bg-white rounded-3 border-start border-primary border-4 shadow-sm post-text">
+                        {{{post_message}}}
+                    </div>
+                </div>
+
+                {{#replies}}
+                <div class="ms-4 mt-3 p-3 border-start">
+                    <div class="d-flex gap-2 align-items-start justify-content-between">
+                        <div class="d-flex gap-2 align-items-start flex-grow-1">
+                            <div class="amd-user-avatar-sm">
+                                {{#userpicture}}
+                                <div class="fallback-avatar">
+                                    <i class="bi bi-person-circle"></i>
+                                </div>
+                                {{/userpicture}}
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <strong>{{user}}</strong>
+                                    <small class="text-muted">{{timeago}}</small>
+                                </div>
+                                <div class="reply-message">
+                                    {{{message}}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{/replies}}
+
+                <!-- Inline Reply Form (Initially Hidden) -->
+                <div id="reply-form-{{id}}" class="mt-4 p-3 bg-light rounded-3 hidden-form">
+                    <form action="{{config.wwwroot}}/theme/mytheme/pages/submission/forum_handler.php"
+                          method="post"
+                          class="forum-reply-ajax-form">
+                        <input type="hidden" name="sesskey" value="{{sesskey}}">
+                        <input type="hidden" name="forum" value="{{forum_id}}">
+                        <input type="hidden" name="discussion" value="{{id}}">
+                        <input type="hidden" name="action" value="reply">
+                        <input type="hidden" name="post" value="1">
+                        <input type="hidden" name="messageformat" value="1">
+
+                        <div class="mb-2">
+                            <textarea name="message"
+                                      class="form-control rounded-2"
+                                      placeholder="Write your reply..."
+                                      rows="3"
+                                      required></textarea>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-sm btn-primary rounded-pill px-3">
+                                Send Reply
+                            </button>
+                            <button type="button"
+                                    class="btn btn-sm btn-outline-secondary rounded-pill px-3"
+                                    onclick="toggleReplyForm('{{id}}')">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {{/discussions}}
     </div>
 </div>

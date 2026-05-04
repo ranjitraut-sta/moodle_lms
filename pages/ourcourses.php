@@ -6,20 +6,18 @@ $PAGE->set_context(context_system::instance());
 
 $PAGE->set_url('/theme/mytheme/layout/dashboard.php');
 $PAGE->set_pagelayout('dashboard');
-$PAGE->set_title('Enroll Courses');
+$PAGE->set_title('Our Courses');
 $PAGE->set_heading(fullname($USER));
 
 // Load CSS
 $PAGE->requires->css('/theme/mytheme/styles/user-dash.css');
 $PAGE->requires->js('/theme/mytheme/amd/src/user-dash.js', array('type' => 'on-demand'));
 
-
-
 // Dynamic data (mock/hardcoded now; replace with real Moodle queries later)
-$enrollCourses = new \theme_mytheme\StudentDashboard\EnrollCourses();
+$enrollCourses = new \theme_mytheme\StudentDashboard\OurCourses();
 $data = $enrollCourses->getData();
 $data['active'] = [
-    'enroll_courses' => true // यो पेज खुल्दा 'our_courses' लाई true बनाउने
+    'our_courses' => true // यो पेज खुल्दा 'our_courses' लाई true बनाउने
 ];
 
 $data['logout_url'] =
@@ -48,7 +46,7 @@ echo $OUTPUT->doctype();
 <body <?php echo $OUTPUT->body_attributes(); ?>>
     <?php echo $OUTPUT->standard_top_of_body_html(); ?>
     <?php
-    $data['body_content'] = $OUTPUT->render_from_template('theme_mytheme/dashboard/pages/enrollcourses', $data);
+    $data['body_content'] = $OUTPUT->render_from_template('theme_mytheme/dashboard/pages/courses', $data);
     echo $OUTPUT->render_from_template('theme_mytheme/dashboard_layout', $data);
 
     echo $OUTPUT->standard_end_of_body_html(); ?>

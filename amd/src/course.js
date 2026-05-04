@@ -42,66 +42,34 @@
         });
     }
 
-   // Accordion open/close for amd-course-chapters
-document.querySelectorAll(".amd-course-chapter-header").forEach(header => {
-    header.addEventListener("click", () => {
-        const isExpanded = header.classList.contains("expanded");
-        const list = header.nextElementSibling;
-        const icon = header.querySelector("i");
+    // Accordion open/close for amd-course-chapters
+    document.querySelectorAll(".amd-course-chapter-header").forEach(header => {
+        header.addEventListener("click", () => {
+            const isExpanded = header.classList.contains("expanded");
+            const listId = header.getAttribute("aria-controls");
+            const list = listId ? document.getElementById(listId) : null;
 
-        if (isExpanded) {
-            header.classList.remove("expanded");
-            header.classList.add("collapsed");
-            if (list) list.classList.remove("expanded");
-            header.setAttribute("aria-expanded", "false");
-        } else {
-            header.classList.remove("collapsed");
-            header.classList.add("expanded");
-            if (list) list.classList.add("expanded");
-            header.setAttribute("aria-expanded", "true");
-        }
-        if (icon) icon.className = "ri-arrow-down-s-line";
-    });
-});
+            if (isExpanded) {
+                header.classList.remove("expanded");
+                header.classList.add("collapsed");
+                if (list) list.classList.remove("expanded");
+                header.setAttribute("aria-expanded", "false");
 
-
-    // ask Q&A Modal Logic
-    const askBtn = document.getElementById("askQuestionBtn");
-    const qOverlay = document.getElementById("qOverlay");
-    const qCloseBtn = document.getElementById("qCloseBtn");
-    const modalBackdrop = document.getElementById("modalBackdrop");
-
-    if (askBtn && qOverlay && modalBackdrop) {
-        askBtn.addEventListener("click", () => {
-            if (qOverlay.classList.contains("show")) {
-                closeModal();
+                const icon = header.querySelector("i");
+                if (icon) icon.className = "ri-arrow-right-s-line";
             } else {
-                openModal();
+                header.classList.remove("collapsed");
+                header.classList.add("expanded");
+                if (list) list.classList.add("expanded");
+                header.setAttribute("aria-expanded", "true");
+
+                const icon = header.querySelector("i");
+                if (icon) icon.className = "ri-arrow-down-s-line";
             }
         });
-    }
+    });
 
-    if (qCloseBtn && qOverlay && modalBackdrop && askBtn) {
-        qCloseBtn.addEventListener("click", closeModal);
-    }
 
-    // Close modal function
-    function closeModal() {
-        qOverlay.classList.remove("show");
-        modalBackdrop.classList.remove("show");
-        askBtn.setAttribute("aria-expanded", "false");
-        document.body.classList.remove('theme-modal-open'); // enable scroll
-    }
-
-    // Open modal function
-    function openModal() {
-        qOverlay.classList.add("show");
-        modalBackdrop.classList.add("show");
-        askBtn.setAttribute("aria-expanded", "true");
-        const input = document.getElementById("amd-course-qInput");
-        if (input) input.focus();
-        document.body.classList.add('theme-modal-open'); // disable scroll via CSS class
-    }
 
 
     // Next, Previous, and Review buttons alerts
@@ -151,9 +119,8 @@ document.querySelectorAll(".amd-course-chapter-header").forEach(header => {
         });
     }
 
-    // Optional: Close right canvas on Escape key press (skip Moodle filepicker)
+    // Optional: Close right canvas on Escape key press
     document.addEventListener("keydown", (e) => {
-        if (e.target.closest('.fp-repo, .filepicker, [data-filepicker], .moodle-dialogue, .yui-panel')) return; // Skip Moodle file picker
         if (e.key === "Escape" && rightCanvas.classList.contains("show")) {
             rightCanvas.classList.remove("show");
             rightCanvas.setAttribute("aria-hidden", "true");
@@ -161,4 +128,43 @@ document.querySelectorAll(".amd-course-chapter-header").forEach(header => {
         }
     });
 })();
+
+
+
+// video fullscreen toggle login
+// Get the video element and fullscreen button
+document.querySelector('.amd-course-video-fullscreen-btn').addEventListener('click', () => {
+    const container = document.querySelector('.amd-app-wrap');
+
+    if (!document.fullscreenElement &&
+        !document.webkitFullscreenElement &&
+        !document.mozFullScreenElement &&
+        !document.msFullscreenElement) {
+
+        if (container.requestFullscreen) {
+            container.requestFullscreen();
+        } else if (container.mozRequestFullScreen) {
+            container.mozRequestFullScreen();
+        } else if (container.webkitRequestFullscreen) {
+            container.webkitRequestFullscreen();
+        } else if (container.msRequestFullscreen) {
+            container.msRequestFullscreen();
+        }
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+        } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+        }
+    }
+});
+// fullscreen toggle end
+
+
+
+
 

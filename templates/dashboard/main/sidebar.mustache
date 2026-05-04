@@ -6,9 +6,7 @@
             <span>LMS</span>
         </a>
 
-        <button class="amd-lms-user-dash-sidebar-toggle d-lg-flex"
-                id="amd-lms-desktop-toggle-btn"
-                type="button">
+        <button class="amd-lms-user-dash-sidebar-toggle d-lg-flex" id="amd-lms-desktop-toggle-btn" type="button">
             <i class="bi bi-chevron-left"></i>
         </button>
     </div>
@@ -24,11 +22,19 @@
             </a>
         </li>
 
-        <!-- COURSES -->
-        <li class="amd-lms-user-dash-nav-item {{#active.courses}}active{{/active.courses}}">
+        <!-- ENROLL COURSES -->
+        <li class="amd-lms-user-dash-nav-item {{#active.enroll_courses}}active{{/active.enroll_courses}}">
             <a href="{{config.wwwroot}}/theme/mytheme/pages/enrollcourse.php">
                 <i class="bi bi-calendar-week"></i>
-                <span>Course Lists</span>
+                <span>Enroll Courses</span>
+            </a>
+        </li>
+
+        <!-- OUR COURSES (अब यो 'active' हुनेछ) -->
+        <li class="amd-lms-user-dash-nav-item {{#active.our_courses}}active{{/active.our_courses}}">
+            <a href="{{config.wwwroot}}/theme/mytheme/pages/ourcourses.php">
+                <i class="bi bi-calendar-check"></i> <!-- आइकन परिवर्तन गरिएको -->
+                <span>Our Courses</span>
             </a>
         </li>
 
@@ -51,18 +57,26 @@
             </a>
         </li>
 
+        <!-- REPORTS -->
+        <li class="amd-lms-user-dash-nav-item {{#active.reports}}active{{/active.reports}}">
+            <a href="{{config.wwwroot}}/theme/mytheme/pages/report.php">
+                <i class="bi bi-bar-chart-line"></i>
+                <span>
+                   Course Reports
+                </span>
+            </a>
+        </li>
+
     </ul>
 
     <!-- FOOTER -->
     <ul class="amd-lms-user-dash-nav-list list-unstyled mt-auto">
-
         <li class="amd-lms-user-dash-nav-item">
             <a href="{{logout_url}}">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Logout</span>
             </a>
         </li>
-
     </ul>
 
 </nav>

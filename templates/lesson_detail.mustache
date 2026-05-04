@@ -88,6 +88,9 @@
 
         <div class="amd-lesson-video-area" aria-label="Lesson content area" tabindex="0">
 
+                <button class="amd-course-video-fullscreen-btn amd-lms-tooltip" title="Fullscreen" aria-label="Fullscreen video" data-bs-toggle="tooltip" data-bs-placement="right" style=" ">
+                    <i class="ri-fullscreen-line" style="font-size: 18px;"></i>
+                </button>
             {{! Progress bar }}
             <div class="amd-lesson-top-progress">
                 <div class="amd-course-progress-wrap" aria-live="polite" aria-atomic="true">
@@ -177,3 +180,54 @@
         </div>
     </main>
 </div>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function() {
+    // 1. Sidebar Toggle (Open/Close Sidebar itself)
+    const sidebar = document.getElementById('amdcoursesidebar');
+    const toggleBtn = document.getElementById('amdcoursesidebarToggle');
+    const openBtn = document.getElementById('amdcoursesidebarOpenBtn');
+
+    if (toggleBtn && openBtn && sidebar) {
+        toggleBtn.addEventListener('click', () => {
+            sidebar.classList.add('collapsed');
+            openBtn.classList.add('show');
+        });
+
+        openBtn.addEventListener('click', () => {
+            sidebar.classList.remove('collapsed');
+            openBtn.classList.remove('show');
+        });
+    }
+
+    // 2. Chapter/Section Toggle (Accordion Logic)
+    const chapterHeaders = document.querySelectorAll('.amd-course-chapter-header');
+
+    chapterHeaders.forEach(header => {
+        header.addEventListener('click', function() {
+            const lessonsList = this.nextElementSibling; // .amd-course-lessons-list
+            const icon = this.querySelector('.ri-arrow-down-s-line, .ri-arrow-up-s-line');
+
+            // Close other open sections (Optional: Accordion effect)
+            document.querySelectorAll('.amd-course-lessons-list').forEach(list => {
+                if (list !== lessonsList) {
+                    list.classList.remove('expanded');
+                    list.previousElementSibling.classList.remove('expanded');
+                }
+            });
+
+            // Toggle current section
+            lessonsList.classList.toggle('expanded');
+            this.classList.toggle('expanded');
+
+            // Icon change (yadi class use garnu bhako chha bhane)
+            if (lessonsList.classList.contains('expanded')) {
+                this.setAttribute('aria-expanded', 'true');
+            } else {
+                this.setAttribute('aria-expanded', 'false');
+            }
+        });
+    });
+});
+</script>

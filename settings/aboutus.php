@@ -11,6 +11,14 @@ $setting = new admin_setting_configstoredfile($name, $title, $description, 'abou
 $page->add($setting);
 
 // About Us Heading
+$name = 'theme_mytheme/abouttagline';
+$title = 'About Tagline';
+$description = 'Heading for about Tagline';
+$default = 'LMS';
+$setting = new admin_setting_configtext($name, $title, $description, $default);
+$page->add($setting);
+
+// About Us Heading
 $name = 'theme_mytheme/aboutheading';
 $title = 'About Heading';
 $description = 'Heading for about section';
@@ -24,6 +32,14 @@ $title = 'About Description';
 $description = 'Description for about section';
 $default = 'A Learning platform based on practical knowledge with world class mentors.';
 $setting = new admin_setting_configtextarea($name, $title, $description, $default);
+$page->add($setting);
+
+//  stat heading
+$name = 'theme_mytheme/statheading';
+$title = 'Stat Heading';
+$description = 'Stat Heading';
+$default = 'Our Achievements';
+$setting = new admin_setting_configtext($name, $title, $description, $default);
 $page->add($setting);
 
 // Stat 1 Number
@@ -71,6 +87,31 @@ $name = 'theme_mytheme/stat3_desc';
 $title = 'Stat 3 Description';
 $description = 'Third statistic description';
 $default = 'Experienced Teacher\'s<br>service';
+$setting = new admin_setting_configtext($name, $title, $description, $default);
+$page->add($setting);
+
+
+
+/* Tutor Image */
+$name = 'theme_mytheme/tutor_img';
+$title = 'Tutor Card Image';
+$description = 'Upload image for tutor card';
+$setting = new admin_setting_configstoredfile($name, $title, $description, 'tutor_img');
+$page->add($setting);
+
+/* Tutor Title */
+$name = 'theme_mytheme/tutor_title';
+$title = 'Tutor Card Title';
+$description = 'Title for tutor card';
+$default = 'Tutor Finder';
+$setting = new admin_setting_configtext($name, $title, $description, $default);
+$page->add($setting);
+
+/* Tutor Description */
+$name = 'theme_mytheme/tutor_desc';
+$title = 'Tutor Card Description';
+$description = 'Description for tutor card';
+$default = 'Find the best instructor now...';
 $setting = new admin_setting_configtext($name, $title, $description, $default);
 $page->add($setting);
 

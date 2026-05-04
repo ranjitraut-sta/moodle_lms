@@ -8,9 +8,15 @@ $templatecontext = array_merge(
     theme_mytheme_get_base_context()
 );
 
+// echo '<pre>';
+// print_r($templatecontext);
+// echo '</pre>';
+// exit;
+
 echo $OUTPUT->doctype();
 ?>
 <html <?php echo $OUTPUT->htmlattributes(); ?>>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,38 +25,84 @@ echo $OUTPUT->doctype();
     <?php echo $OUTPUT->standard_head_html(); ?>
 
     <link href="<?php echo $CFG->wwwroot; ?>/theme/mytheme/styles/bootstrap.min.css" rel="stylesheet">
+
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+        rel="stylesheet">
+
+
+
+    <style>
+        @font-face {
+            font-family: 'Italic';
+            src: url('<?php echo $CFG->wwwroot; ?>/theme/mytheme/styles/fonts/Lato-Italic.woff') format('woff');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'BoldItalic';
+            src: url('<?php echo $CFG->wwwroot; ?>/theme/mytheme/styles/fonts/Lato-BoldItalic.woff') format('woff');
+            font-weight: 300;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'BlackItalic';
+            src: url('<?php echo $CFG->wwwroot; ?>/theme/mytheme/styles/fonts/Lato-BlackItalic.woff') format('woff');
+            font-weight: 300;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Bold';
+            src: url('<?php echo $CFG->wwwroot; ?>/theme/mytheme/styles/fonts/Lato-Bold.woff') format('woff');
+            font-weight: 700;
+            font-style: normal;
+            font-display: swap;
+        }
+    </style>
+
     <link href="<?php echo $CFG->wwwroot; ?>/theme/mytheme/styles/main.css" rel="stylesheet">
+
 </head>
 
 <body <?php echo $OUTPUT->body_attributes(); ?>>
 
-<?php echo $OUTPUT->standard_top_of_body_html(); ?>
+    <?php echo $OUTPUT->standard_top_of_body_html(); ?>
 
-<!-- Header -->
-<?php echo $OUTPUT->render_from_template('theme_mytheme/header', $templatecontext); ?>
+    <!-- Header -->
+    <?php echo $OUTPUT->render_from_template('theme_mytheme/header', $templatecontext); ?>
 
-<!-- Main Content -->
-<?php echo $OUTPUT->render_from_template('theme_mytheme/frontpage_content', $templatecontext); ?>
+    <!-- Main Content -->
+    <?php echo $OUTPUT->render_from_template('theme_mytheme/frontpage_content', $templatecontext); ?>
 
-<!-- Moodle Main Content (Required) -->
-<div style="display:none;">
-    <?php echo $OUTPUT->main_content(); ?>
-</div>
+    <!-- Moodle Main Content (Required) -->
+    <div style="display:none;">
+        <?php echo $OUTPUT->main_content(); ?>
+    </div>
 
-<!-- Footer -->
-<?php echo $OUTPUT->render_from_template('theme_mytheme/footer', $templatecontext); ?>
+    <!-- Footer -->
+    <?php echo $OUTPUT->render_from_template('theme_mytheme/footer', $templatecontext); ?>
 
-<?php echo $OUTPUT->standard_end_of_body_html(); ?>
+    <?php echo $OUTPUT->standard_end_of_body_html(); ?>
 
-<!-- Landing JS -->
-<script defer src="<?php echo $CFG->wwwroot; ?>/theme/mytheme/amd/src/landing.js"></script>
+    <!-- Landing JS -->
+    <script defer src="<?php echo $CFG->wwwroot; ?>/theme/mytheme/amd/src/bootstrap.bundle.min.js"></script>
+    <script defer src="<?php echo $CFG->wwwroot; ?>/theme/mytheme/amd/src/landing.js"></script>
 
 </body>
+
 </html>

@@ -36,7 +36,7 @@ function theme_mytheme_get_course_context($courseid): array
             $file->get_contextid(),
             $file->get_component(),
             $file->get_filearea(),
-            $file->get_itemid(),
+            null, // Pass null to omit itemid from URL
             $file->get_filepath(),
             $file->get_filename()
         )->out(false);

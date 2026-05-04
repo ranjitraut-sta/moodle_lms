@@ -14,12 +14,11 @@ $PAGE->requires->css('/theme/mytheme/styles/user-dash.css');
 $PAGE->requires->js('/theme/mytheme/amd/src/user-dash.js', array('type' => 'on-demand'));
 
 
-
 // Dynamic data (mock/hardcoded now; replace with real Moodle queries later)
-$enrollCourses = new \theme_mytheme\StudentDashboard\EnrollCourses();
-$data = $enrollCourses->getData();
+$reports = new \theme_mytheme\Report\Report();
+$data = $reports->getData();
 $data['active'] = [
-    'enroll_courses' => true // यो पेज खुल्दा 'our_courses' लाई true बनाउने
+    'reports' => true // यो पेज खुल्दा 'our_courses' लाई true बनाउने
 ];
 
 $data['logout_url'] =
@@ -29,7 +28,7 @@ $data['messages_url'] = (new moodle_url('/message/index.php'))->out(false);
 
 // echo '<pre>';
 // print_r($data);
-// echo '</pre>';
+// echo '</pre>'; 
 // exit;
 
 // Moodle ko default header/navbar bypass garna manual HTML suru gareko
@@ -48,7 +47,7 @@ echo $OUTPUT->doctype();
 <body <?php echo $OUTPUT->body_attributes(); ?>>
     <?php echo $OUTPUT->standard_top_of_body_html(); ?>
     <?php
-    $data['body_content'] = $OUTPUT->render_from_template('theme_mytheme/dashboard/pages/enrollcourses', $data);
+    $data['body_content'] = $OUTPUT->render_from_template('theme_mytheme/dashboard/pages/reports', $data);
     echo $OUTPUT->render_from_template('theme_mytheme/dashboard_layout', $data);
 
     echo $OUTPUT->standard_end_of_body_html(); ?>

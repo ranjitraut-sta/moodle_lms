@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics & Reporting Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --success-color: #198754;
+            --warning-color: #ffc107;
+            --light-bg: #f8f9fa;
+            --border-radius: 12px;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+            --transition: all 0.3s ease;
+        }
+
+        .avatar-circle {
+            width: 40px;
+            height: 40px;
+            background-color: #e7f1ff;
+            color: #0d6efd;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+
+        .bg-soft-primary {
+            background-color: #e7f1ff !important;
+        }
+
+        .btn-icon-only {
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        .btn-icon-only:hover {
+            background: #f0f7ff !important;
+            transform: scale(1.05);
+        }
+
+        #report-table th {
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 15px 10px;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        #report-table tbody tr {
+            transition: var(--transition);
+        }
+
+        #report-table tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .stat-card {
+            border-radius: var(--border-radius);
+            border: none;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .badge-success-custom {
+            background-color: rgba(25, 135, 84, 0.15);
+            color: var(--success-color);
+            font-weight: 600;
+        }
+
+        .badge-warning-custom {
+            background-color: rgba(255, 193, 7, 0.15);
+            color: var(--warning-color);
+            font-weight: 600;
+        }
+
+        .filter-control {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        .filter-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1);
+            background: white;
+        }
+
+        .no-data-state {
+            text-align: center;
+            padding: 50px 20px;
+            color: #6c757d;
+        }
+
+        .no-data-state i {
+            font-size: 48px;
+            opacity: 0.2;
+            margin-bottom: 15px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 280px;
+        }
+
+        .top-filter-card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            padding: 24px;
+            margin-bottom: 30px;
+        }
+
+        .filter-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr auto auto;
+            gap: 15px;
+            align-items: flex-end;
+        }
+
+        @media (max-width: 1200px) {
+            .filter-row {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .filter-actions {
+                grid-column: 1 / -1;
+                display: flex;
+                gap: 10px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .filter-row {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-actions {
+                grid-column: 1 / -1;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .stat-card {
+                margin-bottom: 15px;
+            }
+
+            #report-table {
+                font-size: 13px;
+            }
+
+            #report-table th,
+            #report-table td {
+                padding: 10px 8px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+
+<main class="amd-lms-user-dash-main-content">
+    <div class="container-fluid p-4">
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="text-dark fw-bold mb-0">Analytics & Reporting Dashboard</h2>
+                <p class="text-muted small mb-0 mt-2">
+                    <i class="fas fa-circle text-success"></i> Real-time Data Overview
+                </p>
+            </div>
+            <div class="text-muted small">Last updated: <span id="update-time">Now</span></div>
+        </div>
+
+        <!-- TOP FILTER SECTION -->
+        <div class="top-filter-card">
+            <form id="amd-filter-form">
+                <div class="filter-row">
+                    <!-- Course Filter -->
+                    <div>
+                        <label class="small fw-bold text-muted d-block mb-2">Course</label>
+                        <select id="filter-course" name="courseid" class="form-select filter-control">
+                            <option value="all">All Courses</option>
+                            {{#course_options}}
+                                <option value="{{id}}"{{#selected}} selected{{/selected}}>{{fullname}}</option>
+                            {{/course_options}}
+                        </select>
+                    </div>
+
+                    <!-- Status Filter -->
+                    <div>
+                        <label class="small fw-bold text-muted d-block mb-2">Status</label>
+                        <select id="filter-status" name="status" class="form-select filter-control">
+                            <option value="all">All Status</option>
+                            <option value="completed">Completed Only</option>
+                            <option value="running">In Progress Only</option>
+                        </select>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="filter-actions">
+                        <button type="submit" class="btn btn-primary shadow-sm fw-bold h-100">
+                            <i class="fas fa-filter me-2"></i>Filter
+                        </button>
+                        <a href="{{config.wwwroot}}/theme/mytheme/pages/report.php" id="reset-filters" class="btn btn-outline-secondary fw-bold h-100">
+                            <i class="fas fa-redo me-2"></i>Reset
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Summary Cards Section -->
+        <div class="row g-3 mb-4">
+            <!-- Total Enrollments -->
+            <div class="col-md-4">
+                <div class="card stat-card border-0" style="border-left: 5px solid #0d6efd !important;">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-shrink-0 bg-primary bg-opacity-10 p-3 rounded-3">
+                                <i class="fas fa-users fa-2x text-primary"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h6 class="text-muted small fw-bold mb-1">TOTAL ENROLLMENTS</h6>
+                                <h3 class="mb-0 fw-bold text-dark" id="total-enrollments">{{stats.total}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Completed -->
+            <div class="col-md-4">
+                <div class="card stat-card border-0" style="border-left: 5px solid #198754 !important;">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-shrink-0 bg-success bg-opacity-10 p-3 rounded-3">
+                                <i class="fas fa-check-double fa-2x text-success"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h6 class="text-muted small fw-bold mb-1">COMPLETED</h6>
+                                <h3 class="mb-0 fw-bold text-dark" id="completed-count">{{stats.completed}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- In Progress -->
+            <div class="col-md-4">
+                <div class="card stat-card border-0" style="border-left: 5px solid #ffc107 !important;">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-shrink-0 bg-warning bg-opacity-10 p-3 rounded-3">
+                                <i class="fas fa-hourglass-half fa-2x text-warning"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h6 class="text-muted small fw-bold mb-1">IN PROGRESS</h6>
+                                <h3 class="mb-0 fw-bold text-dark" id="running-count">{{stats.running}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+
+
+            <!-- Right Side: Data Table -->
+            <div class="col-lg-12">
+                <div class="card border-0 shadow-sm rounded-4 h-100">
+                    <div class="card-header bg-white border-0 py-4 px-4 d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0 fw-bold">
+                            <i class="fas fa-table me-2 text-primary"></i>Student Progress Details
+                        </h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0" id="report-table">
+                                <thead class="bg-light text-muted">
+                                <tr>
+                                    <th class="ps-4 border-0">STUDENT</th>
+                                    <th class="border-0">ENROLLED COURSE</th>
+                                    <th class="border-0 text-center">ENROLLMENT DATE</th>
+                                    <th class="border-0 text-center">STATUS</th>
+                                </tr>
+                                </thead>
+                                <tbody id="table-body">
+                                {{#reports}}
+                                <tr class="amd-row-data"
+                                    data-student="{{user}}"
+                                    data-course="{{course}}"
+                                    data-status="{{status_class}}">
+                                    <td class="ps-4 py-3">
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar-circle bg-soft-primary text-primary me-3">
+                                                <i class="fas fa-user"></i>
+                                            </div>
+                                            <span class="fw-bold text-dark">{{user}}</span>
+                                        </div>
+                                    </td>
+                                    <td><span class="text-secondary small">{{course}}</span></td>
+                                    <td class="text-center small text-muted">{{date}}</td>
+                                    <td class="text-center">
+                                        <span class="badge rounded-pill bg-{{status_class}} px-3 py-2"
+                                              style="font-size: 0.75rem;">
+                                            {{status}}
+                                        </span>
+                                    </td>
+                                </tr>
+                                {{/reports}}
+                                {{^reports}}
+                                <tr>
+                                    <td colspan="4" class="no-data-state">
+                                    {{^has_filter}}
+                                        <div class="text-center py-5 text-muted">
+                                            <i class="fas fa-filter fa-2x mb-2"></i>
+                                            <p>Select filters to view reports</p>
+                                        </div>
+                                        {{/has_filter}}
+                                    </td>
+                                </tr>
+                                {{/reports}}
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const dashboardData = {
+        stats: {
+            total: {{stats.total}},
+            completed: {{stats.completed}},
+            running: {{stats.running}},
+            chart: {{stats.chart|json_encode}}
+        },
+        course_options: {{course_options|json_encode}},
+        reports: {{reports|json_encode}},
+        chart_data: {{{chart_data_json}}}
+    };
+
+    let chartInstance = null;
+    let allReports = [];
+
+    document.addEventListener('DOMContentLoaded', function () {
+        initializeDashboard();
+    });
+
+    function initializeDashboard() {
+        allReports = dashboardData.reports || [];
+        updateStatsDisplay();
+        if (dashboardData.stats.chart && dashboardData.stats.chart.values) {
+            initializeChart();
+        }
+        setupEventListeners();
+        updateTimestamp();
+    }
+
+    function updateStatsDisplay() {
+        document.getElementById('total-enrollments').textContent =
+            dashboardData.stats.total.toLocaleString();
+        document.getElementById('completed-count').textContent =
+            dashboardData.stats.completed.toLocaleString();
+        document.getElementById('running-count').textContent =
+            dashboardData.stats.running.toLocaleString();
+    }
+
+    function initializeChart() {
+        const ctx = document.getElementById('analyticsChart');
+        if (!ctx) return;
+
+        if (chartInstance) {
+            chartInstance.destroy();
+        }
+
+        const chartData = dashboardData.stats.chart || dashboardData.chart_data;
+
+        chartInstance = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: chartData.labels || ['Completed', 'In Progress'],
+                datasets: [{
+                    data: chartData.values || [0, 0],
+                    backgroundColor: ['#198754', '#ffc107'],
+                    borderColor: ['#198754', '#ffc107'],
+                    borderWidth: 0,
+                    cutout: '75%'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            usePointStyle: true,
+                            padding: 20,
+                            font: {size: 13, weight: '600'}
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                return context.label + ': ' + context.parsed + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function setupEventListeners() {
+        const filterForm = document.getElementById('amd-filter-form');
+        const filterInput = document.getElementById('filter-text');
+        const filterStatus = document.getElementById('filter-status');
+        const filterCourse = document.getElementById('filter-course');
+        const resetBtn = document.getElementById('reset-filters');
+        const exportBtn = document.getElementById('export-btn');
+
+        filterInput.addEventListener('keyup', applyFilters);
+        filterStatus.addEventListener('change', applyFilters);
+        filterCourse.addEventListener('change', applyFilters);
+
+        filterForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            applyFilters();
+        });
+
+        resetBtn.addEventListener('click', function () {
+            filterInput.value = '';
+            filterStatus.value = 'all';
+            filterCourse.value = 'all';
+            applyFilters();
+        });
+
+        exportBtn.addEventListener('click', exportTableToCSV);
+    }
+
+  function applyFilters() {
+    const searchTerm = document.getElementById('filter-text').value.toLowerCase();
+    const statusFilter = document.getElementById('filter-status').value;
+    const courseFilter = document.getElementById('filter-course').value;
+
+    const rows = document.querySelectorAll('.amd-row-data');
+    let visibleCount = 0;
+
+    rows.forEach(row => {
+        const student = row.getAttribute('data-student').toLowerCase();
+        const course = row.getAttribute('data-course').toLowerCase();
+        const status = row.getAttribute('data-status');
+
+        // Apply all filters
+        const matchesSearch = student.includes(searchTerm);
+        const matchesStatus = statusFilter === 'all' || status === statusFilter;
+        const matchesCourse = courseFilter === 'all' || course.includes(getCourseNameById(courseFilter).toLowerCase());
+
+        if (matchesSearch && matchesStatus && matchesCourse) {
+            row.style.display = '';
+            visibleCount++;
+        } else {
+            row.style.display = 'none';
+        }
+    });
+
+    // Show/hide no data message
+    handleNoDataMessage(visibleCount);
+}
+
+function getCourseNameById(courseId) {
+    if (courseId === 'all') return '';
+    const course = dashboardData.course_options.find(c => c.id == courseId);
+    return course ? course.fullname : '';
+}
+
+function handleNoDataMessage(visibleCount) {
+    const tableBody = document.getElementById('table-body');
+    const existingNoData = document.getElementById('no-data-row');
+
+    if (visibleCount === 0) {
+        if (!existingNoData) {
+            const noDataRow = document.createElement('tr');
+            noDataRow.id = 'no-data-row';
+            noDataRow.innerHTML = `
+                <td colspan="4" class="no-data-state">
+                    <div>
+                        <i class="fas fa-search"></i>
+                        <p class="mt-3">No records match your filters.</p>
+                    </div>
+                </td>
+            `;
+            tableBody.appendChild(noDataRow);
+        }
+    } else {
+        if (existingNoData) {
+            existingNoData.remove();
+        }
+    }
+}
+
+function exportTableToCSV() {
+    const table = document.getElementById('report-table');
+    let csv = [];
+
+    // Headers
+    const headers = ['STUDENT', 'ENROLLED COURSE', 'ENROLLMENT DATE', 'STATUS'];
+    csv.push(headers.join(','));
+
+    // Data rows (only visible)
+    const rows = document.querySelectorAll('.amd-row-data');
+    rows.forEach(row => {
+        if (row.style.display !== 'none') {
+            const cells = [
+                row.children[0].textContent.trim(),
+                row.children[1].textContent.trim(),
+                row.children[2].textContent.trim(),
+                row.children[3].textContent.trim()
+            ];
+            csv.push(cells.map(cell => `"${cell.replace(/"/g, '""')}"`).join(','));
+        }
+    });
+
+    // Create and download file
+    const csvContent = csv.join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'student_progress_report.csv');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+function updateTimestamp() {
+    const now = new Date();
+    const timeString = now.toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+    document.getElementById('update-time').textContent = timeString;
+}
+
+setInterval(updateTimestamp, 60000);
+</script>
+</html>
+</html

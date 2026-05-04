@@ -1,19 +1,12 @@
 <?php
 
-namespace theme_mytheme\StudentDashboard;
+namespace theme_mytheme\classes;
 
 defined('MOODLE_INTERNAL') || die();
 
-class EnrollCourses
+class loadImages
 {
-    protected $user;
-
-    public function __construct($user = null)
-    {
-        global $USER;
-        $this->user = $user ?? $USER;
-    }
-
+  
     public function getData(): array
     {
         return [

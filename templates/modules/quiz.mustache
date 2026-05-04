@@ -1,13 +1,575 @@
-<div class="amd-module-quiz"
+    <style>
+
+        .stat-card-main {
+        background: #fff;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        border: 1px solid #eef2f7;
+    }
+
+    .stat-header {
+        text-align: center;
+        margin-bottom: 15px;
+        padding-top: 10px;
+    }
+
+    .main-percentage {
+        display: block;
+        font-size: 2rem;
+        font-weight: 800;
+        color: #2d3436;
+    }
+
+    .main-label {
+        color: #636e72;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+    }
+
+    .stat-divider {
+        border: 0;
+        border-top: 1px solid #eee;
+        margin: 15px 0;
+    }
+
+    .stat-grid {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding-bottom: 10px;
+    }
+.stat-item{
+    border: 1px solid #d6d6d6;
+    padding: 6px;
+        border-radius: 8px;
+       
+        background-color: #f8f9fa;
+
+}
+    .stat-item .value{
+         display: flex; 
+         align-items: center;
+         justify-content: center;
+   
+    }
+
+    .stat-details .value {
+        display: block;
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: #000;
+    }
+
+    .stat-details .label {
+        font-size: 0.8rem;
+        color: #b2bec3;
+    }
+        /* Prevent body scroll on mobile */
+        .amd-quiz-content {
+            flex: 1;
+            /* overflow-y: auto; */
+            /* height: 100vh; */
+            padding: 0 20px;
+        }
+
+        .amd-lms-quiz-header-bar {
+            width: 100%;
+            height: 4px;
+            background-color: #4263eb;
+        }
+
+        /* Mobile-only Header */
+        .amd-lms-quiz-mobile-header {
+            display: none;
+            /* Hidden on desktop */
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            background-color: var(--amd-primary-light);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 900;
+        }
+
+        .amd-lms-quiz-mobile-title {
+            font-size: 1.1rem;
+            color: var(--amd-dark);
+            font-weight: 600;
+        }
+
+        #open-sidebar-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        #open-sidebar-btn svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Main Container */
+        .amd-lms-quiz-container {
+            display: flex;
+            gap: 2rem;
+            padding: 2rem;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .amd-lms-quiz-questions-section {
+            flex: 3;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* Question Cards */
+        .amd-lms-quiz-question-card {
+            background-color: var(--amd-secondary-light);
+            border: 1px solid var(--amd-secondary-light);
+            /* border-radius: 5px; */
+            padding: 1.5rem 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .amd-lms-quiz-question-header {
+            color: var(--amd-muted);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .amd-lms-quiz-question-title {
+            color: var(--amd-dark);
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Answer Options & Static States */
+        .amd-lms-quiz-answer-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .amd-lms-quiz-option {
+            display: flex;
+            align-items: center;
+            padding: 0.9rem 1rem;
+            border: 1px solid #ced4da;
+            /* border-radius: 8px; */
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .amd-lms-quiz-option span {
+            color: var(--amd-dark);
+        }
+
+        /* Common styling */
+        .amd-lms-quiz-option input[type="radio"],
+        .amd-lms-quiz-option input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            margin-right: 10px;
+            cursor: pointer;
+            background-color: #6b6b6b;
+            border: 2px solid #c3c3c3;
+            border-radius: 4px;
+            position: relative;
+            transition: all 0.25s ease;
+        }
+
+        /* Radio specific (make circular) */
+        .amd-lms-quiz-option input[type="radio"] {
+            border-radius: 50%;
+        }
+
+        /* Hover effect */
+        .amd-lms-quiz-option input[type="radio"]:hover,
+        .amd-lms-quiz-option input[type="checkbox"]:hover {
+            border-color: #8458b3;
+            /* Purple hover */
+            box-shadow: 0 0 6px rgba(132, 88, 179, 0.4);
+        }
+
+        /* Checked (Radio + Checkbox) */
+        .amd-lms-quiz-option input[type="radio"]:checked,
+        .amd-lms-quiz-option input[type="checkbox"]:checked {
+            background: radial-gradient(circle, #6258b3c4 40%, #4842a1 100%);
+            border-color: #d0bdf4;
+            box-shadow: 0 0 6px rgba(208, 189, 244, 0.6);
+        }
+
+        /* Custom tick for checkbox */
+        .amd-lms-quiz-option input[type="checkbox"]:checked::after {
+            content: "✔";
+            position: absolute;
+            top: 40%;
+            left: 52%;
+            transform: translate(-50%, -50%) scale(1);
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* Smooth tick appearance */
+        .amd-lms-quiz-option input[type="checkbox"]::after {
+            transition: all 0.2s ease;
+            transform: scale(0);
+        }
+
+
+        .amd-lms-quiz-option:hover {
+            background-color: #f8f9fa;
+            color: var(--amd-dark);
+        }
+
+        .amd-lms-quiz-option.selected {
+            background-color: #e7f5ff;
+            border-color: #5b42eb;
+        }
+
+        .amd-lms-quiz-option.correct {
+            border-color: #68b77a;
+            background-color: #abffb824;
+        }
+
+        .amd-lms-quiz-option.correct.selected {
+            background-color: #d4edda42;
+            border-color: #28a745;
+        }
+
+        .amd-lms-quiz-option.incorrect.selected {
+            background-color: #f8d7da38;
+            border-color: #ad5961;
+        }
+
+        .amd-lms-quiz-option input {
+            margin-right: 1rem;
+            transform: scale(1.2);
+        }
+
+        .amd-lms-quiz-option code {
+            font-family: 'Courier New', monospace;
+            background-color: #e9ecef;
+            color: #000000ba !important;
+            padding: 0.1rem 0.4rem;
+            border-radius: 4px;
+        }
+
+        .amd-lms-quiz-fill-blank {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .amd-lms-quiz-mark-review-btn {
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            color: #856404;
+            padding: 0.6rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 1.5rem;
+            float: right;
+        }
+
+        .amd-lms-quiz-mark-review-btn.active {
+            background-color: #ffeeba;
+            border: 2px solid #856404;
+        }
+
+        .amd-lms-quiz-question-card::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        /* Sidebar Styles (Desktop) */
+        .amd-lms-quiz-sidebar {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .amd-lms-quiz-sidebar-content {
+            background-color: var(--amd-fade-secondary);
+            /* border-radius: 5px; */
+            border: 1px solid var(--amd-secondary-light);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            /* position: fixed; */
+            /* top: 2rem; */
+        }
+
+        .amd-lms-quiz-sidebar-title {
+            color: var(--amd-dark);
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        /* Timer */
+        .amd-lms-quiz-timer-section {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .amd-lms-quiz-timer-circle {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            margin: 0.5rem auto;
+        }
+
+        .amd-lms-quiz-timer-circle svg {
+            transform: rotate(-90deg);
+        }
+
+        .amd-lms-quiz-timer-bg,
+        .amd-lms-quiz-timer-progress {
+            fill: none;
+            stroke-width: 8;
+        }
+
+        .amd-lms-quiz-timer-bg {
+            stroke: #e9ecef;
+        }
+
+        .amd-lms-quiz-timer-progress {
+            stroke: #4f5dff;
+            /* background: red; */
+            stroke-linecap: round;
+            transition: stroke-dashoffset 1s linear;
+        }
+
+        .amd-lms-quiz-time-display {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--amd-secondary);
+        }
+
+        /* Progress Bar & Question Nav */
+        .amd-lms-quiz-progress-section,
+        .amd-lms-quiz-question-nav {
+            margin-bottom: 1.5rem;
+        }
+
+        .amd-lms-quiz-progress-bar-container {
+            height: 8px;
+            background: linear-gradient(90deg, var(--amd-secondary), rgba(255, 255, 255, 0.01));
+            border-radius: 6px;
+        }
+
+        /* Quiz Progress Section */
+        .amd-lms-quiz-progress-section {
+            width: 100%;
+            padding: 12px 16px;
+            background: #262291a8;
+            /* Dark blue tone */
+            /* border-radius: 12px; */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+            color: #fff;
+        }
+
+        /* Header Layout */
+        .amd-lms-quiz-progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        /* Label */
+        .amd-lms-progress-label {
+            font-size: 15px;
+            font-weight: 600;
+            color: #a0d2eb;
+            /* Ice cold blue */
+        }
+
+        /* Field (readonly progress display) */
+        .amd-lms-progress-field {
+            background: #1f2340;
+            border: 1px solid #2d335c;
+            border-radius: 6px;
+            padding: 5px 10px;
+            color: #e5eaf5;
+            font-size: 12px;
+            font-weight: 500;
+            width: 100px;
+            text-align: center;
+            outline: none;
+        }
+
+        /* Progress Bar Container */
+        .amd-lms-quiz-progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background: #2b2f4a;
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Progress Bar */
+        .amd-lms-quiz-progress-bar {
+            height: 100%;
+            background: rgb(90 181 90 / 81%);
+            border-radius: 5px;
+            transition: width 0.4s ease;
+        }
+
+
+        .amd-lms-quiz-question-nav {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(45px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .amd-lms-quiz-qnav-btn {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 8px;
+            border: 1px solid #ced4da;
+            background-color: #f8f9fa;
+            font-weight: 600;
+            text-decoration: none;
+            color: var(--amd-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .amd-lms-quiz-qnav-btn.answered {
+            background-color: #e6f7eb;
+            border-color: #50c878;
+        }
+
+        .amd-lms-quiz-qnav-btn.marked-for-review {
+            box-shadow: 0 0 0 3px #ffeeba inset;
+        }
+
+        .amd-lms-quiz-submit-quiz-btn {
+            width: 100%;
+            padding: 0.9rem;
+            background-color: var(--amd-secondary);
+            color: var(--amd-light);
+            border: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Mobile Overlay for Off-Canvas Menu */
+        .amd-lms-quiz-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        body.sidebar-open .amd-lms-quiz-overlay {
+            display: block;
+        }
+
+        /* === Responsive Design (The "Canvas" Logic) === */
+        @media (max-width: 1024px) {
+
+            .amd-lms-quiz-submit-quiz-btn {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                z-index: 1001;
+                border-radius: 0;
+            }
+
+            .amd-lms-quiz-mobile-header {
+                display: flex;
+            }
+
+            .amd-lms-quiz-container {
+                padding: 1rem;
+            }
+
+            .amd-lms-quiz-sidebar {
+                position: fixed;
+                top: 0;
+                right: 0;
+                width: 345px;
+                max-width: 90%;
+                height: 100%;
+                background-color: #fff;
+                z-index: 1000;
+                transform: translateX(100%);
+                transition: transform 0.3s ease-in-out;
+                flex: none;
+                /* Override desktop flex property */
+                min-width: 0;
+            }
+
+            body.sidebar-open .amd-lms-quiz-sidebar {
+                transform: translateX(0);
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            }
+
+            .amd-lms-quiz-sidebar-content {
+                position: relative;
+                box-shadow: none;
+                border-radius: 0;
+                /* background: #0b0921f0; */
+
+                height: 100%;
+                overflow-y: auto;
+                /* Allow scrolling within the sidebar */
+            }
+        }
+
+        @media (max-width:768px) {
+            .amd-lms-quiz-question-title {
+                font-size: 1rem;
+            }
+
+            .amd-lms-quiz-option span {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+    
+
+          
+
+<div class="amd-lms-quiz-container amd-module-quiz"
      data-quizid="{{quizid}}"
      data-cmid="{{cmid}}"
      data-ajaxurl="{{ajaxurl}}"
      data-sesskey="{{sesskey}}"
      data-attemptid="{{#inprogress}}{{attemptid}}{{/inprogress}}{{^inprogress}}0{{/inprogress}}">
 
-    <h4 class="mb-3">{{quizname}}</h4>
+    <!-- Main Questions Section -->
+    <main class="amd-lms-quiz-questions-section {{^inprogress}}d-none{{/inprogress}}">
 
-    {{#hasattempts}}
+   {{#hasattempts}}
     <div class="mb-3">
         <div><strong>Your attempts:</strong></div>
         <div class="list-group">
@@ -16,169 +578,137 @@
                 <div><strong>Attempt {{attemptnumber}}</strong> — {{status}}</div>
                 <div>Started: {{started}}, Completed: {{completed}}, Duration: {{duration}}</div>
                 <div>Marks: {{marks}}/{{maxmarks}}, Grade: {{grade}}%</div>
-                <div><a href="{{reviewurl}}" class="text-decoration-none">Review</a></div>
             </div>
             {{/attempts}}
         </div>
     </div>
     {{/hasattempts}}
 
-    {{#inprogress}}
-    <div class="alert alert-info mb-3">
-        <strong>In-progress attempt</strong>: Attempt #{{inprogressinfo.attemptnumber}} started on {{inprogressinfo.started}} and is currently open.
-    </div>
-    {{/inprogress}}
-
-    {{#hasresult}}
-    {{#attemptresult}}
-    <div class="alert {{#passed}}alert-success{{/passed}}{{#failed}}alert-warning{{/failed}} mb-3 d-flex justify-content-between align-items-center">
-        <div>
-            <strong>{{#passed}}Passed{{/passed}}{{#failed}}Failed{{/failed}}</strong>
-            &nbsp;&middot; Attempt {{attemptnumber}} &middot; {{timefinished}}
-        </div>
-        <span class="fs-5 fw-semibold">
-            {{sumgrades}} / {{maxgrade}}
-            <small class="fs-6 text-muted">({{percentage}}%)</small>
-        </span>
-    </div>
-    {{/attemptresult}}
-    {{/hasresult}}
-
-    <div class="amd-quiz-live-result alert d-none mb-3"></div>
-
-    {{^inprogress}}
-    <div class="amd-quiz-start-wrap mb-3">
-        <button class="btn btn-primary amd-quiz-start-btn">
-            {{#hasresult}}Retake Quiz{{/hasresult}}
-            {{^hasresult}}Start Quiz{{/hasresult}}
-        </button>
-    </div>
-    {{/inprogress}}
-
-    <div class="amd-quiz-body {{^inprogress}}d-none{{/inprogress}}">
 
         {{#questions}}
-        <div class="amd-quiz-question card mb-3 p-3"
+        <div class="amd-lms-quiz-question-card amd-quiz-question" 
+             id="question-{{slot}}"
              data-slot="{{slot}}"
              data-questionid="{{id}}"
-             data-type="{{type}}"
-             data-mcqsingle="{{#ismcqsingle}}1{{/ismcqsingle}}{{^ismcqsingle}}0{{/ismcqsingle}}">
+             data-type="{{type}}">
+            
+            <div class="amd-lms-quiz-question-header">Question {{slot}} of {{totalquestions}}</div>
+            <h2 class="amd-lms-quiz-question-title amd-quiz-qtext">
+                {{{text}}}
+            </h2>
 
-            <div class="d-flex justify-content-between mb-2">
-                <span class="badge bg-secondary">{{type}}</span>
-                <span class="text-muted small">{{mark}} mark(s)</span>
-            </div>
-
-            <div class="amd-quiz-qtext mb-3">{{{text}}}</div>
-
-            {{! MCQ }}
-            {{#ismcq}}
-            <ul class="list-group list-group-flush amd-mcq-options">
-                {{#answers}}
-                <li class="list-group-item amd-mcq-option"
-                    data-answerid="{{answerid}}"
-                    style="cursor:pointer;">
-                    <span class="amd-mcq-marker me-2">&#9675;</span>{{{answertext}}}
-                </li>
-                {{/answers}}
-            </ul>
-            {{/ismcq}}
-
-            {{! True/False }}
-            {{#istruefalse}}
-            <div class="d-flex gap-2 amd-tf-options">
-                {{#answers}}
-                <button class="btn btn-outline-secondary amd-tf-option"
-                        data-answerid="{{answerid}}">
-                    {{{answertext}}}
-                </button>
-                {{/answers}}
-            </div>
-            {{/istruefalse}}
-
-            {{! Short answer }}
-            {{#isshortans}}
-            <div class="mt-2">
-                <input type="text"
-                       class="form-control amd-shortans-input"
-                       placeholder="Type your answer here">
-            </div>
-            {{/isshortans}}
-
-            {{! Drag & Drop into Text }}
-            {{#isddwtos}}
-            <div class="amd-ddwtos-question">
-                <!-- Drag Items / Options -->
-                <div class="amd-ddwtos-drag-area mb-3 p-3 border rounded bg-light">
-                    <h6 class="fw-semibold mb-2">
-                        <i class="fas fa-hand-pointer me-2"></i>Drag these items:
-                    </h6>
-                    <div class="d-flex flex-wrap gap-2">
-                        {{#ddwtosoptions}}
-                        <div class="amd-ddwtos-drag-item badge bg-primary p-2" 
-                             data-optionno="{{no}}"
-                             draggable="true"
-                             style="cursor: move;">
-                            <i class="fas fa-grip-vertical me-1"></i>{{{text}}}
-                        </div>
-                        {{/ddwtosoptions}}
-                    </div>
+            <div class="amd-lms-quiz-answer-options">
+                {{! --- Multiple Choice (MCQ) Logic --- }}
+                {{#ismcq}}
+                <div class="amd-mcq-options">
+                    {{#answers}}
+                    <label class="amd-lms-quiz-option amd-mcq-option" data-answerid="{{answerid}}">
+                        <input type="{{#ismcqsingle}}radio{{/ismcqsingle}}{{^ismcqsingle}}checkbox{{/ismcqsingle}}" 
+                               name="q{{slot}}" 
+                               {{#checked}}checked{{/checked}}>
+                        <span>{{{answertext}}}</span>
+                    </label>
+                    {{/answers}}
                 </div>
+                {{/ismcq}}
 
-                <!-- Drop Zones / Blanks -->
-                <div class="amd-ddwtos-drop-areas">
-                    <h6 class="fw-semibold mb-2">
-                        <i class="fas fa-inbox me-2"></i>Drop here:
-                    </h6>
-                    {{#ddwtositems}}
-                    <div class="amd-ddwtos-drop-zone card p-3 mb-2 position-relative" 
-                         data-no="{{no}}"
-                         style="min-height: 60px; border: 2px dashed #ccc;">
-                        <div class="d-flex justify-content-between align-items-start">
-                            <div class="flex-grow-1">
-                                <small class="text-muted fw-semibold d-block mb-1">Blank {{no}}:</small>
-                                <div class="amd-ddwtos-display d-none text-dark"></div>
-                                <input type="hidden" class="amd-ddwtos-input">
-                            </div>
-                            <button type="button" 
-                                    class="amd-ddwtos-clear btn btn-sm btn-outline-danger d-none"
-                                    title="Clear">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                    </div>
-                    {{/ddwtositems}}
+                {{! --- True/False Logic --- }}
+                {{#istruefalse}}
+                <div class="amd-tf-options">
+                    {{#answers}}
+                    <label class="amd-lms-quiz-option amd-tf-option" data-answerid="{{answerid}}">
+                        <input type="radio" name="q{{slot}}" {{#checked}}checked{{/checked}}>
+                        <span>{{{answertext}}}</span>
+                    </label>
+                    {{/answers}}
                 </div>
-            </div>
+                {{/istruefalse}}
 
-            <style>
-                .amd-ddwtos-drag-item {
-                    transition: all 0.2s ease;
-                    user-select: none;
-                }
-                .amd-ddwtos-drag-item:hover {
-                    transform: scale(1.05);
-                    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-                }
-                .amd-ddwtos-drag-item.dragging {
-                    opacity: 0.5;
-                }
-                .amd-ddwtos-drop-zone {
-                    transition: all 0.2s ease;
-                }
-                .amd-ddwtos-drop-zone.drag-over {
-                    border-color: #0d6efd !important;
-                    background-color: #e7f1ff !important;
-                }
-            </style>
-            {{/isddwtos}}
+                {{! --- Short Answer / Fill in Blank Logic --- }}
+                {{#isshortans}}
+                <input type="text" 
+                       class="amd-lms-quiz-fill-blank amd-shortans-input" 
+                       placeholder="Type your answer here..." 
+                       value="{{response}}">
+                {{/isshortans}}
+            </div>
         </div>
         {{/questions}}
+    </main>
 
-        <div class="text-end mt-3">
-            <button type="button" class="btn btn-success amd-quiz-submit-btn">Submit Quiz</button>
+    <!-- Sidebar Section -->
+    <div class="amd-lms-quiz-overlay"></div>
+    <aside class="amd-lms-quiz-sidebar" id="quiz-sidebar">
+        <div class="amd-lms-quiz-sidebar-content">
+            
+            <!-- Statistics Card -->
+            <div class="state-grid">
+                <div class="card mb-2">
+                    {{#hasresult}}
+                    {{#attemptresult}}
+                    <div class="stat-header">
+                        <span class="main-percentage">{{percentage}}%</span>
+                        <span class="main-label">Overall Performance</span>
+                    </div>
+
+                    <hr class="stat-divider">
+
+                    <div class="stat-grid">
+                        <div class="stat-item">
+                            <span class="value">{{maxgrade}}</span>
+                            <div class="stat-details">
+                                <i class="fas fa-list-ol text-primary"></i>
+                                <span class="label">Total</span>
+                            </div>
+                        </div>
+
+                        <div class="stat-item">
+                            <span class="value">{{sumgrades}}</span>
+                            <div class="stat-details">
+                                <i class="fas fa-check-circle text-success"></i>
+                                <span class="label">Score</span>
+                            </div>
+                        </div>
+                    </div>
+                    {{/attemptresult}}
+                    {{/hasresult}}
+                    
+                    {{^hasresult}}
+                    <div class="p-3 text-center text-muted">
+                        No attempts yet.
+                    </div>
+                    {{/hasresult}}
+                </div>
+            </div>
+
+            <!-- Sidebar Navigation Grid -->
+            <div class="amd-lms-quiz-question-nav">
+                {{#questions}}
+                <a href="#question-{{slot}}" 
+                   class="amd-lms-quiz-qnav-btn {{#answered}}answered{{/answered}} {{#review}}marked-for-review{{/review}}">
+                    {{slot}}
+                </a>
+                {{/questions}}
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="mt-3">
+                {{^inprogress}}
+                <button class="amd-lms-quiz-submit-quiz-btn amd-quiz-start-btn">
+                    {{#hasresult}}Retake Quiz{{/hasresult}}{{^hasresult}}Start Quiz{{/hasresult}}
+                </button>
+                {{/inprogress}}
+
+                {{#inprogress}}
+                <button class="amd-lms-quiz-submit-quiz-btn amd-quiz-submit-btn">Submit Quiz</button>
+                {{/inprogress}}
+            </div>
         </div>
+    </aside>
 
-    </div>
+    <!-- Mobile Submit Button -->
+    {{#inprogress}}
+    <button class="amd-lms-quiz-submit-quiz-btn amd-quiz-submit-btn d-lg-none">Submit Quiz</button>
+    {{/inprogress}}
 
 </div>

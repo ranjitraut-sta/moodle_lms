@@ -27,7 +27,12 @@ $data = $dashboard_preparer->getData();
 
 $data['logout_url'] =
     (new moodle_url('/login/logout.php', ['sesskey' => sesskey()]))->out(false);
+    
 $data['messages_url'] = (new moodle_url('/message/index.php'))->out(false);
+
+$data['active'] = [
+    'dashboard' => true
+];
 
 
 // Moodle ko default header/navbar bypass garna manual HTML suru gareko
@@ -38,7 +43,7 @@ echo $OUTPUT->doctype();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LMS User Dashboard</title>
+    <title>Dashboard</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <?php echo $OUTPUT->standard_head_html(); ?>
 </head>

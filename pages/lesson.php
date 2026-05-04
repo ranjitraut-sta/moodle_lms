@@ -80,9 +80,12 @@ $bootstrapcss  = (new moodle_url('/theme/mytheme/styles/bootstrap.min.css'))->ou
 $biconscss     = (new moodle_url('/theme/mytheme/styles/bootstrap-icons.min.css'))->out(false);
 $allcss        = (new moodle_url('/theme/mytheme/styles/all.min.css'))->out(false);
 $coursecss     = (new moodle_url('/theme/mytheme/styles/course.css'))->out(false);
-$coursejs      = (new moodle_url('/theme/mytheme/amd/src/course.js'))->out(false);
+
 $jquery        = (new moodle_url('https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js'))->out(false);
+$coursejs      = (new moodle_url('/theme/mytheme/amd/src/course.js'))->out(false);
 $quizjs        = (new moodle_url('/theme/mytheme/amd/src/quiz.js'))->out(false);
+$forumJs       = (new moodle_url('/theme/mytheme/amd/src/forum.js'))->out(false);
+$PAGE->requires->js(new moodle_url('/theme/mytheme/amd/src/forum.js'));
 
 echo $OUTPUT->doctype();
 ?>
@@ -109,15 +112,11 @@ echo $OUTPUT->doctype();
 echo $OUTPUT->render_from_template('theme_mytheme/lesson_detail', $templatecontext); 
 ?>
 
-<script src="<?php echo $coursejs; ?>"></script>
 <script src="<?php echo $jquery; ?>"></script>
+<script src="<?php echo $coursejs; ?>"></script>
 <script src="<?php echo $quizjs; ?>"></script>
+<script src="<?php echo $forumJs; ?>"></script>
 
-
-
-
-
-
-
+<?php echo $OUTPUT->standard_end_of_body_html(); ?>
 </body>
 </html>
