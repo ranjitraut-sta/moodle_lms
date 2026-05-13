@@ -6,7 +6,7 @@ $PAGE->set_context(context_system::instance());
 
 $PAGE->set_url('/theme/mytheme/layout/reportdashboard.php');
 $PAGE->set_pagelayout('dashboard');
-$PAGE->set_title('Enroll Courses');
+$PAGE->set_title('Course Reports');
 $PAGE->set_heading(fullname($USER));
 
 // Load CSS

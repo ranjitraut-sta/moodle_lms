@@ -6,14 +6,28 @@ defined('MOODLE_INTERNAL') || die();
 
 class UserPrepare
 {
-    /**
-     * Main function to get report data
-     */
+    protected $user;
+
+    public function __construct($user = null)
+    {
+        global $USER;
+        $this->user = $user ?? $USER;
+    }
     public function getData(): array
     {
         return [
             'users' => $this->getUserList(),
+            'user_fullname' => fullname($this->user),
+            'user_firstname' => $this->user->firstname,
+            'user_profile_pix' => $this->get_user_picture(),
         ];
+    }
+
+
+    protected function get_user_picture()
+    {
+        global $OUTPUT;
+        return $OUTPUT->user_picture($this->user, array('size' => 100, 'link' => false));
     }
 
     /**

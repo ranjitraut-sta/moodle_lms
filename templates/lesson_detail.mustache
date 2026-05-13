@@ -62,9 +62,6 @@
         <header class="amd-course-header" aria-label="Course details">
             <div class="d-flex align-items-center gap-2">
                 <h1>{{coursename}}</h1>
-                <i class="fas fa-info-circle amd-course-content-description-icon" role="button" id="lessonInfoBtn"
-                    data-bs-placement="right" title="View lesson description"
-                    data-bs-toggle="offcanvas" data-bs-target="#lessonInfoCanvas"></i>
             </div>
             <div>
                 <span class="amd-course-tag mx-1 amd-lms-tooltip" title="Back to Course" data-bs-toggle="tooltip"
@@ -88,17 +85,14 @@
 
         <div class="amd-lesson-video-area" aria-label="Lesson content area" tabindex="0">
 
-                <button class="amd-course-video-fullscreen-btn amd-lms-tooltip" title="Fullscreen" aria-label="Fullscreen video" data-bs-toggle="tooltip" data-bs-placement="right" style=" ">
-                    <i class="ri-fullscreen-line" style="font-size: 18px;"></i>
-                </button>
+            <button class="amd-course-video-fullscreen-btn amd-lms-tooltip" title="Fullscreen" aria-label="Fullscreen video" data-bs-toggle="tooltip" data-bs-placement="right" style=" ">
+                <i class="ri-fullscreen-line" style="font-size: 18px;"></i>
+            </button>
+
             {{! Progress bar }}
             <div class="amd-lesson-top-progress">
                 <div class="amd-course-progress-wrap" aria-live="polite" aria-atomic="true">
                     <div class="amd-course-prog-label" id="progLabel">{{modulename}}</div>
-                    <div class="amd-course-progress-bar-track" role="progressbar" aria-valuemin="0"
-                        aria-valuemax="100" aria-label="Course progress">
-                        <div class="amd-course-progress-bar-fill" id="progFill" style="width: 0%;"></div>
-                    </div>
                 </div>
                 {{#ismanualcompletion}}
                 <a href="{{toggleurl}}" class="amd-lms-btn ms-3 {{#ismarkedcomplete}}amd-lms-prev-btn{{/ismarkedcomplete}}{{^ismarkedcomplete}}amd-lms-next-btn{{/ismarkedcomplete}}" style="white-space:nowrap;">

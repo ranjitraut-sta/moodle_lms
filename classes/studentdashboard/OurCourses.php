@@ -18,10 +18,19 @@ class OurCourses
     {
         return [
             'enrolled_courses' => $this->getAllCourses(),
+            'user_fullname' => fullname($this->user),
+            'user_firstname' => $this->user->firstname,
+            'user_profile_pix' => $this->get_user_picture(),
         ];
     }
 
-public function getAllCourses(): array
+    protected function get_user_picture()
+    {
+        global $OUTPUT;
+        return $OUTPUT->user_picture($this->user, array('size' => 100, 'link' => false));
+    }
+
+    public function getAllCourses(): array
     {
         global $DB, $CFG;
 
@@ -71,7 +80,12 @@ public function getAllCourses(): array
             foreach ($courseobj->get_course_overviewfiles() as $file) {
                 if ($file->is_valid_image()) {
                     $imageurl = \moodle_url::make_pluginfile_url(
-                        $file->get_contextid(), $file->get_component(), $file->get_filearea(), null, $file->get_filepath(), $file->get_filename()
+                        $file->get_contextid(),
+                        $file->get_component(),
+                        $file->get_filearea(),
+                        null,
+                        $file->get_filepath(),
+                        $file->get_filename()
                     )->out(false);
                     break;
                 }

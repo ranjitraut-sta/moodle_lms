@@ -9,7 +9,6 @@ $PAGE->set_pagelayout('dashboard');
 $PAGE->set_title('Certificate');
 $PAGE->set_heading(fullname($USER));
 
-
 // Load CSS
 $PAGE->requires->css('/theme/mytheme/styles/user-dash.css');
 $PAGE->requires->js('/theme/mytheme/amd/src/user-dash.js', array('type' => 'on-demand'));

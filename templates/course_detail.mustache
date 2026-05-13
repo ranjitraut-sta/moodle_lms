@@ -2,9 +2,9 @@
     <div class="amd-lms-breadcum-section__content">
         <nav aria-label="breadcrumb">
             <ol class="amd-lms-breadcum-nav">
-                <li class="amd-lms-breadcum-nav__item"><a href="{{wwwroot}}">Home</a></li>
+                <li class="amd-lms-breadcum-nav__item"><a href="{{config.wwwroot}}/?redirect=0">Home</a></li>
                 <span>/</span>
-                <li class="amd-lms-breadcum-nav__item"><a href="{{wwwroot}}course/index.php">Courses</a></li>
+                <li class="amd-lms-breadcum-nav__item"><a href="{{config.wwwroot}}/theme/mytheme/pages/courselist.php">Courses</a></li>
                 <span>/</span>
                 <li class="amd-lms-breadcum-nav__item amd-lms-breadcum-nav__item--active" aria-current="page">
                     <span>{{coursename}}</span>
@@ -16,11 +16,6 @@
 
 <section class="amd-lms-course-detail-container amd-shine-bg">
     <div class="container">
-        <a href="{{wwwroot}}/course/index.php" class="amd-lms-course-detail-back-btn">
-            <i class="fas fa-arrow-left"></i>
-            <span>Back</span>
-        </a>
-
         <div class="amd-lms-course-detail-grid">
             <!-- Main Content Column -->
             <div class="amd-lms-course-detail-main">
@@ -37,7 +32,7 @@
                     <!-- Description Section -->
                     <section class="amd-lms-course-detail-section">
                         <h2>Description</h2>
-                        <div>{{{coursesummary}}}</div>
+                        <p>{{{coursesummary}}}</p>
                     </section>
 
                     <!-- Tags Section -->
@@ -98,23 +93,23 @@
                 <div class="amd-lms-course-detail-actions">
                     {{#isenrolled}}
                         {{#iscompleted}}
-                        <a href="{{firstlessonurl}}" class="amd-lms-btn-register">
+                        <a href="{{firstlessonurl}}" class="amd-lms-btn-register text-decoration-none">
                             Review Course <i class="ri-refresh-line"></i>
                         </a>
                         {{#certurl}}
-                        <a href="{{certurl}}" target="_blank" class="amd-lms-btn-register">
+                        <a href="{{certurl}}" target="_blank" class="amd-lms-btn-register text-decoration-none">
                             Certificate <i class="ri-award-line"></i>
                         </a>
                         {{/certurl}}
                         {{/iscompleted}}
                         {{^iscompleted}}
-                        <a href="{{firstlessonurl}}" class="amd-lms-btn-register">
+                        <a href="{{firstlessonurl}}" class="amd-lms-btn-register text-decoration-none">
                             Continue Learning <i class="ri-play-circle-line"></i>
                         </a>
                         {{/iscompleted}}
                     {{/isenrolled}}
                     {{^isenrolled}}
-                    <a href="{{wwwroot}}theme/mytheme/pages/enroll.php?id={{courseid}}&sesskey={{sesskey}}" class="amd-lms-btn-register">
+                    <a href="{{wwwroot}}theme/mytheme/pages/enroll.php?id={{courseid}}&sesskey={{sesskey}}" class="amd-lms-btn-register text-decoration-none">
                         Enroll Now <i class="ri-play-circle-line"></i>
                     </a>
                     {{/isenrolled}}
@@ -136,15 +131,6 @@
                     </div>
                 </div>
                 {{/teachername}}
-
-                <div class="amd-lms-course-detail-sidebar-card amd-lms-course-detail-share">
-                    <h3>Share This Course</h3>
-                    <div class="amd-lms-course-detail-social-links">
-                        <a href="https://twitter.com/intent/tweet?url={{wwwroot}}/theme/mytheme/pages/course.php?id={{courseid}}" target="_blank" class="twitter"><i class="bi bi-twitter"></i></a>
-                        <a href="https://www.facebook.com/sharer/sharer.php?u={{wwwroot}}/theme/mytheme/pages/course.php?id={{courseid}}" target="_blank" class="facebook"><i class="bi bi-facebook"></i></a>
-                        <a href="https://www.linkedin.com/sharing/share-offsite/?url={{wwwroot}}/theme/mytheme/pages/course.php?id={{courseid}}" target="_blank" class="linkedin"><i class="bi bi-linkedin"></i></a>
-                    </div>
-                </div>
             </aside>
         </div>
     </div>

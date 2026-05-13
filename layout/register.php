@@ -87,14 +87,13 @@ echo $OUTPUT->doctype();
                             <!-- Employment -->
                             <div class="amd-lms-login-input-group">
                                 <select name="employed">
-                                    <option value="">Employed?</option>
+                                    <option value="">Select</option>
                                     <option value="yes">Yes</option>
                                     <option value="no">No</option>
                                 </select>
                                 <label>Employed?</label>
                             </div>
                         </div>
-
 
                         <div class="grid-row grid-2">
                             <!-- Citizenship -->
@@ -103,8 +102,12 @@ echo $OUTPUT->doctype();
                                 <label>Citizenship No.</label>
                             </div>
 
+
                             <div class="amd-lms-login-input-group">
-                                <input type="text" name="citizenship_district" placeholder=" ">
+                                <select name="citizenship_district" id="citizenship_district_dropdown">
+                                    <option value="">Select Issued District</option>
+                                    <!-- AJAX bata populate hunchha -->
+                                </select>
                                 <label>Citizenship Issued District</label>
                             </div>
                         </div>
@@ -116,7 +119,7 @@ echo $OUTPUT->doctype();
                                 <label for="NIDNo">NID No</label>
                             </div>
                             <div class="amd-lms-login-input-group">
-                                <input type="text" name="pan_no" id="PANNo" placeholder=" " maxlength="9">
+                                <input type="text" name="pan_no" id="PANNo" placeholder=" " maxlength="9" required>
                                 <label for="PANNo">PAN No (9 digits)</label>
                             </div>
                         </div>
@@ -337,6 +340,35 @@ echo $OUTPUT->doctype();
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            const wwwroot = "<?php echo $CFG->wwwroot; ?>";
+            const citizenDistrictSelect = document.getElementById('citizenship_district_dropdown');
+
+            if (citizenDistrictSelect) {
+                console.log("Fetching districts from: ", wwwroot + '/theme/mytheme/pages/ajax/locations.php?action=districts');
+
+                fetch(wwwroot + '/theme/mytheme/pages/ajax/locations.php?action=districts')
+                    .then(res => {
+                        if (!res.ok) throw new Error('Network response was not ok');
+                        return res.json();
+                    })
+                    .then(data => {
+                        console.log("Districts received:", data); // Check if data is coming
+                        citizenDistrictSelect.innerHTML = '<option value="">Select Issued District</option>';
+                        if (data.length > 0) {
+                            data.forEach(d => {
+                                citizenDistrictSelect.innerHTML += `<option value="${d.id}">${d.name}</option>`;
+                            });
+                        } else {
+                            console.warn("No districts found in database.");
+                        }
+                    })
+                    .catch(err => console.error('Fetch error:', err));
+            }
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
 
             const wwwroot = "<?php echo $CFG->wwwroot; ?>";
 
@@ -510,6 +542,30 @@ echo $OUTPUT->doctype();
 
         });
     </script>
+
+    <script>
+        document.querySelectorAll('.togglePassword').forEach(button => {
+            button.addEventListener('click', function () {
+                // 1. Toggle garne input field patta lagaune (teskai parent bhitra ko input)
+                const input = this.parentElement.querySelector('input');
+
+                // 2. Icon select garne
+                const icon = this.querySelector('i');
+
+                // 3. Logic: type toggle garne
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    // Icon change garne: Eye-slash bata Eye ma
+                    icon.classList.replace('fa-eye-slash', 'fa-eye');
+                } else {
+                    input.type = 'password';
+                    // Icon change garne: Eye bata Eye-slash ma
+                    icon.classList.replace('fa-eye', 'fa-eye-slash');
+                }
+            });
+        });
+    </script>
+
 
 </body>
 

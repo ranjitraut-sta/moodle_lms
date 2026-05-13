@@ -18,6 +18,9 @@ $PAGE->requires->js('/theme/mytheme/amd/src/user-dash.js', array('type' => 'on-d
 $profile = new \theme_mytheme\StudentDashboard\ProfileData();
 $data = $profile->getData();
 
+$data['logout_url'] =
+    (new moodle_url('/login/logout.php', ['sesskey' => sesskey()]))->out(false);
+
 // echo '<pre>';
 // print_r($data);
 // echo '</pre>';

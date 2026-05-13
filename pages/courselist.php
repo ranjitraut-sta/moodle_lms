@@ -10,6 +10,7 @@ $PAGE->set_pagelayout('base');
 $PAGE->set_title(get_string('courses'));
 $PAGE->set_heading(get_string('courses'));
 
+
 $templatecontext = array_merge(
     theme_mytheme_get_course_list_context($categoryid),
     theme_mytheme_get_base_context()
@@ -33,11 +34,45 @@ echo $OUTPUT->doctype();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
 
-        <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
         rel="stylesheet">
+
+    <style>
+        @font-face {
+            font-family: 'Italic';
+            src: url('<?php echo $CFG->wwwroot; ?>/theme/mytheme/styles/fonts/Lato-Italic.woff') format('woff');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'BoldItalic';
+            src: url('<?php echo $CFG->wwwroot; ?>/theme/mytheme/styles/fonts/Lato-BoldItalic.woff') format('woff');
+            font-weight: 300;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'BlackItalic';
+            src: url('<?php echo $CFG->wwwroot; ?>/theme/mytheme/styles/fonts/Lato-BlackItalic.woff') format('woff');
+            font-weight: 300;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Bold';
+            src: url('<?php echo $CFG->wwwroot; ?>/theme/mytheme/styles/fonts/Lato-Bold.woff') format('woff');
+            font-weight: 700;
+            font-style: normal;
+            font-display: swap;
+        }
+    </style>
 </head>
 
 <body <?php echo $OUTPUT->body_attributes(); ?>>

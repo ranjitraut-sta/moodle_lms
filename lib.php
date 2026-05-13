@@ -463,3 +463,66 @@ function theme_mytheme_pluginfile($course, $cm, $context, $filearea, $args, $for
     }
     return false;
 }
+
+
+/**
+ * Redirect user to home page instead of dashboard after login.
+ * 
+ * @param string $redirecturl The URL the user is being redirected to.
+ * @param stdClass $user The user object.
+ * @return string The modified redirect URL.
+ */
+
+/**
+ * Prevent logged-in users from being forced to /my/ dashboard 
+ * when they try to access the site root.
+ */
+/**
+ * Redirect user logic: Logged in user lai /my/ bata homepage ma dhalkiuna.
+ */
+function theme_mytheme_before_footer()
+{
+    global $CFG, $PAGE, $SCRIPT;
+
+    // Check if user is logged in and specifically on /my/index.php or /my/
+    if (isloggedin() && !isguestuser()) {
+        // Moodle le default dashboard load garna khojda yo catch hunchha
+        if ($PAGE->pagetype === 'my-index' || strpos($_SERVER['REQUEST_URI'], '/my/') !== false) {
+            // Yadi user manually dashboard ma jana khojeko hoina (referral chaina) bhane root ma pathaune
+            if (!isset($_GET['redirect'])) {
+                redirect(new moodle_url('/?redirect=0'));
+            }
+        }
+    }
+}
+
+/**
+ * Handle initial login redirect.
+ */
+function theme_mytheme_user_login_redirect($redirecturl, $user)
+{
+    global $CFG;
+
+    // Login huna sath /my/ ko satta homepage ma pathaune logic
+    $dashboardurl = $CFG->wwwroot . '/my/';
+
+    if (empty($redirecturl) || strpos($redirecturl, $dashboardurl) !== false || $redirecturl == $CFG->wwwroot . '/my') {
+        return $CFG->wwwroot . '/?redirect=0';
+    }
+
+    return $redirecturl;
+}
+
+/**
+ * Custom function to force root URL behavior
+ * Moodle core le login bhayepachi 'Home' click garda /my/ ma lane force garxa, teslai yo logic le rokxa.
+ */
+function theme_mytheme_extend_navigation(global_navigation $nav)
+{
+    global $CFG, $PAGE;
+
+    if (isloggedin() && !isguestuser() && $PAGE->url->out_as_local_url() === '/') {
+        // Homepage ma basda loop narokiyema redirect force garne
+        // Yo section khali choddinu, before_footer le handle garihalxa.
+    }
+}

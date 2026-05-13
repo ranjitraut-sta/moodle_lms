@@ -81,12 +81,33 @@ echo $OUTPUT->doctype();
                             <input type="password" id="login-password" name="password" required placeholder=" ">
                             <label for="login-password">Password</label>
 
-                            <!-- Login Form toggle -->
-                            <span class="amd-eye-toggle togglePassword"
+                            <!-- Toggle Button -->
+                            <span class="amd-eye-toggle" id="togglePassword"
                                 style="position: absolute; top: 50%; right: 15px; transform: translateY(-50%); cursor: pointer; font-size: 1.3rem; color: var(--amd-muted);">
-                                <i class="fas fa-eye-slash"></i>
+                                <i class="fas fa-eye-slash" id="eyeIcon"></i>
                             </span>
                         </div>
+
+                        <script>
+                            // Elements select garne
+                            const toggleBtn = document.querySelector('#togglePassword');
+                            const passwordInput = document.querySelector('#login-password');
+                            const eyeIcon = document.querySelector('#eyeIcon');
+
+                            // Event Listener thapne
+                            toggleBtn.addEventListener('click', function () {
+                                // Type toggle garne: password <-> text
+                                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                                passwordInput.setAttribute('type', type);
+
+                                // Icon change garne (FontAwesome use gareko bhae)
+                                if (type === 'password') {
+                                    eyeIcon.classList.replace('fa-eye', 'fa-eye-slash');
+                                } else {
+                                    eyeIcon.classList.replace('fa-eye-slash', 'fa-eye');
+                                }
+                            });
+                        </script>
                         <button type="submit" class="amd-lms-login-submit-btn">Login</button>
 
                     </form>
@@ -99,15 +120,17 @@ echo $OUTPUT->doctype();
                 <div>
                     <div class="amd-right-side-logo border-bottom mb-4 pb-3 pt-2">
                         <?php if ($logo): ?>
-                            <img src="<?php echo $logo; ?>" alt="Logo">
+                            <a href="<?php echo $CFG->wwwroot; ?>" class="text-decoration-none">
+                                <img src="<?php echo $logo; ?>" alt="Logo">
+                            </a>
                         <?php else: ?>
                             <h3 class="fw-bold text-primary">LOGIN</h3>
                         <?php endif; ?>
                     </div>
                     <div class="amd-right-side-content">
-                        <img src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcS9kZBLfczhN4oUfH6gvV9k4sZ6ZyWOvdc1v7Y7mWbKerWFO8-l"
-                            alt="">
+                        <img src="<?php echo $CFG->wwwroot . '/theme/mytheme/amd/pix/login.jpg'; ?>" alt="Login Image">
                     </div>
+
                 </div>
             </div>
     </main>
@@ -115,19 +138,6 @@ echo $OUTPUT->doctype();
     <div style="display:none;"><?php echo $OUTPUT->main_content(); ?></div>
     <?php echo $OUTPUT->standard_end_of_body_html(); ?>
 
-    <script>
-        function togglePass(id, btn) {
-            const input = document.getElementById(id);
-            const icon = btn.querySelector('i');
-            if (input.type === 'password') {
-                input.type = 'text';
-                icon.className = 'bi bi-eye-slash';
-            } else {
-                input.type = 'password';
-                icon.className = 'bi bi-eye';
-            }
-        }
-    </script>
 </body>
 
 </html>

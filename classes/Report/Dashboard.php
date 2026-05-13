@@ -9,6 +9,13 @@ class Dashboard
     /**
      * सम्पूर्ण ड्यासबोर्ड (System-wide) डेटा तयार गर्ने मुख्य फङ्सन
      */
+    protected $user;
+
+    public function __construct($user = null)
+    {
+        global $USER;
+        $this->user = $user ?? $USER;
+    }
     public function getData(): array
     {
         return [
@@ -23,7 +30,16 @@ class Dashboard
             'active_users_chart' => $this->getActiveUsersData(30), // Last 30 days
             'enrollment_chart' => $this->getCourseEnrollmentChart(5),
             'dropout_rate' => $this->getDropoutRate(),
+            'user_fullname' => fullname($this->user),
+            'user_firstname' => $this->user->firstname,
+            'user_profile_pix' => $this->get_user_picture(),
         ];
+    }
+
+    protected function get_user_picture()
+    {
+        global $OUTPUT;
+        return $OUTPUT->user_picture($this->user, array('size' => 100, 'link' => false));
     }
 
     /**

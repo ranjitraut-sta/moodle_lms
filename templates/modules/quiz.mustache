@@ -557,6 +557,8 @@
     </style>
     
 
+    
+
           
 
 <div class="amd-lms-quiz-container amd-module-quiz"
@@ -566,25 +568,8 @@
      data-sesskey="{{sesskey}}"
      data-attemptid="{{#inprogress}}{{attemptid}}{{/inprogress}}{{^inprogress}}0{{/inprogress}}">
 
-    <!-- Main Questions Section -->
     <main class="amd-lms-quiz-questions-section {{^inprogress}}d-none{{/inprogress}}">
-
-   {{#hasattempts}}
-    <div class="mb-3">
-        <div><strong>Your attempts:</strong></div>
-        <div class="list-group">
-            {{#attempts}}
-            <div class="list-group-item">
-                <div><strong>Attempt {{attemptnumber}}</strong> — {{status}}</div>
-                <div>Started: {{started}}, Completed: {{completed}}, Duration: {{duration}}</div>
-                <div>Marks: {{marks}}/{{maxmarks}}, Grade: {{grade}}%</div>
-            </div>
-            {{/attempts}}
-        </div>
-    </div>
-    {{/hasattempts}}
-
-
+        
         {{#questions}}
         <div class="amd-lms-quiz-question-card amd-quiz-question" 
              id="question-{{slot}}"
@@ -593,12 +578,36 @@
              data-type="{{type}}">
             
             <div class="amd-lms-quiz-question-header">Question {{slot}} of {{totalquestions}}</div>
+            
+            {{! --- Drag and Drop into Text (ddwtos) logic starts --- }}
+            {{#isddwtos}}
+            <div class="amd-ddwtos-container" data-slot="{{slot}}">
+                <h2 class="amd-lms-quiz-question-title amd-quiz-qtext amd-ddwtos-text-content">
+                    {{{text}}}
+                </h2>
+
+                <div class="amd-ddwtos-drags-pool d-flex flex-wrap gap-2 p-3 bg-light border rounded mt-4">
+                    {{#ddwtosoptions}}
+                    <div class="amd-ddwtos-drag-item shadow-sm" 
+                         draggable="true" 
+                         data-no="{{no}}" 
+                         data-group="{{groupno}}"
+                         style="cursor: grab; padding: 8px 15px; background: #fff; border: 1px solid #4263eb; border-radius: 6px; user-select: none; font-weight: 500;">
+                        {{{text}}}
+                    </div>
+                    {{/ddwtosoptions}}
+                </div>
+            </div>
+            {{/isddwtos}}
+            {{! --- ddwtos logic ends --- }}
+
+            {{^isddwtos}}
             <h2 class="amd-lms-quiz-question-title amd-quiz-qtext">
                 {{{text}}}
             </h2>
+            {{/isddwtos}}
 
             <div class="amd-lms-quiz-answer-options">
-                {{! --- Multiple Choice (MCQ) Logic --- }}
                 {{#ismcq}}
                 <div class="amd-mcq-options">
                     {{#answers}}
@@ -612,7 +621,6 @@
                 </div>
                 {{/ismcq}}
 
-                {{! --- True/False Logic --- }}
                 {{#istruefalse}}
                 <div class="amd-tf-options">
                     {{#answers}}
@@ -624,7 +632,6 @@
                 </div>
                 {{/istruefalse}}
 
-                {{! --- Short Answer / Fill in Blank Logic --- }}
                 {{#isshortans}}
                 <input type="text" 
                        class="amd-lms-quiz-fill-blank amd-shortans-input" 
@@ -636,79 +643,4 @@
         {{/questions}}
     </main>
 
-    <!-- Sidebar Section -->
-    <div class="amd-lms-quiz-overlay"></div>
-    <aside class="amd-lms-quiz-sidebar" id="quiz-sidebar">
-        <div class="amd-lms-quiz-sidebar-content">
-            
-            <!-- Statistics Card -->
-            <div class="state-grid">
-                <div class="card mb-2">
-                    {{#hasresult}}
-                    {{#attemptresult}}
-                    <div class="stat-header">
-                        <span class="main-percentage">{{percentage}}%</span>
-                        <span class="main-label">Overall Performance</span>
-                    </div>
-
-                    <hr class="stat-divider">
-
-                    <div class="stat-grid">
-                        <div class="stat-item">
-                            <span class="value">{{maxgrade}}</span>
-                            <div class="stat-details">
-                                <i class="fas fa-list-ol text-primary"></i>
-                                <span class="label">Total</span>
-                            </div>
-                        </div>
-
-                        <div class="stat-item">
-                            <span class="value">{{sumgrades}}</span>
-                            <div class="stat-details">
-                                <i class="fas fa-check-circle text-success"></i>
-                                <span class="label">Score</span>
-                            </div>
-                        </div>
-                    </div>
-                    {{/attemptresult}}
-                    {{/hasresult}}
-                    
-                    {{^hasresult}}
-                    <div class="p-3 text-center text-muted">
-                        No attempts yet.
-                    </div>
-                    {{/hasresult}}
-                </div>
-            </div>
-
-            <!-- Sidebar Navigation Grid -->
-            <div class="amd-lms-quiz-question-nav">
-                {{#questions}}
-                <a href="#question-{{slot}}" 
-                   class="amd-lms-quiz-qnav-btn {{#answered}}answered{{/answered}} {{#review}}marked-for-review{{/review}}">
-                    {{slot}}
-                </a>
-                {{/questions}}
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="mt-3">
-                {{^inprogress}}
-                <button class="amd-lms-quiz-submit-quiz-btn amd-quiz-start-btn">
-                    {{#hasresult}}Retake Quiz{{/hasresult}}{{^hasresult}}Start Quiz{{/hasresult}}
-                </button>
-                {{/inprogress}}
-
-                {{#inprogress}}
-                <button class="amd-lms-quiz-submit-quiz-btn amd-quiz-submit-btn">Submit Quiz</button>
-                {{/inprogress}}
-            </div>
-        </div>
-    </aside>
-
-    <!-- Mobile Submit Button -->
-    {{#inprogress}}
-    <button class="amd-lms-quiz-submit-quiz-btn amd-quiz-submit-btn d-lg-none">Submit Quiz</button>
-    {{/inprogress}}
-
-</div>
+    </div>

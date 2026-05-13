@@ -16,7 +16,8 @@ $context = context_course::instance($courseid);
 if ($justenrolled && is_enrolled($context, $USER)) {
     $modinfo = get_fast_modinfo($course);
     foreach ($modinfo->get_section_info_all() as $section) {
-        if (!$section->uservisible) continue;
+        if (!$section->uservisible)
+            continue;
         if (!empty($modinfo->sections[$section->section])) {
             foreach ($modinfo->sections[$section->section] as $cmid) {
                 $cm = $modinfo->cms[$cmid];
@@ -42,6 +43,7 @@ $templatecontext = array_merge(
 echo $OUTPUT->doctype();
 ?>
 <html <?php echo $OUTPUT->htmlattributes(); ?>>
+
 <head>
     <title><?php echo $OUTPUT->page_title(); ?></title>
     <link rel="shortcut icon" href="<?php echo $OUTPUT->favicon(); ?>" />
@@ -52,18 +54,57 @@ echo $OUTPUT->doctype();
     <link rel="stylesheet" href="<?php echo new moodle_url('/theme/mytheme/styles/all.min.css'); ?>">
     <link rel="stylesheet" href="<?php echo new moodle_url('/theme/mytheme/styles/main.css'); ?>">
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        @font-face {
+            font-family: 'Italic';
+            src: url('<?php echo $CFG->wwwroot; ?>/theme/mytheme/styles/fonts/Lato-Italic.woff') format('woff');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'BoldItalic';
+            src: url('<?php echo $CFG->wwwroot; ?>/theme/mytheme/styles/fonts/Lato-BoldItalic.woff') format('woff');
+            font-weight: 300;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'BlackItalic';
+            src: url('<?php echo $CFG->wwwroot; ?>/theme/mytheme/styles/fonts/Lato-BlackItalic.woff') format('woff');
+            font-weight: 300;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Bold';
+            src: url('<?php echo $CFG->wwwroot; ?>/theme/mytheme/styles/fonts/Lato-Bold.woff') format('woff');
+            font-weight: 700;
+            font-style: normal;
+            font-display: swap;
+        }
+    </style>
+
 </head>
+
 <body <?php echo $OUTPUT->body_attributes(); ?>>
-<?php echo $OUTPUT->standard_top_of_body_html(); ?>
+    <?php echo $OUTPUT->standard_top_of_body_html(); ?>
 
-<?php
-echo $OUTPUT->render_from_template('theme_mytheme/header', $templatecontext);
-echo $OUTPUT->render_from_template('theme_mytheme/course_detail', $templatecontext);
-echo $OUTPUT->render_from_template('theme_mytheme/footer', $templatecontext);
-?>
+    <?php
+    echo $OUTPUT->render_from_template('theme_mytheme/header', $templatecontext);
+    echo $OUTPUT->render_from_template('theme_mytheme/course_detail', $templatecontext);
+    echo $OUTPUT->render_from_template('theme_mytheme/footer', $templatecontext);
+    ?>
 
-<?php echo $OUTPUT->standard_end_of_body_html(); ?>
+    <?php echo $OUTPUT->standard_end_of_body_html(); ?>
 </body>
+
 </html>

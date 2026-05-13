@@ -18,8 +18,17 @@ class EnrollCourses
     {
         return [
             'enrolled_courses' => $this->getEnrolledCourses(),
+            'user_fullname' => fullname($this->user),
+            'user_firstname' => $this->user->firstname,
+            'user_profile_pix' => $this->get_user_picture(),
         ];
     }
+    protected function get_user_picture()
+    {
+        global $OUTPUT;
+        return $OUTPUT->user_picture($this->user, array('size' => 100, 'link' => false));
+    }
+
 
     public function getEnrolledCourses(): array
     {
@@ -84,7 +93,7 @@ class EnrollCourses
             $imageurl = '';
 
             $context = \context_course::instance($course->id);
-            \context_helper::preload_from_record((object)[
+            \context_helper::preload_from_record((object) [
                 'id' => $context->id,
                 'contextlevel' => CONTEXT_COURSE,
                 'instanceid' => $course->id

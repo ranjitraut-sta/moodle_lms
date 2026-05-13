@@ -1074,7 +1074,7 @@ a {
 /* Firefox */
 * {
     scrollbar-width: thin;
-    scrollbar-color: var(--amd-secondary) transparent;
+    scrollbar-color: #f7eaea transparent;
 }
 
 

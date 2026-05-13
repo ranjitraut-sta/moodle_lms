@@ -83,4 +83,17 @@ http://localhost/moodle/local/location/seed_municipalities.php
 
 # role banauda System context enable garepaxi matra user lai role assign garna milxa 
 
+
+https://learntiti.amdsoft.com.np/my/ yaha jada default ma 
+# comment 
+6630187
+
+pan number mandatory
+select
+citizenship district ma all district
+
+
+# aba fill in the blank ni tanne quiz ma 
+
+
 # Happy Coding 

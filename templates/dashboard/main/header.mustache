@@ -1,5 +1,3 @@
-
-
 <header class="amd-lms-user-dash-header d-flex justify-content-between align-items-center">
     <div class="d-flex align-items-center">
         <button class="btn d-lg-none me-3 p-0" id="amd-lms-mobile-toggle-btn"><i class="bi bi-list fs-3"></i></button>
@@ -11,11 +9,11 @@
     <div class="d-flex align-items-center amd-lms-user-dash-header-icons">
         <div class="amd-lms-user-dash-profile d-flex align-items-center dropdown">
 
-            <img src="https://i.pravatar.cc/40?u=aramide" alt="User Avatar" class="rounded-circle me-2">
+        <!-- FontAwesome User Icon (Image ko saato) -->
+            <i class="fas fa-user-circle fa-2x me-2 text-secondary"></i>
 
-            <div class="amd-lms-user-dash-profile-text d-none d-md-block">
-                <strong>{{user_fullname}}</strong>
-                <span>Student ID: {{user_id}}</span>
+            <div class="amd-lms-user-dash-profile-text d-none d-md-block me-1">
+                <strong class="text-dark">{{user_fullname}}</strong>
             </div>
 
             <!-- Toggle -->

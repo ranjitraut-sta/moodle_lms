@@ -24,9 +24,17 @@ class EarnCertificate
         return [
             'certificates' => $certificates,
             'total_certs_count' => $total,
+            'user_fullname' => fullname($this->user),
+            'user_firstname' => $this->user->firstname,
+            'user_profile_pix' => $this->get_user_picture(),
         ];
     }
 
+    protected function get_user_picture()
+    {
+        global $OUTPUT;
+        return $OUTPUT->user_picture($this->user, array('size' => 100, 'link' => false));
+    }
     public function getCertificates(): array
     {
         global $DB, $CFG;

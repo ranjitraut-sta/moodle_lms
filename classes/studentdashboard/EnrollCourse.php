@@ -28,6 +28,7 @@ class EnrollCourse
         ];
     }
 
+
     /**
      * TOTAL ENROLLED COURSES COUNT
      */
