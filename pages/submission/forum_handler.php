@@ -5,7 +5,7 @@ require_once($CFG->dirroot . '/mod/forum/lib.php');
 
 header('Content-Type: application/json');
 
-// Security Check: Sesskey अनिवार्य छ
+// Session check
 if (!confirm_sesskey()) {
     echo json_encode(['success' => false, 'message' => 'Invalid Session Key']);
     exit;
@@ -15,15 +15,24 @@ $action = optional_param('action', 'adddiscussion', PARAM_ALPHA);
 $forumid = required_param('forum', PARAM_INT);
 
 try {
-    // आधारभूत डेटा लोड गर्ने
     $forum = $DB->get_record('forum', array('id' => $forumid), '*', MUST_EXIST);
     $course = $DB->get_record('course', array('id' => $forum->course), '*', MUST_EXIST);
     $cm = get_coursemodule_from_instance('forum', $forum->id, $course->id, false, MUST_EXIST);
 
-    // Permission चेक
+    // Context capability loading rules
+    $context = \context_module::instance($cm->id);
     require_login($course, false, $cm);
 
-    // १. नयाँ Discussion थप्ने (New Topic)
+    // CRITICAL SECURITY ENFORCEMENT FOR SINGLE FORUMS
+    if ($action === 'adddiscussion' && $forum->type === 'single') {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Action denied: Single Simple Discussion layouts do not support branch creations.'
+        ]);
+        exit;
+    }
+
+    // 1. Add Discussion Thread
     if ($action === 'adddiscussion') {
         $subject = required_param('subject', PARAM_TEXT);
         $message = required_param('message', PARAM_RAW);
@@ -32,7 +41,7 @@ try {
         $discussion->course = $course->id;
         $discussion->forum = $forum->id;
         $discussion->name = $subject;
-        $discussion->intro = $message; // केही भर्सनमा intro चाहिन्छ
+        $discussion->intro = $message;
         $discussion->message = $message;
         $discussion->messageformat = FORMAT_HTML;
         $discussion->messagetrust = 0;
@@ -40,7 +49,7 @@ try {
         $discussion->groupid = -1;
         $discussion->timestart = 0;
         $discussion->timeend = 0;
-        $discussion->itemid = 0; // Draft files छैन भने ०
+        $discussion->itemid = 0;
 
         $discussionid = forum_add_discussion($discussion, null, null, $USER->id);
 
@@ -48,13 +57,19 @@ try {
         exit;
     }
 
-    // २. रिप्लाई थप्ने (Reply to Discussion)
+    // 2. Add Reply Post
     else if ($action === 'reply') {
         $discussionid = required_param('discussion', PARAM_INT);
         $message = required_param('message', PARAM_RAW);
 
-        // पहिलो पोस्ट (Parent Post) पत्ता लगाउने
         $discussion_rec = $DB->get_record('forum_discussions', ['id' => $discussionid], '*', MUST_EXIST);
+
+        // Ensure targeting post elements map back explicitly inside this course module workspace
+        if ($discussion_rec->forum != $forum->id) {
+            echo json_encode(['success' => false, 'message' => 'Parameters configuration matching violation error.']);
+            exit;
+        }
+
         $parentid = $discussion_rec->firstpost;
 
         $post = new \stdClass();
@@ -67,27 +82,32 @@ try {
         $post->messagetrust = 0;
         $post->mailnow = 0;
         $post->attachment = 0;
-        $post->itemid = 0; // Attachment नभएकोले ०
+        $post->itemid = 0;
 
-        // रिप्लाई पोस्ट गर्ने
         $postid = forum_add_new_post($post, null);
 
         echo json_encode(['success' => true, 'id' => $postid, 'type' => 'reply']);
         exit;
-    } else if ($action === 'delete') {
+    }
+
+    // 3. Delete Post Handler
+    else if ($action === 'delete') {
         $postid = required_param('postid', PARAM_INT);
         $post = $DB->get_record('forum_posts', ['id' => $postid], '*', MUST_EXIST);
         $discussion = $DB->get_record('forum_discussions', ['id' => $post->discussion], '*', MUST_EXIST);
 
-        // Permission Check: आफैले लेखेको हुनुपर्छ वा म्यानेजर हुनुपर्छ
-        $canmanage = ($USER->id == $post->userid) || has_capability('mod/forum:manageanydiscussion', $cm->context);
+        $canmanage = ($USER->id == $post->userid) || has_capability('mod/forum:manageanydiscussion', $context);
 
         if ($canmanage) {
-            // यदि यो डिस्कसनको पहिलो पोस्ट हो भने पूरै डिस्कसन डिलिट हुन्छ
             if ($discussion->firstpost == $post->id) {
+                // Deleting the first post of a single forum is prohibited
+                if ($forum->type === 'single') {
+                    echo json_encode(['success' => false, 'message' => 'Cannot delete the master description node of single topic forums.']);
+                    exit;
+                }
                 forum_delete_discussion($discussion, false, $course, $cm, $forum);
             } else {
-                forum_delete_post($post, has_capability('mod/forum:deleteanypost', $cm->context), $course, $cm, $forum);
+                forum_delete_post($post, has_capability('mod/forum:deleteanypost', $context), $course, $cm, $forum);
             }
             echo json_encode(['success' => true, 'message' => 'Post deleted']);
         } else {
@@ -96,7 +116,7 @@ try {
         exit;
     }
 
-    // ४. पोस्ट अपडेट गर्ने (Update/Edit)
+    // 4. Update Post Handler
     else if ($action === 'update') {
         $postid = required_param('postid', PARAM_INT);
         $subject = optional_param('subject', '', PARAM_TEXT);
@@ -104,8 +124,7 @@ try {
 
         $post = $DB->get_record('forum_posts', ['id' => $postid], '*', MUST_EXIST);
 
-        // Permission Check
-        if ($USER->id != $post->userid && !has_capability('mod/forum:editanypost', $cm->context)) {
+        if ($USER->id != $post->userid && !has_capability('mod/forum:editanypost', $context)) {
             echo json_encode(['success' => false, 'message' => 'Access denied']);
             exit;
         }
@@ -113,9 +132,8 @@ try {
         $updatepost = new \stdClass();
         $updatepost->id = $postid;
         $updatepost->message = $message;
-        if (!empty($subject)) {
+        if (!empty($subject) && $forum->type !== 'single') {
             $updatepost->subject = $subject;
-            // यदि पहिलो पोस्ट हो भने डिस्कसनको नाम पनि फेर्ने
             $DB->set_field('forum_discussions', 'name', $subject, ['firstpost' => $postid]);
         }
         $updatepost->modified = time();
