@@ -92,48 +92,90 @@
       }
 
       // --- ४. Submit Logic (यही हो मुख्य भाग) ---
+      // --- ४. Submit Logic (Fixed Formatting for Moodle MCQ Matrix & DDWTOS Blanks) ---
       const submitBtn = wrap.querySelector(".amd-quiz-submit-btn");
       if (submitBtn) {
         submitBtn.addEventListener("click", function (e) {
           e.preventDefault();
           let answers = [];
 
-          // MCQ & True/False जम्मा गर्ने
-          wrap
-            .querySelectorAll(
-              '.amd-quiz-question[data-type="multichoice"], .amd-quiz-question[data-type="truefalse"]',
-            )
-            .forEach((qcard) => {
-              const slot = qcard.dataset.slot;
-              qcard.querySelectorAll("input:checked").forEach((input) => {
-                const option = input.closest(".amd-lms-quiz-option");
-                answers.push({ slot: slot, answerid: option.dataset.answerid });
-              });
-            });
+          // Process every single question card explicitly by its assigned type
+          wrap.querySelectorAll(".amd-quiz-question").forEach((qcard) => {
+            const slot = qcard.dataset.slot;
+            const qtype = qcard.dataset.type;
 
-          // DDWTOS (Drag Drop) जम्मा गर्ने
-          wrap
-            .querySelectorAll('.amd-quiz-question[data-type="ddwtos"]')
-            .forEach((qcard) => {
-              const slot = qcard.dataset.slot;
+            if (qtype === "multichoice") {
+              // Is this a checkbox (multi) or radio (single)?
+              const isMultiple =
+                qcard.querySelectorAll('input[type="checkbox"]').length > 0;
+
+              if (isMultiple) {
+                // Send all options so we can construct a true/false matrix for the engine
+                let optionsMap = {};
+                qcard.querySelectorAll(".amd-mcq-option").forEach((opt) => {
+                  const answerId = opt.dataset.answerid;
+                  const isChecked = opt.querySelector("input").checked ? 1 : 0;
+                  optionsMap[answerId] = isChecked;
+                });
+
+                answers.push({
+                  slot: slot,
+                  qtype: "multichoice_multi",
+                  selections: optionsMap, // Map of {answerid: 1, answerid: 0, ...}
+                });
+              } else {
+                // Single choice (radio)
+                const checkedRadio = qcard.querySelector("input:checked");
+                if (checkedRadio) {
+                  const option = checkedRadio.closest(".amd-lms-quiz-option");
+                  answers.push({
+                    slot: slot,
+                    qtype: "multichoice_single",
+                    answerid: option.dataset.answerid,
+                  });
+                }
+              }
+            } else if (qtype === "truefalse") {
+              const checkedRadio = qcard.querySelector("input:checked");
+              if (checkedRadio) {
+                const option = checkedRadio.closest(".amd-lms-quiz-option");
+                answers.push({
+                  slot: slot,
+                  qtype: "truefalse",
+                  answerid: option.dataset.answerid,
+                });
+              }
+            } else if (qtype === "ddwtos") {
+              let dropsMap = {};
+              let hasDrops = false;
+
               qcard
                 .querySelectorAll(".amd-ddwtos-inline-drop")
                 .forEach((drop) => {
                   if (drop.dataset.selectedNo) {
-                    answers.push({
-                      slot: slot,
-                      ddwtosno: drop.dataset.no, // [[1]] को '1'
-                      textans: drop.dataset.selectedNo, // drag item को 'no'
-                    });
+                    const blankNo = drop.dataset.no; // standard layout place counter
+                    const dragNo = drop.dataset.selectedNo; // assigned option counter
+                    dropsMap[blankNo] = dragNo;
+                    hasDrops = true;
                   }
                 });
-            });
+
+              if (hasDrops) {
+                answers.push({
+                  slot: slot,
+                  qtype: "ddwtos",
+                  drops: dropsMap, // Map of { blank_position: drag_option_no }
+                });
+              }
+            }
+          });
 
           if (
             answers.length === 0 &&
             !confirm("You haven't answered any questions. Submit anyway?")
-          )
+          ) {
             return;
+          }
 
           submitBtn.disabled = true;
           submitBtn.innerText = "Submitting...";
@@ -144,7 +186,7 @@
             cmid: cmid,
             sesskey: sesskey,
             attemptid: currentAttemptId,
-            answers: JSON.stringify(answers),
+            answers: JSON.stringify(answers), // Formatted safely
           });
 
           fetch(ajaxurl, {
@@ -154,8 +196,9 @@
           })
             .then((r) => r.json())
             .then((data) => {
-              if (data.success) location.reload();
-              else {
+              if (data.success) {
+                location.reload();
+              } else {
                 alert(data.error);
                 submitBtn.disabled = false;
                 submitBtn.innerText = "Submit Quiz";
@@ -164,6 +207,7 @@
             .catch((err) => {
               console.error(err);
               submitBtn.disabled = false;
+              submitBtn.innerText = "Submit Quiz";
             });
         });
       }
