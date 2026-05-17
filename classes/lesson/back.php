@@ -168,9 +168,9 @@ class Quiz implements LessonModuleInterface
         }
 
         return [
-            'text' => format_text($text, FORMAT_HTML),
-            'isddwtos' => true,
-            'ddwtositems' => $items,
+            'text'          => format_text($text, FORMAT_HTML),
+            'isddwtos'      => true,
+            'ddwtositems'   => $items,
             'ddwtosoptions' => $options
         ];
     }

@@ -465,13 +465,7 @@ function theme_mytheme_pluginfile($course, $cm, $context, $filearea, $args, $for
 }
 
 
-/**
- * Redirect user to home page instead of dashboard after login.
- * 
- * @param string $redirecturl The URL the user is being redirected to.
- * @param stdClass $user The user object.
- * @return string The modified redirect URL.
- */
+
 
 /**
  * Prevent logged-in users from being forced to /my/ dashboard 
@@ -480,21 +474,21 @@ function theme_mytheme_pluginfile($course, $cm, $context, $filearea, $args, $for
 /**
  * Redirect user logic: Logged in user lai /my/ bata homepage ma dhalkiuna.
  */
-function theme_mytheme_before_footer()
-{
-    global $CFG, $PAGE, $SCRIPT;
+// function theme_mytheme_before_footer()
+// {
+//     global $CFG, $PAGE, $SCRIPT;
 
-    // Check if user is logged in and specifically on /my/index.php or /my/
-    if (isloggedin() && !isguestuser()) {
-        // Moodle le default dashboard load garna khojda yo catch hunchha
-        if ($PAGE->pagetype === 'my-index' || strpos($_SERVER['REQUEST_URI'], '/my/') !== false) {
-            // Yadi user manually dashboard ma jana khojeko hoina (referral chaina) bhane root ma pathaune
-            if (!isset($_GET['redirect'])) {
-                redirect(new moodle_url('/?redirect=0'));
-            }
-        }
-    }
-}
+//     // Check if user is logged in and specifically on /my/index.php or /my/
+//     if (isloggedin() && !isguestuser()) {
+//         // Moodle le default dashboard load garna khojda yo catch hunchha
+//         if ($PAGE->pagetype === 'my-index' || strpos($_SERVER['REQUEST_URI'], '/my/') !== false) {
+//             // Yadi user manually dashboard ma jana khojeko hoina (referral chaina) bhane root ma pathaune
+//             if (!isset($_GET['redirect'])) {
+//                 redirect(new moodle_url('/?redirect=0'));
+//             }
+//         }
+//     }
+// }
 
 /**
  * Handle initial login redirect.

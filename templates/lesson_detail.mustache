@@ -115,63 +115,134 @@
 
         </div>
 
-        {{! Prev / Next navigation }}
-        <div class="container">
-            <div class="amd-lms-btns-wrap d-flex justify-content-center align-items-center mt-4 gap-4" role="group"
+
+        {{! Sticky Bottom Navigation }}
+        <div class="amd-sticky-btn-bottom">
+            <div class="amd-lms-btns-wrap gap-4 d-flex justify-content-end align-items-center"
+                role="group"
                 aria-label="Lesson navigation buttons">
 
+                {{! ================= PREVIOUS BUTTON ================= }}
                 {{#prevmodule}}
-                <a href="{{prevmodule.url}}" class="amd-lms-btn amd-lms-prev-btn" aria-label="Previous lesson"
+                <button class="amd-lms-btn amd-lms-prev-btn"
+                    onclick="window.location.href='{{prevmodule.url}}'"
+                    aria-label="Previous lesson"
                     title="{{prevmodule.name}}">
-                    <span class="amd-lms-icon"><i class="fa-solid fa-arrow-left"></i></span>
-                    <span class="amd-lms-text">Previous</span>
-                </a>
+                    
+                    <span class="amd-lms-icon">
+                        <i class="fa-solid fa-arrow-left"></i>
+                    </span>
+
+                    <span class="amd-lms-text">
+                        Previous
+                    </span>
+                </button>
                 {{/prevmodule}}
 
+
+                {{! ================= NEXT LESSON ================= }}
                 {{#nextmodule}}
                 {{^islastlesson}}
-                {{#nextmodule.locked}}
-                <button class="amd-lms-btn amd-lms-next-btn" disabled title="Complete this lesson first">
-                    <span class="amd-lms-text">Next</span>
-                    <span class="amd-lms-icon"><i class="fa-solid fa-lock"></i></span>
-                </button>
-                {{/nextmodule.locked}}
-                {{^nextmodule.locked}}
-                <a href="{{nextmodule.url}}" class="amd-lms-btn amd-lms-next-btn" aria-label="Next lesson"
-                    title="{{nextmodule.name}}">
-                    <span class="amd-lms-text">Next</span>
-                    <span class="amd-lms-icon"><i class="fa-solid fa-arrow-right"></i></span>
-                </a>
-                {{/nextmodule.locked}}
+
+                    {{#nextmodule.locked}}
+                    <button class="amd-lms-btn amd-lms-next-btn"
+                        disabled
+                        title="Complete this lesson first">
+
+                        <span class="amd-lms-text">
+                            Next
+                        </span>
+
+                        <span class="amd-lms-icon">
+                            <i class="fa-solid fa-lock"></i>
+                        </span>
+                    </button>
+                    {{/nextmodule.locked}}
+
+
+                    {{^nextmodule.locked}}
+                    <button class="amd-lms-btn amd-lms-next-btn"
+                        onclick="window.location.href='{{nextmodule.url}}'"
+                        aria-label="Next lesson"
+                        title="{{nextmodule.name}}">
+
+                        <span class="amd-lms-text">
+                            Next
+                        </span>
+
+                        <span class="amd-lms-icon">
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </span>
+                    </button>
+                    {{/nextmodule.locked}}
+
                 {{/islastlesson}}
                 {{/nextmodule}}
 
+
+                {{! ================= LAST LESSON / FINISH COURSE ================= }}
                 {{#islastlesson}}
                 {{^iscompleted}}
-                {{#nextmodule.locked}}
-                <button class="amd-lms-btn amd-lms-next-btn" disabled title="Complete this lesson first">
-                    <span class="amd-lms-text">Finish Course</span>
-                    <span class="amd-lms-icon"><i class="fa-solid fa-lock"></i></span>
-                </button>
-                {{/nextmodule.locked}}
-                {{^nextmodule.locked}}
-                <a href="{{nextmodule.url}}" class="amd-lms-btn amd-lms-next-btn" aria-label="Course complete">
-                    <span class="amd-lms-text">Finish Course</span>
-                    <span class="amd-lms-icon"><i class="fa-solid fa-check"></i></span>
-                </a>
-                {{/nextmodule.locked}}
+
+                    {{#nextmodule.locked}}
+                    <button class="amd-lms-btn amd-lms-next-btn"
+                        disabled
+                        title="Complete this lesson first">
+
+                        <span class="amd-lms-text">
+                            Finish Course
+                        </span>
+
+                        <span class="amd-lms-icon">
+                            <i class="fa-solid fa-lock"></i>
+                        </span>
+                    </button>
+                    {{/nextmodule.locked}}
+
+
+                    {{^nextmodule.locked}}
+                    <button class="amd-lms-btn amd-lms-next-btn"
+                        onclick="window.location.href='{{nextmodule.url}}'"
+                        aria-label="Finish Course">
+
+                        <span class="amd-lms-text">
+                            Finish Course
+                        </span>
+
+                        <span class="amd-lms-icon">
+                            <i class="fa-solid fa-check"></i>
+                        </span>
+                    </button>
+                    {{/nextmodule.locked}}
+
                 {{/iscompleted}}
                 {{/islastlesson}}
 
-                {{#iscompleted}}{{#certurl}}
-                <a href="{{certurl}}" target="_blank" class="amd-lms-btn amd-lms-next-btn" aria-label="View certificate">
-                    <span class="amd-lms-text">View Certificate</span>
-                    <span class="amd-lms-icon"><i class="fa-solid fa-certificate"></i></span>
-                </a>
-                {{/certurl}}{{/iscompleted}}
+
+                {{! ================= CERTIFICATE BUTTON ================= }}
+                {{#iscompleted}}
+                {{#certurl}}
+
+                <button class="amd-lms-btn amd-lms-next-btn"
+                    onclick="window.open('{{certurl}}', '_blank')"
+                    aria-label="View Certificate">
+
+                    <span class="amd-lms-text">
+                        View Certificate
+                    </span>
+
+                    <span class="amd-lms-icon">
+                        <i class="fa-solid fa-certificate"></i>
+                    </span>
+                </button>
+
+                {{/certurl}}
+                {{/iscompleted}}
 
             </div>
         </div>
+
+ 
     </main>
 </div>
 
