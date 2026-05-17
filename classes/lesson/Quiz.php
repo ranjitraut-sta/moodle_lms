@@ -135,6 +135,9 @@ class Quiz implements LessonModuleInterface
     /**
      * Drag & Drop into Text को डेटा
      */
+/**
+     * Drag & Drop into Text data collection
+     */
     private function get_ddwtos_data($q): array
     {
         global $DB;
@@ -142,7 +145,9 @@ class Quiz implements LessonModuleInterface
         $items = [];
         $text = $q->questiontext;
 
+        // Fetch choices sorted strictly by ID order to match step initialization sequence
         $answers = $DB->get_records('question_answers', ['question' => $q->id], 'id ASC');
+        
         $no = 1;
         foreach ($answers as $ans) {
             $draggroup = 1;
@@ -153,17 +158,16 @@ class Quiz implements LessonModuleInterface
                 }
             }
             $options[] = [
-                'no' => $no++,
+                'no' => $no++, // This maps cleanly to the index matching _choiceorder items
                 'groupno' => $draggroup,
                 'text' => strip_tags($ans->answer),
             ];
         }
 
+        // Process placeholders mapping layout slots
         preg_match_all('/\[\[(\d+)\]\]/', $text, $matches, PREG_SET_ORDER);
         foreach ($matches as $match) {
             $blankNo = $match[1];
-            $dropzone = '<span class="amd-ddwtos-inline-drop" data-no="' . $blankNo . '"><input type="text" readonly class="form-control d-inline-block" style="width:120px; border:2px dashed #0d6efd;"></span>';
-            $text = str_replace($match[0], $dropzone, $text);
             $items[] = ['no' => $blankNo, 'text' => 'Blank ' . $blankNo];
         }
 

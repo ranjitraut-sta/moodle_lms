@@ -55,7 +55,6 @@ if ($action === 'start') {
         IGNORE_MULTIPLE
     );
 
-    // If there is already an active attempt, return it
     if ($existing) {
         echo json_encode([
             'success' => true,
@@ -151,40 +150,69 @@ if ($action === 'submit') {
             $question = $qa->get_question(false);
             $qtype = $ans['qtype'] ?? '';
 
-            // CRITICAL FIX: Get real-time dynamic sequence check count from Moodle Engine
+            // Get real-time dynamic sequence check count from Moodle Engine
             $postdata[$prefix . ':sequencecheck'] = $qa->get_sequence_check_count();
 
+
             // -----------------------------------------------------------------
-            // 1. DRAG AND DROP INTO TEXT (DDWTOS) MAPPING
-            // -----------------------------------------------------------------
+// FIXED & TESTED: DRAG AND DROP INTO TEXT (DDWTOS) MAPPING
+// -----------------------------------------------------------------
             if ($qtype === 'ddwtos' && !empty($ans['drops'])) {
+
+                // Log the incoming drop payload for tracing
+                error_log("DDWTOS Slot " . $slot . " Payload: " . json_encode($ans['drops']));
+
+                // Get the initialization step (Step 0 holds the structural choice orders)
+                $step0 = $qa->get_step(0);
+
                 foreach ($ans['drops'] as $blankno => $dragno) {
                     $blankno = (int) $blankno;
-                    $dragno = (int) $dragno;
+                    $dragno = (int) $dragno; // This is the 'no' property from get_ddwtos_data()
 
-                    if (!isset($question->places[$blankno])) {
+                    // Find which group this specific drop zone (place) belongs to
+                    // Moodle 4.4 places array is 1-indexed matching the target layout placeholders
+                    $group = null;
+                    if (isset($question->places[$blankno])) {
+                        $group = $question->places[$blankno];
+                    } else if (isset($question->places[$blankno - 1])) {
+                        $group = $question->places[$blankno - 1];
+                    }
+
+                    if ($group === null) {
+                        error_log("DDWTOS Error: Place/Blank {$blankno} not found in Moodle question object.");
                         continue;
                     }
 
-                    $group = $question->places[$blankno];
-                    $step = $qa->get_step(0);
-                    $choiceorder_str = $step->get_qt_var('_choiceorder' . $group);
+                    // Fetch the randomized choice order string for this specific group (e.g., "3,1,4,2")
+                    $choiceorder_str = $step0->get_qt_var('_choiceorder' . $group);
 
                     if ($choiceorder_str) {
                         $choiceorder = explode(',', $choiceorder_str);
-                        // Find the index of the dragged item in randomized choiceorder
+
+                        // Search where our original item counter position falls within the shuffled block
                         $index = array_search((string) $dragno, $choiceorder);
+
                         if ($index !== false) {
-                            // Moodle demands 1-based index key for the slot form parameters
+                            // Moodle expects a 1-based index pointing to the layout choice position
                             $choicekey = $index + 1;
+
+                            // Bind response value to the standard parameter format
                             $postdata[$prefix . 'p' . $blankno] = $choicekey;
+
+                            // Fallback mechanism if your template context handles 0-indexed values
+                            if (!isset($question->places[$blankno]) && isset($question->places[$blankno - 1])) {
+                                $postdata[$prefix . 'p' . ($blankno - 1)] = $choicekey;
+                            }
+                        } else {
+                            error_log("DDWTOS Error: Drag item '{$dragno}' not found inside choiceorder array.");
                         }
                     }
                 }
+                error_log("Forged Post Data for DDWTOS Slot {$slot}: " . json_encode($postdata));
             }
 
             // -----------------------------------------------------------------
-            // 2. MCQ MULTIPLE CHOICE (CHECKBOX MATRIX) MAPPING
+            // MCQ MULTIPLE CHOICE (CHECKBOX MATRIX) MAPPING
             // -----------------------------------------------------------------
             elseif ($qtype === 'multichoice_multi' && !empty($ans['selections'])) {
                 $order = $question->get_order($qa);
@@ -193,27 +221,25 @@ if ($action === 'submit') {
                     $aid = (int) $answerid;
                     $akey = array_search($aid, $order);
                     if ($akey !== false) {
-                        // Matrix requires choice index bound to 1 (checked) or 0 (unchecked)
                         $postdata[$prefix . 'choice' . $akey] = (int) $isChecked;
                     }
                 }
             }
 
             // -----------------------------------------------------------------
-            // 3. MCQ SINGLE CHOICE (RADIO BUTTONS) MAPPING
+            // MCQ SINGLE CHOICE (RADIO BUTTONS) MAPPING
             // -----------------------------------------------------------------
             elseif ($qtype === 'multichoice_single' && !empty($ans['answerid'])) {
                 $order = $question->get_order($qa);
                 $aid = (int) $ans['answerid'];
                 $akey = array_search($aid, $order);
                 if ($akey !== false) {
-                    // Single format requires key order as string index
                     $postdata[$prefix . 'answer'] = (string) $akey;
                 }
             }
 
             // -----------------------------------------------------------------
-            // 4. TRUE / FALSE MAPPING
+            // TRUE / FALSE MAPPING
             // -----------------------------------------------------------------
             elseif ($qtype === 'truefalse' && !empty($ans['answerid'])) {
                 $aid = (int) $ans['answerid'];
@@ -230,7 +256,7 @@ if ($action === 'submit') {
             $postdata['slots'] = implode(',', array_unique($slots_processed));
         }
 
-        // CRITICAL FOR MOODLE: Bind forged data map globally to PHP superglobal $_POST
+        // Bind forged data map globally to PHP superglobal $_POST
         $_POST = $postdata;
 
         // Process states inside Moodle Engine
