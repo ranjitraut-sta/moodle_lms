@@ -14,6 +14,7 @@ function previewMoodleFile(event, url, name) {
     // Set Title and Download link
     label.textContent = name;
     downloadBtn.href = url;
+    downloadBtn.download = name;
 
     // Reset loader states
     loader.classList.remove('d-none');
@@ -59,3 +60,16 @@ function closeMoodleOffcanvas() {
         }
     }
 }
+
+// Cleanup iframe after offcanvas closes by Bootstrap event
+document.addEventListener('DOMContentLoaded', function() {
+    const offcanvasEl = document.getElementById('filePreviewOffcanvas');
+    if (offcanvasEl) {
+        offcanvasEl.addEventListener('hidden.bs.offcanvas', function() {
+            const iframe = document.getElementById('filePreviewIframe');
+            if (iframe) {
+                iframe.src = 'about:blank';
+            }
+        });
+    }
+});

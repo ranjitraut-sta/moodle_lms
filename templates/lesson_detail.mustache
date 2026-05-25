@@ -1,54 +1,54 @@
 <div class="amd-app-wrap" role="application">
     {{! Left Sidebar }}
-    <nav class="amdcoursesidebar" id="amdcoursesidebar" aria-label="Course navigation" role="navigation" tabindex="0">
-        <div class="amd-course-brand" tabindex="0" aria-label="Course title">
-            <a href="{{config.wwwroot}}/?redirect=0" class="logo amd-lms-tooltip" aria-hidden="true" data-bs-toggle="tooltip"
-                data-bs-placement="right" title="Home">
-                <i class="fas fa-home"></i>
-            </a>
-            <div class="amd-course-brand-text">{{coursename}}</div>
-            <button id="amdcoursesidebarToggle" aria-label="Collapse sidebar" aria-expanded="true"
-                class="btn btn-sm btn-outline-light ms-auto amd-lms-tooltip" data-bs-toggle="tooltip"
-                data-bs-placement="left" title="Close sidebar">
-                <i class="ri-arrow-left-s-line"></i>
-            </button>
-        </div>
+  <nav class="amdcoursesidebar" id="amdcoursesidebar" aria-label="Course navigation" role="navigation" tabindex="0">
+    <div class="amd-course-brand" tabindex="0" aria-label="Course title">
+        <a href="{{config.wwwroot}}/?redirect=0" class="logo amd-lms-tooltip" aria-hidden="true" data-bs-toggle="tooltip"
+            data-bs-placement="right" title="Home">
+            <i class="fas fa-home"></i>
+        </a>
+        <div class="amd-course-brand-text">{{coursename}}</div>
+        <button id="amdcoursesidebarToggle" aria-label="Collapse sidebar" aria-expanded="true"
+            class="btn btn-sm btn-outline-light ms-auto amd-lms-tooltip" data-bs-toggle="tooltip"
+            data-bs-placement="left" title="Close sidebar">
+            <i class="ri-arrow-left-s-line"></i>
+        </button>
+    </div>
 
-        <div class="amdcoursesidebar-inner" tabindex="0">
-            {{#sections}}
-            <section class="amd-course-chapter">
-                <div class="amd-course-chapter-header expanded" aria-expanded="true" role="button" tabindex="0">
+    <div class="amdcoursesidebar-inner" tabindex="0">
+        {{#sections}}
+        <section class="amd-course-chapter">
+            <div class="amd-course-chapter-header expanded" aria-expanded="true" role="button" tabindex="0" aria-controls="chapter-list-{{id}}">
+                <span class="text-label">{{name}}</span>
+                <i class="ri-arrow-down-s-line"></i>
+            </div>
+            <ul id="chapter-list-{{id}}" class="amd-course-lessons-list expanded">
+                {{#modules}}
+                <a href="{{url}}" class="lesson {{#active}}active{{/active}} {{#locked}}amd-lesson-locked{{/locked}}" tabindex="0" title="{{name}}">
+                    <span class="number"><i class="bi bi-{{icon}}"></i></span>
                     <span class="text-label">{{name}}</span>
-                    <i class="ri-arrow-down-s-line"></i>
-                </div>
-                <ul class="amd-course-lessons-list expanded">
-                    {{#modules}}
-                    <a href="{{url}}" class="lesson {{#active}}active{{/active}} {{#locked}}amd-lesson-locked{{/locked}}" tabindex="0" title="{{name}}">
-                        <span class="number"><i class="bi bi-{{icon}}"></i></span>
-                        <span class="text-label">{{name}}</span>
-                        {{#completed}}
-                        <i class="fa fa-check amd-course-sidebar-icon" aria-hidden="true"></i>
-                        {{/completed}}
-                        {{^completed}}
-                        {{#locked}}
-                        <i class="fa fa-lock amd-course-sidebar-icon" aria-hidden="true"></i>
-                        {{/locked}}
-                        {{^locked}}
-                        {{#active}}
-                        <i class="fa-solid fa-lock-open amd-course-sidebar-icon"></i>
-                        {{/active}}
-                        {{^active}}
-                        <i class="fa fa-lock-open amd-course-sidebar-icon" aria-hidden="true"></i>
-                        {{/active}}
-                        {{/locked}}
-                        {{/completed}}
-                    </a>
-                    {{/modules}}
-                </ul>
-            </section>
-            {{/sections}}
-        </div>
-    </nav>
+                    {{#completed}}
+                    <i class="fa fa-check amd-course-sidebar-icon" aria-hidden="true"></i>
+                    {{/completed}}
+                    {{^completed}}
+                    {{#locked}}
+                    <i class="fa fa-lock amd-course-sidebar-icon" aria-hidden="true"></i>
+                    {{/locked}}
+                    {{^locked}}
+                    {{#active}}
+                    <i class="fa-solid fa-lock-open amd-course-sidebar-icon"></i>
+                    {{/active}}
+                    {{^active}}
+                    <i class="fa fa-lock-open amd-course-sidebar-icon" aria-hidden="true"></i>
+                    {{/active}}
+                    {{/locked}}
+                    {{/completed}}
+                </a>
+                {{/modules}}
+            </ul>
+        </section>
+        {{/sections}}
+    </div>
+</nav>
 
     {{! Sidebar open button (shown when collapsed) }}
     <button class="amdcoursesidebarOpenBtn btn btn-outline-secondary amd-lms-tooltip" id="amdcoursesidebarOpenBtn"
@@ -114,7 +114,6 @@
             </div>
 
         </div>
-
 
         {{! Sticky Bottom Navigation }}
         <div class="amd-sticky-btn-bottom">
@@ -224,15 +223,14 @@
                 {{#certurl}}
 
                 <button class="amd-lms-btn amd-lms-next-btn"
-                    onclick="window.open('{{certurl}}', '_blank')"
                     aria-label="View Certificate">
 
                     <span class="amd-lms-text">
-                        View Certificate
+                       Completed Course
                     </span>
 
                     <span class="amd-lms-icon">
-                        <i class="fa-solid fa-certificate"></i>
+                        <i class="fa-solid fa-check-circle"></i>
                     </span>
                 </button>
 
@@ -241,6 +239,8 @@
 
             </div>
         </div>
+
+
 
  
     </main>

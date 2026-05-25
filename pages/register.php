@@ -48,6 +48,10 @@ if (!empty($errors)) {
     throw new moodle_exception(implode(', ', $errors));
 }
 
+/* ================= CREATE USER ================= */
+// Email block/divert garna ko lagi temporary config overwrite
+$CFG->noemailever = true; // Moodle lai kunai pani obit email pathauna bata roki dinchha
+
 
 /* ================= CREATE USER ================= */
 $user = new stdClass();

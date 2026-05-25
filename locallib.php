@@ -284,12 +284,13 @@ function theme_mytheme_get_lesson_context($cmid): array
                 'url' => (new moodle_url('/theme/mytheme/pages/lesson.php', [
                     'id' => $course->id,
                     'cmid' => $next->id
-                ]))->out(false)
+                ]))->out(false),
             ]
             : [
                 'name' => $next->name,
                 'url' => null,
-                'locked' => true
+                'locked' => true,
+                'last_lesson_id' => $next->id,
             ];
     } else {
         $islastlesson = true;
@@ -297,12 +298,13 @@ function theme_mytheme_get_lesson_context($cmid): array
         $nextmodule = $iscurrentcomplete
             ? [
                 'url' => (new moodle_url('/theme/mytheme/pages/complete.php', [
-                    'id' => $course->id
-                ]))->out(false)
+                    'id' => $course->id,
+                    'from_cmid' => $cmid
+                ]))->out(false),
             ]
             : [
                 'url' => null,
-                'locked' => true
+                'locked' => true,
             ];
     }
 

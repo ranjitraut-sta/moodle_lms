@@ -2,7 +2,9 @@
 require_once('../../../config.php');
 require_once($CFG->libdir . '/completionlib.php');
 
-$courseid = required_param('id', PARAM_INT);
+$courseid  = required_param('id', PARAM_INT);
+$from_cmid = optional_param('from_cmid', 0, PARAM_INT); // function बाट पठाइएको ID समात्ने
+
 require_login($courseid);
 
 $course  = $DB->get_record('course', ['id' => $courseid], '*', MUST_EXIST);
@@ -14,7 +16,19 @@ $PAGE->set_pagelayout('standard');
 $PAGE->set_title(get_string('coursecompleted', 'completion'));
 
 $completion = new completion_info($course);
-$certurl = $lessonurl = null;
+$certurl = null;
+$lessonurl = null;
+
+// सुरक्षित रूपमा कोर्स होमपेजमा फर्किने URL
+$backtocourseurl = (new moodle_url('/theme/mytheme/pages/course.php', ['id' => $courseid]))->out(false);
+
+// १. मुख्य फिक्स: यदि from_cmid आएको छ भने त्यसैलाई सिधै ब्याक बटनको लिङ्क बनाउने
+if ($from_cmid > 0) {
+    $lessonurl = (new moodle_url('/theme/mytheme/pages/lesson.php', [
+        'id' => $courseid,
+        'cmid' => $from_cmid
+    ]))->out(false);
+}
 
 if ($completion->is_enabled()) {
     // Mark course complete
@@ -53,25 +67,25 @@ if ($completion->is_enabled()) {
         }
     }
 
-    // Find last accessed lesson/module
-    $lastlesson = null;
-    $allcms = $modinfo->get_cms(); // returns array
-    foreach ($allcms as $cm) {
-        if ($cm->uservisible && $cm->modname !== 'customcert') {
-            $completiondata = $completion->get_data($cm, true, $USER->id);
-            if (!empty($completiondata->timemodified)) {
-                $lastlesson = $cm; // last accessed module
+    // २. फलब्याक फिक्स: यदि कुनै कारणले $from_cmid खाली भएमा मात्र यो डेटाबेस लुप चल्छ
+    if (empty($lessonurl)) {
+        $lastlesson = null;
+        $allcms = $modinfo->get_cms(); 
+        foreach ($allcms as $cm) {
+            if ($cm->uservisible && $cm->modname !== 'customcert') {
+                $completiondata = $completion->get_data($cm, true, $USER->id);
+                if (!empty($completiondata->timemodified)) {
+                    $lastlesson = $cm; 
+                }
             }
         }
-    }
 
-    if ($lastlesson) {
-        // Point to custom lesson.php page
-        $lessonurl = new moodle_url('/theme/mytheme/pages/lesson.php', [
-            'id' => $courseid,
-            'cmid' => $lastlesson->id
-        ]);
-        $lessonurl = $lessonurl->out(false);
+        if ($lastlesson) {
+            $lessonurl = (new moodle_url('/theme/mytheme/pages/lesson.php', [
+                'id' => $courseid,
+                'cmid' => $lastlesson->id
+            ]))->out(false);
+        }
     }
 }
 
@@ -103,19 +117,28 @@ echo $OUTPUT->doctype();
     <h3 class="fw-bold mb-4" style="color:var(--amd-secondary);"><?php echo format_string($course->fullname); ?></h3>
 
     <div class="d-flex flex-wrap gap-3 justify-content-center mt-2">
+
+        <!-- सर्टिफिकेट बटन -->
         <?php if ($certurl): ?>
-        <a href="<?php echo $certurl; ?>" class="amd-lms-btn amd-lms-next-btn px-4 py-2" target="_blank">
-            <span class="amd-lms-icon"><i class="fa-solid fa-certificate"></i></span>
-            <span class="amd-lms-text">View Certificate</span>
+        <a href="<?php echo $certurl; ?>" class="btn btn-success px-4 py-2 text-white">
+            <span class="me-2"><i class="fa-solid fa-file-pdf"></i></span>
+            <span>Download Certificate</span>
         </a>
         <?php endif; ?>
 
+        <!-- 'Back to Lesson' बटन (केस सेन्सिटिभिटी फिक्स गरिएको र रिएकटिभेट) -->
         <?php if ($lessonurl): ?>
         <a href="<?php echo $lessonurl; ?>" class="amd-lms-btn amd-lms-prev-btn px-4 py-2">
             <span class="amd-lms-icon"><i class="fa-solid fa-arrow-left"></i></span>
             <span class="amd-lms-text">Back to Lesson</span>
         </a>
         <?php endif; ?>
+
+        <!-- सिधै मुख्य कोर्स होमपेजमा फर्किने सुरक्षित बटन -->
+        <a href="<?php echo $backtocourseurl; ?>" class="btn btn-outline-secondary px-4 py-2">
+            <span class="me-2"><i class="fa-solid fa-house"></i></span>
+            <span>Back to Course Home</span>
+        </a>
     </div>
 </div>
 

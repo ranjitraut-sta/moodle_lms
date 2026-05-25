@@ -1,15 +1,158 @@
 <div class="amd-module-url youtube-video-container container mb-4 mt-3">
-    {{#urlintro}}<div class="mb-3">{{{urlintro}}}</div>{{/urlintro}}
+
+    {{#urlintro}}
+        <div class="mb-3">
+            {{{urlintro}}}
+        </div>
+    {{/urlintro}}
+
     {{#isyoutube}}
-    <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;">
-        <iframe style="position:absolute;top:0;left:0;width:100%;height:100%;"
-            src="https://www.youtube.com/embed/{{youtubeid}}"
-            frameborder="0" allowfullscreen></iframe>
+
+    <div class="custom-video-player">
+
+        <!-- THUMBNAIL -->
+        <div class="thumbnail-wrapper" onclick="loadVideo(this)"
+             data-video-id="{{youtubeid}}">
+
+            <img
+                src="https://img.youtube.com/vi/{{youtubeid}}/hqdefault.jpg"
+                class="video-thumbnail"
+                alt="Video Thumbnail">
+
+            <div class="custom-play-btn">
+                ▶
+            </div>
+            
+
+        </div>
+
     </div>
+
     {{/isyoutube}}
-    {{#isexternalurl}}
-    <a href="{{externalurl}}" class="amd-lms-btn-register" target="_blank">
-        <i class="bi bi-link-45deg me-2"></i> Open Link
-    </a>
-    {{/isexternalurl}}
+
 </div>
+
+<style>
+
+.custom-video-player{
+    position:relative;
+    width:100%;
+    aspect-ratio:16/9;
+    overflow:hidden;
+    border-radius:12px;
+    background:#000;
+}
+
+/* THUMBNAIL */
+.thumbnail-wrapper{
+    position:relative;
+    width:100%;
+    height:100%;
+    cursor:pointer;
+}
+
+.video-thumbnail{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+}
+
+/* CENTER PLAY BUTTON */
+.custom-play-btn{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%);
+    width:80px;
+    height:80px;
+    border-radius:50%;
+    background:red;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:32px;
+    font-weight:bold;
+    z-index:2;
+}
+
+/* VIDEO AREA */
+.video-wrapper{
+    position:relative;
+    width:100%;
+    height:100%;
+}
+
+.video-wrapper iframe{
+    width:100%;
+    height:100%;
+    border:0;
+}
+
+/* BLOCK YOUTUBE CLICK */
+.video-blocker{
+    position:absolute;
+    inset:0;
+    z-index:2;
+    background:transparent;
+}
+
+/* CONTROLS */
+.custom-controls {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    padding: 12px;
+    background: rgba(0,0,0,0.6);
+    z-index: 5;
+    box-sizing: border-box;
+    
+    /* Hover Effect को लागि थपिएको */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none; /* Controls लुकेको बेला क्लिक नहोस् भनेर */
+}
+
+/* BUTTONS */
+.control-buttons{
+    display:flex;
+    gap:10px;
+}
+
+.video-wrapper:hover .custom-controls {
+    opacity: 1;
+    pointer-events: auto; /* देखिएपछि क्लिक गर्न मिल्ने बनाएको */
+}
+
+.control-buttons button {
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    display: none; 
+}
+
+
+.video-wrapper.is-playing .pause-btn {
+    display: block;
+}
+/* भिडियो PAUSE हुँदा PLAY बटन मात्र देखाउने */
+.video-wrapper.is-paused .play-btn {
+    display: block;
+}
+
+.play-btn{
+    background:#28a745;
+    color:#fff;
+}
+
+.pause-btn{
+    background:#dc3545;
+    color:#fff;
+}
+
+</style>
+

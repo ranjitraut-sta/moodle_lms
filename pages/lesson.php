@@ -5,14 +5,16 @@ require_once($CFG->libdir . '/completionlib.php');
 
 // Required parameters
 $courseid = required_param('id', PARAM_INT);
-$cmid     = required_param('cmid', PARAM_INT);
+$cmid = required_param('cmid', PARAM_INT);
 
 // User login check
 require_login($courseid);
 
+
+
 // Fetch course and module
-$course  = $DB->get_record('course', ['id' => $courseid], '*', MUST_EXIST);
-$cm      = get_coursemodule_from_id('', $cmid, 0, false, MUST_EXIST);
+$course = $DB->get_record('course', ['id' => $courseid], '*', MUST_EXIST);
+$cm = get_coursemodule_from_id('', $cmid, 0, false, MUST_EXIST);
 $context = context_module::instance($cmid);
 
 // Redirect Admins/Teachers to standard Moodle activity view
@@ -21,14 +23,16 @@ if (has_capability('moodle/course:manageactivities', $context)) {
 }
 
 // Server-side lock check — block direct URL access to locked lessons
-$modinfo  = get_fast_modinfo($course);
-$allcms   = [];
+$modinfo = get_fast_modinfo($course);
+$allcms = [];
 foreach ($modinfo->get_section_info_all() as $section) {
-    if (!$section->uservisible) continue;
+    if (!$section->uservisible)
+        continue;
     if (!empty($modinfo->sections[$section->section])) {
         foreach ($modinfo->sections[$section->section] as $modnumber) {
             $mod = $modinfo->cms[$modnumber];
-            if ($mod->uservisible) $allcms[] = $mod;
+            if ($mod->uservisible)
+                $allcms[] = $mod;
         }
     }
 }
@@ -38,8 +42,8 @@ if ($currentindex > 0) {
     if ($prevmod->completion != COMPLETION_TRACKING_NONE) {
         $prevdone = $DB->record_exists('course_modules_completion', [
             'coursemoduleid' => $prevmod->id,
-            'userid'         => $USER->id,
-            'completionstate'=> COMPLETION_COMPLETE,
+            'userid' => $USER->id,
+            'completionstate' => COMPLETION_COMPLETE,
         ]);
         if (!$prevdone) {
             redirect(
@@ -76,21 +80,24 @@ $templatecontext = array_merge(
 );
 
 // CSS/JS includes
-$bootstrapcss  = (new moodle_url('/theme/mytheme/styles/bootstrap.min.css'))->out(false);
-$biconscss     = (new moodle_url('/theme/mytheme/styles/bootstrap-icons.min.css'))->out(false);
-$allcss        = (new moodle_url('/theme/mytheme/styles/all.min.css'))->out(false);
-$coursecss     = (new moodle_url('/theme/mytheme/styles/course.css'))->out(false);
+$bootstrapcss = (new moodle_url('/theme/mytheme/styles/bootstrap.min.css'))->out(false);
+$biconscss = (new moodle_url('/theme/mytheme/styles/bootstrap-icons.min.css'))->out(false);
+$allcss = (new moodle_url('/theme/mytheme/styles/all.min.css'))->out(false);
+$coursecss = (new moodle_url('/theme/mytheme/styles/course.css'))->out(false);
 
-$jquery        = (new moodle_url('https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js'))->out(false);
-$coursejs      = (new moodle_url('/theme/mytheme/amd/src/course.js'))->out(false);
-$quizjs        = (new moodle_url('/theme/mytheme/amd/src/quiz.js'))->out(false);
-$folderJs        = (new moodle_url('/theme/mytheme/amd/src/folder.js'))->out(false);
-$forumJs       = (new moodle_url('/theme/mytheme/amd/src/forum.js'))->out(false);
+$jquery = (new moodle_url('https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js'))->out(false);
+$coursejs = (new moodle_url('/theme/mytheme/amd/src/course.js'))->out(false);
+$quizjs = (new moodle_url('/theme/mytheme/amd/src/quiz.js'))->out(false);
+$folderJs = (new moodle_url('/theme/mytheme/amd/src/folder.js'))->out(false);
+$forumJs = (new moodle_url('/theme/mytheme/amd/src/forum.js'))->out(false);
+$youtubeJs = (new moodle_url('/theme/mytheme/amd/src/youtube.js'))->out(false);
 $PAGE->requires->js(new moodle_url('/theme/mytheme/amd/src/forum.js'));
+$PAGE->requires->js(new moodle_url('/theme/mytheme/amd/src/youtube.js'));
 
 echo $OUTPUT->doctype();
 ?>
 <html <?php echo $OUTPUT->htmlattributes(); ?>>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -101,25 +108,33 @@ echo $OUTPUT->doctype();
     <link rel="stylesheet" href="<?php echo $allcss; ?>">
     <link rel="stylesheet" href="<?php echo $coursecss; ?>">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.7.0/fonts/remixicon.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" 
-        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 </head>
+
 <body>
 
-<?php 
-// Render the lesson template
-echo $OUTPUT->render_from_template('theme_mytheme/lesson_detail', $templatecontext); 
-?>
+    <?php
 
-<script src="<?php echo $jquery; ?>"></script>
-<script src="<?php echo $coursejs; ?>"></script>
-<script src="<?php echo $quizjs; ?>"></script>
-<script src="<?php echo $folderJs; ?>"></script>
-<script src="<?php echo $forumJs; ?>"></script>
+    // Render the activity header for this lesson page (guard in case renderer doesn't provide it)
+    if (method_exists($OUTPUT, 'activity_header')) {
+        echo $OUTPUT->activity_header();
+    }
 
+    // Render the lesson template
+    echo $OUTPUT->render_from_template('theme_mytheme/lesson_detail', $templatecontext);
+    ?>
 
-<?php echo $OUTPUT->standard_end_of_body_html(); ?>
+    <script src="<?php echo $jquery; ?>"></script>
+    <script src="<?php echo $coursejs; ?>"></script>
+    <script src="<?php echo $quizjs; ?>"></script>
+    <script src="<?php echo $folderJs; ?>"></script>
+    <script src="<?php echo $forumJs; ?>"></script>
+    <script src="<?php echo $youtubeJs; ?>"></script>
+
+    <?php echo $OUTPUT->standard_end_of_body_html(); ?>
 </body>
+
 </html>

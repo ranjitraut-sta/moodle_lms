@@ -520,3 +520,6 @@ function theme_mytheme_extend_navigation(global_navigation $nav)
         // Yo section khali choddinu, before_footer le handle garihalxa.
     }
 }
+
+
+

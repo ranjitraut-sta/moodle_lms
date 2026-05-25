@@ -96,4 +96,8 @@ citizenship district ma all district
 # aba fill in the blank ni tanne quiz ma 
 
 
+# smtp setup garne tarika 
+-- Site administration → Server → Email → Outgoing mail configuration
+
+
 # Happy Coding 

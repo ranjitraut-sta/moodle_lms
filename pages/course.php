@@ -12,6 +12,26 @@ require_login(null, false);
 $course = $DB->get_record('course', ['id' => $courseid], '*', MUST_EXIST);
 $context = context_course::instance($courseid);
 
+// 1. Fetch the course module ID (cmid) for the customcert activity in this course
+$cmid = $DB->get_field_sql("
+    SELECT cm.id 
+    FROM {course_modules} cm
+    JOIN {modules} m ON m.id = cm.module
+    JOIN {customcert} c ON c.id = cm.instance
+    WHERE cm.course = ? AND m.name = 'customcert'
+", [$courseid], IGNORE_MULTIPLE);
+
+// 2. Generate the URL using the cmid if it exists
+if ($cmid) {
+    $certificateUrl = (new \moodle_url('/mod/customcert/view.php', [
+        'id' => $cmid, // Passing the course module ID here!
+        'downloadown' => 1
+    ]))->out(false);
+} else {
+    $certificateUrl = null; // No certificate module found in this course
+}
+
+
 // Redirect to first lesson after enroll
 if ($justenrolled && is_enrolled($context, $USER)) {
     $modinfo = get_fast_modinfo($course);
@@ -29,6 +49,7 @@ if ($justenrolled && is_enrolled($context, $USER)) {
     }
 }
 
+
 $PAGE->set_url('/theme/mytheme/pages/course.php', ['id' => $courseid]);
 $PAGE->set_context($context);
 $PAGE->set_pagelayout('base');
@@ -37,7 +58,11 @@ $PAGE->set_heading($course->fullname);
 
 $templatecontext = array_merge(
     theme_mytheme_get_course_context($courseid),
-    theme_mytheme_get_base_context()
+    theme_mytheme_get_base_context(),
+    [
+        'certificate_url' => $certificateUrl,
+        'has_certificate' => !empty($certificateUrl) // Handy helper for your mustache template
+    ]
 );
 
 echo $OUTPUT->doctype();
