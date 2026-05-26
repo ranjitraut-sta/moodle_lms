@@ -99,5 +99,10 @@ citizenship district ma all district
 # smtp setup garne tarika 
 -- Site administration → Server → Email → Outgoing mail configuration
 
+# mark as complete button 
+--  yadi completion ma student mark as a complete manually tick lagako xa vani 
+
+
+# user changer self password change 
 
 # Happy Coding 

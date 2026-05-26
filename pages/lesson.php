@@ -91,8 +91,10 @@ $quizjs = (new moodle_url('/theme/mytheme/amd/src/quiz.js'))->out(false);
 $folderJs = (new moodle_url('/theme/mytheme/amd/src/folder.js'))->out(false);
 $forumJs = (new moodle_url('/theme/mytheme/amd/src/forum.js'))->out(false);
 $youtubeJs = (new moodle_url('/theme/mytheme/amd/src/youtube.js'))->out(false);
+$scromJs = (new moodle_url('/theme/mytheme/amd/src/scrom.js'))->out(false);
 $PAGE->requires->js(new moodle_url('/theme/mytheme/amd/src/forum.js'));
 $PAGE->requires->js(new moodle_url('/theme/mytheme/amd/src/youtube.js'));
+$PAGE->requires->js(new moodle_url('/theme/mytheme/amd/src/scrom.js'));
 
 echo $OUTPUT->doctype();
 ?>
@@ -133,6 +135,7 @@ echo $OUTPUT->doctype();
     <script src="<?php echo $folderJs; ?>"></script>
     <script src="<?php echo $forumJs; ?>"></script>
     <script src="<?php echo $youtubeJs; ?>"></script>
+    <script src="<?php echo $scromJs; ?>"></script>
 
     <?php echo $OUTPUT->standard_end_of_body_html(); ?>
 </body>

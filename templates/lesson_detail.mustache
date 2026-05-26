@@ -91,9 +91,6 @@
 
             {{! Progress bar }}
             <div class="amd-lesson-top-progress">
-                <div class="amd-course-progress-wrap" aria-live="polite" aria-atomic="true">
-                    <div class="amd-course-prog-label" id="progLabel">{{modulename}}</div>
-                </div>
                 {{#ismanualcompletion}}
                 <a href="{{toggleurl}}" class="amd-lms-btn ms-3 {{#ismarkedcomplete}}amd-lms-prev-btn{{/ismarkedcomplete}}{{^ismarkedcomplete}}amd-lms-next-btn{{/ismarkedcomplete}}" style="white-space:nowrap;">
                     {{#ismarkedcomplete}}

@@ -25,6 +25,28 @@ $PAGE->requires->css('/theme/mytheme/styles/login.css');
 $templatecontext = theme_mytheme_get_base_context();
 $logo = !empty($templatecontext['setting']['logo']) ? $templatecontext['setting']['logo'] : false;
 
+// Show friendly error for login failures (e.g. redirected with ?errorcode=3)
+$errorcode = optional_param('errorcode', 0, PARAM_INT);
+$errormessage = '';
+if (!empty($errorcode)) {
+    switch ($errorcode) {
+        case 1:
+            $errormessage = 'Authentication error. Please try again.';
+            break;
+        case 2:
+            $errormessage = 'Your account is not confirmed or disabled.';
+            break;
+        case 3:
+            $errormessage = 'Invalid username or password. Please check your credentials.';
+            break;
+        case 4:
+            $errormessage = 'Your session expired. Please try logging in again.';
+            break;
+        default:
+            $errormessage = 'Login failed. Please contact the site administrator.';
+    }
+}
+
 echo $OUTPUT->doctype();
 ?>
 <html <?php echo $OUTPUT->htmlattributes(); ?>>
@@ -86,6 +108,10 @@ echo $OUTPUT->doctype();
                                 style="position: absolute; top: 50%; right: 15px; transform: translateY(-50%); cursor: pointer; font-size: 1.3rem; color: var(--amd-muted);">
                                 <i class="fas fa-eye-slash" id="eyeIcon"></i>
                             </span>
+                        </div>
+
+                        <div class="mt-2 text-danger small" role="alert" aria-live="polite">
+                            <?php echo s($errormessage); ?>
                         </div>
 
                         <script>

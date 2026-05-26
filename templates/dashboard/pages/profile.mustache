@@ -1,175 +1,500 @@
-<main class="amd-lms-user-dash-main-content p-4">
-    <div class="container-fluid">
-        <!-- 🚀 Profile Header Card -->
-        <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
-            <div class="card-body p-0">
-                <!-- Cover Background with Gradient -->
-                <div class="amd-profile-bg" style="height: 140px; background: linear-gradient(45deg, #1e293b, #334155);"></div>
-                
-                <div class="px-4 pb-4 mt-n5">
-                    <div class="d-flex align-items-end flex-wrap">
-                        <!-- Profile Icon Placeholder -->
-                        <div class="position-relative" style="margin-top: -70px;">
-                            <div class="rounded-circle border border-4 border-white shadow-sm d-flex align-items-center justify-content-center bg-white" 
-                                 style="width: 140px; height: 140px;">
-                                <div class="rounded-circle d-flex align-items-center justify-content-center" 
-                                     style="width: 100%; height: 100%; background: #f1f5f9; color: #64748b;">
-                                    <!-- Using FontAwesome User Circle Icon -->
-                                    <i class="fas fa-user-circle" style="font-size: 132px;"></i>
-                                </div>
-                            </div>
-                        </div>
+<!-- Custom Styling -->
+<style>
+    /* Tab Management Fixes */
+    .amd-tab-pane {
+        display: none !important;
+    }
+    .amd-tab-pane.active-pane {
+        display: block !important;
+        animation: fadeInTab 0.3s ease-in-out;
+    }
+    @keyframes fadeInTab {
+        from { opacity: 0; transform: translateY(8px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
 
-                        <!-- User Identity -->
-                        <div class="ms-md-4 mt-3 mt-md-0 mb-2">
-                            <h2 class="fw-bold mb-1 text-white me-2">{{fullname}}</h2>
-                            <div class="d-flex gap-3 flex-wrap mt-3">
-                                {{#email}}
-                                <span class="text-dark small"><i class="fas fa-envelope text-danger me-1"></i> {{email}}</span>
-                                {{/email}}
-                            </div>
+    /* Core Visual Tokens */
+    .bg-light-soft { background-color: #f8fafc !important; }
+    .bg-glass { background: rgba(255, 255, 255, 0.12) !important; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+    .border-glass { border-color: rgba(255, 255, 255, 0.25) !important; }
+    .border-glass-subtle { border-color: rgba(255, 255, 255, 0.15) !important; }
+    .text-dark-smooth { color: #334155 !important; }
+    .font-xs { font-size: 11px !important; letter-spacing: 0.5px; }
+    .fw-extrabold { font-weight: 800 !important; }
+    
+    .dashboard-hero-card {
+        border-radius: 1.25rem !important;
+        box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08) !important;
+    }
+    
+    .profile-modern-tabs .nav-link {
+        color: rgba(255, 255, 255, 0.7) !important;
+        border-bottom: 3px solid transparent !important;
+        transition: all 0.2s ease;
+    }
+    .profile-modern-tabs .nav-link:hover {
+        color: #fff !important;
+    }
+    .profile-modern-tabs .nav-link.active {
+        color: #38bdf8 !important;
+        border-bottom: 3px solid #38bdf8 !important;
+    }
+    
+    .icon-circle-box {
+        width: 32px;
+        height: 32px;
+        background: #f1f5f9;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        flex-shrink: 0;
+    }
+    .grid-info-box {
+        background-color: #fcfdfe !important;
+        border-color: #e2e8f0 !important;
+    }
+    .bg-warning-soft { background-color: #fefce8 !important; }
+    .text-warning-dark { color: #854d0e !important; }
+
+    .transition-hover { transition: all 0.2s ease-in-out; }
+    .transition-hover:hover { transform: translateY(-2px); }
+    
+    .btn-action-glow {
+        background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
+        border: none;
+        box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35);
+        transition: all 0.2s ease;
+    }
+    .btn-action-glow:hover {
+        box-shadow: 0 6px 20px rgba(79, 70, 229, 0.5);
+        transform: translateY(-1px);
+    }
+</style>
+
+<main class="amd-lms-user-dash-main-content p-4 bg-light-soft">
+    <div class="container-fluid">
+        <!-- 🚀 Hero Profile Header -->
+        <div class="card border-0 rounded-4 overflow-hidden shadow-sm mb-4 position-relative dashboard-hero-card">
+            <div class="amd-profile-bg position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%); z-index: 1;"></div>
+            
+            <div class="card-body p-4 p-md-5 position-relative" style="z-index: 2; margin-top: 40px;">
+                <div class="d-flex align-items-center flex-column flex-md-row text-center text-md-start gap-4">
+                    <!-- Profile Picture Frame -->
+                    <div class="profile-avatar-wrapper position-relative">
+                        <div class="rounded-circle border border-4 border-glass shadow d-flex align-items-center justify-content-center bg-white" 
+                             style="width: 130px; height: 130px; overflow: hidden;">
+                            {{#profile_pix}}
+                                <img src="{{profile_pix}}" alt="{{fullname}}" class="w-100 h-100 object-fit-cover rounded-circle">
+                            {{/profile_pix}}
+                            {{^profile_pix}}
+                                <div class="rounded-circle d-flex align-items-center justify-content-center bg-light text-secondary w-100 h-100">
+                                    <i class="fas fa-user-circle" style="font-size: 120px;"></i>
+                                </div>
+                            {{/profile_pix}}
+                        </div>
+                    </div>
+
+                    <!-- Identity Block -->
+                    <div class="flex-grow-1 text-white">
+                        <h2 class="fw-extrabold mb-1 tracking-tight text-white">{{fullname}}</h2>
+                        <p class="opacity-75 mb-3 fs-6 font-monospace"><i class="fas fa-at text-info me-1"></i>{{username}}</p>
+                        
+                        <div class="d-flex gap-2 flex-wrap justify-content-center justify-content-md-start">
+                            {{#gender}}
+                                <span class="badge bg-glass text-white border border-glass-subtle px-3 py-2 rounded-pill small"><i class="fas fa-venus-mars text-info me-1"></i> {{gender}}</span>
+                            {{/gender}}
+                            {{#ethnicity}}
+                                <span class="badge bg-glass text-white border border-glass-subtle px-3 py-2 rounded-pill small"><i class="fas fa-users text-warning me-1"></i> {{ethnicity}}</span>
+                            {{/ethnicity}}
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <!-- Modern Navigation Tabs inside Header Card -->
+            <div class="card-footer bg-glass border-0 px-4 py-0 position-relative" style="z-index: 2;">
+                <ul class="nav nav-tabs border-0 profile-modern-tabs" id="profileTab">
+                    <li class="nav-item">
+                        <button class="nav-link active py-3 fw-bold text-white border-0 bg-transparent" id="info-tab" onclick="switchAmdTab(event, 'info-pane')">
+                            <i class="fas fa-address-card me-2"></i>Overview
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link py-3 fw-bold text-white border-0 bg-transparent" id="security-tab" onclick="switchAmdTab(event, 'security-pane')">
+                            <i class="fas fa-user-shield me-2"></i>Account & Security
+                        </button>
+                    </li>
+                </ul>
             </div>
         </div>
 
-        <div class="row g-4">
-            <!-- 👤 Quick Stats & Account Info -->
-            <div class="col-lg-4">
-                <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
-                    <div class="d-flex align-items-center mb-4">
-                        <div class="icon-shape bg-soft-primary rounded-3 p-2 me-3">
-                            <i class="fas fa-shield-alt text-primary"></i>
+        <!-- 🔄 Multi-Tab Panes Layout -->
+        <div class="tab-content" id="profileTabContent">
+            
+            <!-- TAB 1: Overview & Profile Details -->
+            <div class="amd-tab-pane active-pane" id="info-pane">
+                <div class="row g-4">
+                    <!-- Left Mini Grid -->
+                    <div class="col-lg-4">
+                        <!-- Account Metrics Card -->
+                        <div class="card border-0 shadow-sm rounded-4 p-4 mb-4 timeline-card-bg">
+                            <h5 class="fw-bold text-dark mb-4 d-flex align-items-center"><i class="fas fa-fingerprint text-primary me-2"></i>Core Account</h5>
+                            <div class="vstack gap-4">
+                                <div class="d-flex align-items-start">
+                                    <div class="icon-circle-box me-3"><i class="fas fa-envelope text-primary"></i></div>
+                                    <div>
+                                        <small class="text-muted d-block text-uppercase fw-bold font-xs">Email</small>
+                                        <span class="fw-medium text-dark-smooth">{{email}}</span>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-start">
+                                    <div class="icon-circle-box me-3"><i class="fas fa-phone-alt text-success"></i></div>
+                                    <div>
+                                        <small class="text-muted d-block text-uppercase fw-bold font-xs">Phone Number</small>
+                                        <span class="fw-medium text-dark-smooth">{{phone_number}}</span>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-start">
+                                    <div class="icon-circle-box me-3"><i class="fas fa-calendar-alt text-warning"></i></div>
+                                    <div>
+                                        <small class="text-muted d-block text-uppercase fw-bold font-xs">Member Since</small>
+                                        <span class="fw-medium text-dark-smooth">{{joined_on}}</span>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-start">
+                                    <div class="icon-circle-box me-3"><i class="fas fa-history text-info"></i></div>
+                                    <div>
+                                        <small class="text-muted d-block text-uppercase fw-bold font-xs">Last Activity</small>
+                                        <span class="fw-bold text-primary">{{last_access}}</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <h5 class="fw-bold mb-0">Account Details</h5>
+
+                        <!-- Location Cards -->
+                        <div class="card border-0 shadow-sm rounded-4 p-4">
+                            <h5 class="fw-bold text-dark mb-4 d-flex align-items-center"><i class="fas fa-map-marked-alt text-danger"></i><span class="ms-2">Location Details</span></h5>
+                            <div class="vstack gap-3">
+                                <div class="p-3 border-0 bg-light-subtle rounded-3 transition-hover">
+                                    <small class="text-muted d-block text-uppercase fw-bold font-xs">Province / State</small>
+                                    <span class="fw-bold text-dark-smooth">{{province}}</span>
+                                </div>
+                                <div class="p-3 border-0 bg-light-subtle rounded-3 transition-hover">
+                                    <small class="text-muted d-block text-uppercase fw-bold font-xs">District</small>
+                                    <span class="fw-bold text-dark-smooth">{{district}}</span>
+                                </div>
+                                <div class="p-3 border-0 bg-light-subtle rounded-3 transition-hover">
+                                    <small class="text-muted d-block text-uppercase fw-bold font-xs">Municipality</small>
+                                    <span class="fw-bold text-dark-smooth">{{municipality}}</span>
+                                </div>
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        <div class="p-3 border-0 bg-light-subtle rounded-3 text-center">
+                                            <small class="text-muted d-block text-uppercase fw-bold font-xs">Ward</small>
+                                            <span class="fw-bold text-dark-smooth">{{ward}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="p-3 border-0 bg-light-subtle rounded-3 text-center">
+                                            <small class="text-muted d-block text-uppercase fw-bold font-xs">Tole</small>
+                                            <span class="fw-bold text-dark-smooth text-truncate d-block">{{tole}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    
-                    <div class="vstack gap-4">
-                        {{#phone}}
-                        <div class="d-flex align-items-center">
-                            <div class="text-primary me-3" style="width: 20px;"><i class="fas fa-phone-alt"></i></div>
-                            <div>
-                                <small class="text-muted d-block small fw-bold text-uppercase">Phone Number</small>
-                                <span class="fw-medium text-dark">{{phone}}</span>
-                            </div>
-                        </div>
-                        {{/phone}}
 
-                        <div class="d-flex align-items-center">
-                            <div class="text-primary me-3" style="width: 20px;"><i class="fas fa-calendar-check"></i></div>
-                            <div>
-                                <small class="text-muted d-block small fw-bold text-uppercase">Member Since</small>
-                                <span class="fw-medium text-dark">{{joined_on}}</span>
+                    <!-- Right Column Profile Block -->
+                    <div class="col-lg-8">
+                        <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+                            <h5 class="fw-bold text-dark mb-4 pb-2 border-bottom d-flex align-items-center"><i class="fas fa-user-tie text-info me-2"></i>Professional Matrix</h5>
+                            
+                            <div class="row g-4 mb-4">
+                                <div class="col-md-6">
+                                    <label class="text-muted font-xs fw-bold text-uppercase mb-1">Organization</label>
+                                    <div class="p-3 border rounded-3 bg-light-subtle grid-info-box">
+                                        <i class="fas fa-university text-muted fs-5 me-3"></i><span class="fw-semibold">{{organization_name}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="text-muted font-xs fw-bold text-uppercase mb-1">Designation</label>
+                                    <div class="p-3 border rounded-3 bg-light-subtle grid-info-box">
+                                        <i class="fas fa-id-card-alt text-muted fs-5 me-3"></i><span class="fw-semibold">{{designation}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="text-muted font-xs fw-bold text-uppercase mb-1">PAN / VAT Number</label>
+                                    <div class="p-3 border rounded-3 bg-light-subtle grid-info-box">
+                                        <i class="fas fa-receipt text-muted fs-5 me-3"></i><span class="fw-semibold font-monospace">{{pan_no}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="text-muted font-xs fw-bold text-uppercase mb-1">National ID (NID)</label>
+                                    <div class="p-3 border rounded-3 bg-light-subtle grid-info-box">
+                                        <i class="fas fa-passport text-muted fs-5 me-3"></i><span class="fw-semibold font-monospace">{{nid_no}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="text-muted font-xs fw-bold text-uppercase mb-1">Highest Qualification</label>
+                                    <div class="p-3 border rounded-3 bg-light-subtle grid-info-box">
+                                        <i class="fas fa-graduation-cap text-muted fs-5 me-3"></i><span class="fw-semibold">{{qualification}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="text-muted font-xs fw-bold text-uppercase mb-1">Years of Experience</label>
+                                    <div class="p-3 border rounded-3 bg-light-subtle grid-info-box">
+                                        <i class="fas fa-briefcase text-muted fs-5 me-3"></i><span class="fw-semibold">{{years_experience}} Years</span>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="d-flex align-items-center">
-                            <div class="text-primary me-3" style="width: 20px;"><i class="fas fa-clock"></i></div>
-                            <div>
-                                <small class="text-muted d-block small fw-bold text-uppercase">Last Activity</small>
-                                <span class="fw-medium text-primary">{{last_access}}</span>
+                            <label class="text-muted font-xs fw-bold text-uppercase mb-2">Area of Expertise</label>
+                            <div class="p-3 border rounded-3 bg-light-subtle mb-2">
+                                <div class="d-flex align-items-start">
+                                    <i class="fas fa-star text-warning fs-5 mt-1 me-3"></i>
+                                    <span class="fw-medium text-dark-smooth line-height-md">{{expertise}}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 📄 Professional & Personal Info -->
-            <div class="col-lg-8">
-                <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
-                    <div class="d-flex align-items-center mb-4 border-bottom pb-3">
-                        <div class="icon-shape bg-soft-info rounded-3 p-2 me-3">
-                            <i class="fas fa-briefcase text-info"></i>
-                        </div>
-                        <h5 class="fw-bold mb-0">Professional Information</h5>
-                    </div>
-                    
-                    <div class="row g-4">
-                        {{#organization_name}}
-                        <div class="col-md-6">
-                            <label class="text-muted small fw-bold text-uppercase mb-1 d-block">Organization</label>
-                            <div class="p-3 border rounded-3 bg-light-subtle">
-                                <i class="fas fa-university me-2 text-muted"></i>{{organization_name}}
-                            </div>
-                        </div>
-                        {{/organization_name}}
+            <!-- TAB 2: Edit Profile Information -->
+            <div class="amd-tab-pane" id="security-pane">
+                <div class="row g-4">
+                    <!-- Edit Profile Form -->
+                    <div class="col-12">
+                        <div class="card border-0 shadow-sm rounded-4 p-4">
+                            <h5 class="fw-bold text-dark mb-4 pb-2 border-bottom">
+                                <i class="fas fa-user-edit text-primary me-2"></i>Edit Profile Information
+                            </h5>
+                            
+                            <form id="profileUpdateForm" method="post" autocomplete="off">
+                                <input type="hidden" name="sesskey" value="{{sesskey}}">
+                                <input type="hidden" name="action" value="update_profile_and_credentials">
 
-                        {{#designation}}
-                        <div class="col-md-6">
-                            <label class="text-muted small fw-bold text-uppercase mb-1 d-block">Designation</label>
-                            <div class="p-3 border rounded-3 bg-light-subtle">
-                                <i class="fas fa-id-badge me-2 text-muted"></i>{{designation}}
-                            </div>
-                        </div>
-                        {{/designation}}
-
-                        {{#pan_no}}
-                        <div class="col-md-6">
-                            <label class="text-muted small fw-bold text-uppercase mb-1 d-block">PAN / VAT</label>
-                            <div class="p-3 border rounded-3 bg-light-subtle">{{pan_no}}</div>
-                        </div>
-                        {{/pan_no}}
-
-                        {{#qualification}}
-                        <div class="col-md-6">
-                            <label class="text-muted small fw-bold text-uppercase mb-1 d-block">Qualification</label>
-                            <div class="p-3 border rounded-3 bg-light-subtle">{{qualification}}</div>
-                        </div>
-                        {{/qualification}}
-                    </div>
-
-                    <!-- 📍 Location with FontAwesome -->
-                    {{#province}}
-                    <div class="mt-5">
-                        <h6 class="fw-bold mb-3 d-flex align-items-center">
-                            <i class="fas fa-map-marker-alt text-danger me-2"></i>Location Details
-                        </h6>
-                        <div class="row g-3">
-                            <div class="col-md-4">
-                                <div class="bg-light p-3 rounded-3">
-                                    <small class="text-muted d-block">Province</small>
-                                    <span class="fw-bold">{{province}}</span>
+                                <div class="row g-3 mb-4">
+                                    <div class="col-md-6">
+                                        <label class="form-label text-muted fw-bold font-xs text-uppercase">First Name</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-light border-end-0 rounded-start-3"><i class="fas fa-user text-muted"></i></span>
+                                            <input type="text" name="firstname" class="form-control border-start-0 rounded-end-3" value="{{firstname}}" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label text-muted fw-bold font-xs text-uppercase">Last Name</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-light border-end-0 rounded-start-3"><i class="fas fa-user text-muted"></i></span>
+                                            <input type="text" name="lastname" class="form-control border-start-0 rounded-end-3" value="{{lastname}}">
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            {{#district}}
-                            <div class="col-md-4">
-                                <div class="bg-light p-3 rounded-3">
-                                    <small class="text-muted d-block">District</small>
-                                    <span class="fw-bold">{{district}}</span>
+
+                                <div class="row g-3 mb-4">
+                                    <div class="col-md-12">
+                                        <label class="form-label text-muted fw-bold font-xs text-uppercase">Email Address</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-light border-end-0 rounded-start-3"><i class="fas fa-envelope text-muted"></i></span>
+                                            <input type="email" name="email" class="form-control border-start-0 rounded-end-3" value="{{email}}" required>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            {{/district}}
-                            {{#municipality}}
-                            <div class="col-md-4">
-                                <div class="bg-light p-3 rounded-3">
-                                    <small class="text-muted d-block">Municipality</small>
-                                    <span class="fw-bold">{{municipality}}</span>
+
+                                <!-- Password change option included in the same form -->
+                                <hr class="my-3">
+                                <h6 class="fw-bold text-dark small mb-3">Change Password (optional)</h6>
+                                <div class="mb-3">
+                                    <label class="form-label text-muted fw-bold font-xs text-uppercase">Current Password</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-end-0 rounded-start-3"><i class="fas fa-lock text-muted"></i></span>
+                                        <input type="password" name="current_password" class="form-control border-start-0 rounded-end-3" placeholder="Enter current password if changing" >
+                                    </div>
+                                    <div class="form-text font-xs text-muted mt-1">Current password required only when changing to a new password.</div>
                                 </div>
-                            </div>
-                            {{/municipality}}
+
+                                <div class="mb-4">
+                                    <label class="form-label text-muted fw-bold font-xs text-uppercase">New Password</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-end-0 rounded-start-3"><i class="fas fa-shield-alt text-muted"></i></span>
+                                        <input type="password" name="new_password" class="form-control border-start-0 rounded-end-3" placeholder="Leave blank to keep current password">
+                                    </div>
+                                    <div class="form-text font-xs text-muted mt-1">यदि पासवर्ड परिवर्तन नगर्नु भएको हो भने खाली छोड्नुस्।</div>
+                                </div>
+
+                                <div id="profileUpdateStatus"></div>
+
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-success rounded-3 py-2.5 fw-bold" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); border: none; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);">
+                                        <i class="fas fa-save me-2"></i>Save Profile Changes
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
-                    {{/province}}
 
-                    <!-- Empty State -->
-                    {{^organization_name}}{{^pan_no}}{{^province}}
-                    <div class="text-center py-4">
-                        <img src="https://cdn-icons-png.flaticon.com/512/7486/7486744.png" alt="Empty" style="width: 80px; opacity: 0.5;">
-                        <p class="mt-3 text-muted">Aafno profile pura garnu hos.</p>
-                    </div>
-                    {{/province}}{{/pan_no}}{{/organization_name}}
+
                 </div>
             </div>
+
         </div>
     </div>
 </main>
 
-<style>
-    .bg-soft-primary { background-color: #e0e7ff; }
-    .bg-soft-info { background-color: #e0f2fe; }
-    .bg-light-subtle { background-color: #f8fafc; }
-    .mt-n5 { margin-top: -3rem !important; }
-    .rounded-4 { border-radius: 1rem !important; }
-    .text-dark { color: #1e293b !important; }
-</style>
+<!-- ⚡ Pure Native JavaScript Engine for Tab Switching -->
+<script>
+function switchAmdTab(evt, paneId) {
+    // 1. All tab content templates hide garne
+    var panes = document.getElementsByClassName("amd-tab-pane");
+    for (var i = 0; i < panes.length; i++) {
+        panes[i].classList.remove("active-pane");
+    }
+
+    // 2. All tab indicators bata 'active' class hatayera standard text style rakhne
+    var links = document.querySelectorAll(".profile-modern-tabs .nav-link");
+    for (var j = 0; j < links.length; j++) {
+        links[j].classList.remove("active");
+    }
+
+    // 3. Clicked dynamic element lai activate garne
+    document.getElementById(paneId).classList.add("active-pane");
+    evt.currentTarget.classList.add("active");
+}
+</script>
+
+
+
+<!-- Profile Update AJAX Handler -->
+<script>
+function showStatusMessage(elementId, message, isSuccess) {
+    const statusDiv = document.getElementById(elementId);
+    statusDiv.innerHTML = `
+        <div class="alert alert-${isSuccess ? 'success' : 'danger'} alert-dismissible fade show rounded-3" role="alert">
+            <i class="fas fa-${isSuccess ? 'check-circle' : 'exclamation-circle'} me-2"></i>
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    `;
+    
+    if (isSuccess) {
+        setTimeout(() => {
+            statusDiv.innerHTML = '';
+        }, 5000);
+    }
+}
+
+// Handle Profile Update Form
+const profileForm = document.getElementById('profileUpdateForm');
+if (profileForm) {
+    profileForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        const ajaxUrl = '{{config.wwwroot}}/theme/mytheme/pages/profile_ajax.php';
+        
+        // Add loading state
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+        
+        // Ensure sesskey is present; prefer the hidden input, fall back to Moodle's JS config
+        if (!formData.get('sesskey')) {
+            var sessFromM = (window.M && M.cfg && M.cfg.sesskey) ? M.cfg.sesskey : null;
+            var hidden = document.querySelector('input[name="sesskey"]');
+            var sess = sessFromM || (hidden ? hidden.value : null);
+            if (sess) formData.set('sesskey', sess);
+        }
+
+        fetch(ajaxUrl, {
+            method: 'POST',
+            body: formData,
+            credentials: 'same-origin'
+        })
+        .then(response => {
+            // Accept both 200 and 400 - we check the JSON response for actual status
+            return response.text().then(text => ({
+                status: response.status,
+                text: text
+            }));
+        })
+        .then(({status, text}) => {
+            try {
+                const data = JSON.parse(text);
+                console.log('Response:', {status, data});
+                showStatusMessage('profileUpdateStatus', data.message, data.success);
+                if (data.success) {
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2000);
+                }
+            } catch (e) {
+                console.error('Invalid JSON response:', text);
+                showStatusMessage('profileUpdateStatus', 'Server returned an invalid response. Please refresh and try again.', false);
+            }
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+            showStatusMessage('profileUpdateStatus', 'An error occurred: ' + error.message, false);
+        })
+        .finally(() => {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalText;
+        });
+    });
+}
+
+// Handle Credentials Update Form
+const credentialsForm = document.getElementById('credentialsForm');
+if (credentialsForm) {
+    credentialsForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        const ajaxUrl = '{{config.wwwroot}}/theme/mytheme/pages/profile_ajax.php';
+        
+        // Add loading state
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+        
+        fetch(ajaxUrl, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            // Accept both 200 and 400 - we check the JSON response for actual status
+            return response.text().then(text => ({
+                status: response.status,
+                text: text
+            }));
+        })
+        .then(({status, text}) => {
+            try {
+                const data = JSON.parse(text);
+                console.log('Response:', {status, data});
+                showStatusMessage('credentialsUpdateStatus', data.message, data.success);
+                if (data.success) {
+                    document.querySelector('input[name="current_password"]').value = '';
+                    document.querySelector('input[name="new_password"]').value = '';
+                }
+            } catch (e) {
+                console.error('Invalid JSON response:', text);
+                showStatusMessage('credentialsUpdateStatus', 'Server returned an invalid response. Please refresh and try again.', false);
+            }
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+            showStatusMessage('credentialsUpdateStatus', 'An error occurred: ' + error.message, false);
+        })
+        .finally(() => {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalText;
+        });
+    });
+}
+</script>
