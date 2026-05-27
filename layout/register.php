@@ -8,6 +8,7 @@ $templatecontext = theme_mytheme_get_base_context();
 $logo = !empty($templatecontext['setting']['logo']) ? $templatecontext['setting']['logo'] : false;
 $PAGE->requires->css('/theme/mytheme/styles/login.css');
 
+
 echo $OUTPUT->doctype();
 ?>
 <html <?php echo $OUTPUT->htmlattributes(); ?>>
@@ -27,6 +28,26 @@ echo $OUTPUT->doctype();
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
         rel="stylesheet">
+    <style>
+        .amd-error-box {
+            background: #ff3b3b;
+            color: white;
+            padding: 16px 20px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+            margin-bottom: 20px;
+        }
+
+        /*
+        .amd-error-box ul {
+            list-style-type: disc;
+            margin: 5px 0 0 0;
+        }
+
+        .amd-error-box li {
+            margin-bottom: 4px;
+        } */
+    </style>
 
 </head>
 
@@ -48,6 +69,32 @@ echo $OUTPUT->doctype();
                 </div>
                 <!-- Forms Wrapper -->
                 <div class="amd-lms-login-forms-wrapper">
+
+                    <?php
+                    $errors = $_SESSION['register_errors'] ?? [];
+                    $formdata = $_SESSION['register_form_data'] ?? [];
+                    unset($_SESSION['register_errors']);
+                    unset($_SESSION['register_form_data']);
+                    ?>
+
+                    <!-- Global Error Box with List -->
+                    <?php if (!empty($errors)): ?>
+                        <div id="global-error-box" class="amd-error-box"
+                            style="display:flex; flex-direction: column; align-items: flex-start;">
+                            <div style="display: flex; align-items: center; gap: 10px; width: 100%; margin-bottom: 8px;">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <strong>Please correct the following errors:</strong>
+                            </div>
+
+                            <ul style="margin: 0; padding-left: 25px; width: 100%; font-size: 0.95rem;">
+                                <?php foreach ($errors as $error): ?>
+                                    <li><?= htmlspecialchars($error) ?></li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    <?php endif; ?>
+
+                    <!-- Register Form -->
                     <!-- Register Form -->
                     <form action="<?php echo $CFG->wwwroot; ?>/theme/mytheme/pages/register.php" method="post"
                         id="register-form" class="amd-lms-login-form amd-lms-login-active overflow-auto grid-container">
@@ -63,63 +110,76 @@ echo $OUTPUT->doctype();
                         </div>
 
                         <div class="grid-row grid-3">
-                            <div class="amd-lms-login-input-group"><input type="text" name="firstname" id="FirstName"
-                                    required placeholder=" "><label for="FirstName">First Name<span
-                                        class="text-danger mx-1">*</span></label></div>
-                            <div class="amd-lms-login-input-group"><input type="text" name="middle_name" id="MiddleName"
-                                    placeholder=" "><label for="MiddleName">Middle Name</label></div>
-                            <div class="amd-lms-login-input-group"><input type="text" name="lastname" id="LastName"
-                                    required placeholder=" "><label for="LastName">Last Name<span
-                                        class="text-danger mx-1">*</span></label></div>
+                            <div class="amd-lms-login-input-group">
+                                <input type="text" name="firstname" id="FirstName"
+                                    value="<?= htmlspecialchars($formdata['firstname'] ?? '') ?>" required
+                                    placeholder=" ">
+                                <label for="FirstName">First Name<span class="text-danger mx-1">*</span></label>
+                            </div>
+                            <div class="amd-lms-login-input-group">
+                                <input type="text" name="middle_name" id="MiddleName"
+                                    value="<?= htmlspecialchars($formdata['middle_name'] ?? '') ?>" placeholder=" ">
+                                <label for="MiddleName">Middle Name</label>
+                            </div>
+                            <div class="amd-lms-login-input-group">
+                                <input type="text" name="lastname" id="LastName"
+                                    value="<?= htmlspecialchars($formdata['lastname'] ?? '') ?>" required
+                                    placeholder=" ">
+                                <label for="LastName">Last Name<span class="text-danger mx-1">*</span></label>
+                            </div>
                         </div>
 
                         <div class="grid-row grid-2">
                             <div class="amd-lms-login-input-group">
                                 <select name="gender" required>
                                     <option value="">Select Gender</option>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
-                                    <option value="other">Other</option>
+                                    <option value="male" <?= ($formdata['gender'] ?? '') === 'male' ? 'selected' : '' ?>>
+                                        Male</option>
+                                    <option value="female" <?= ($formdata['gender'] ?? '') === 'female' ? 'selected' : '' ?>>Female</option>
+                                    <option value="other" <?= ($formdata['gender'] ?? '') === 'other' ? 'selected' : '' ?>>
+                                        Other</option>
                                 </select>
                                 <label>Gender<span class="text-danger mx-1">*</span></label>
                             </div>
 
-                            <!-- Employment -->
                             <div class="amd-lms-login-input-group">
                                 <select name="employed">
                                     <option value="">Select</option>
-                                    <option value="yes">Yes</option>
-                                    <option value="no">No</option>
+                                    <option value="yes" <?= ($formdata['employed'] ?? '') === 'yes' ? 'selected' : '' ?>>
+                                        Yes</option>
+                                    <option value="no" <?= ($formdata['employed'] ?? '') === 'no' ? 'selected' : '' ?>>No
+                                    </option>
                                 </select>
                                 <label>Employed?</label>
                             </div>
                         </div>
 
                         <div class="grid-row grid-2">
-                            <!-- Citizenship -->
                             <div class="amd-lms-login-input-group">
-                                <input type="text" name="citizenship_no" placeholder=" ">
+                                <input type="text" name="citizenship_no"
+                                    value="<?= htmlspecialchars($formdata['citizenship_no'] ?? '') ?>" placeholder=" ">
                                 <label>Citizenship No.</label>
                             </div>
-
 
                             <div class="amd-lms-login-input-group">
                                 <select name="citizenship_district" id="citizenship_district_dropdown">
                                     <option value="">Select Issued District</option>
-                                    <!-- AJAX bata populate hunchha -->
                                 </select>
                                 <label>Citizenship Issued District</label>
                             </div>
                         </div>
 
-                        <!-- New NID/PAN fields row -->
                         <div class="grid-row grid-2">
                             <div class="amd-lms-login-input-group">
-                                <input type="text" name="nid_no" id="NIDNo" placeholder=" " maxlength="16">
+                                <input type="text" name="nid_no" id="NIDNo"
+                                    value="<?= htmlspecialchars($formdata['nid_no'] ?? '') ?>" placeholder=" "
+                                    maxlength="16">
                                 <label for="NIDNo">NID No</label>
                             </div>
                             <div class="amd-lms-login-input-group">
-                                <input type="text" name="pan_no" id="PANNo" placeholder=" " maxlength="9" required>
+                                <input type="text" name="pan_no" id="PANNo"
+                                    value="<?= htmlspecialchars($formdata['pan_no'] ?? '') ?>" placeholder=" "
+                                    maxlength="9" required>
                                 <label for="PANNo">PAN No (9 digits)</label>
                             </div>
                         </div>
@@ -128,22 +188,22 @@ echo $OUTPUT->doctype();
                             <div class="amd-lms-login-input-group">
                                 <select name="ethnicity" id="ethnicity-select" class="ethnicity-dropdown" required>
                                     <option value="">Select Ethnicity</option>
-                                    <option value="brahmin">Brahmin</option>
-                                    <option value="chhetri">Chhetri</option>
-                                    <option value="janajati">Janajati</option>
-                                    <option value="indigenous">Indigenous</option>
-                                    <option value="madheshi">Madheshi</option>
-                                    <option value="dalit">Dalit</option>
-                                    <option value="muslim">Muslim</option>
-                                    <option value="others">Others</option>
+                                    <option value="brahmin" <?= ($formdata['ethnicity'] ?? '') === 'brahmin' ? 'selected' : '' ?>>Brahmin</option>
+                                    <option value="chhetri" <?= ($formdata['ethnicity'] ?? '') === 'chhetri' ? 'selected' : '' ?>>Chhetri</option>
+                                    <option value="janajati" <?= ($formdata['ethnicity'] ?? '') === 'janajati' ? 'selected' : '' ?>>Janajati</option>
+                                    <option value="indigenous" <?= ($formdata['ethnicity'] ?? '') === 'indigenous' ? 'selected' : '' ?>>Indigenous</option>
+                                    <option value="madheshi" <?= ($formdata['ethnicity'] ?? '') === 'madheshi' ? 'selected' : '' ?>>Madheshi</option>
+                                    <option value="dalit" <?= ($formdata['ethnicity'] ?? '') === 'dalit' ? 'selected' : '' ?>>Dalit</option>
+                                    <option value="muslim" <?= ($formdata['ethnicity'] ?? '') === 'muslim' ? 'selected' : '' ?>>Muslim</option>
+                                    <option value="others" <?= ($formdata['ethnicity'] ?? '') === 'others' ? 'selected' : '' ?>>Others</option>
                                 </select>
                                 <label>Ethnicity<span class="text-danger mx-1">*</span></label>
                                 <input type="text" id="ethnicity-others-text" name="ethnicity_others"
+                                    value="<?= htmlspecialchars($formdata['ethnicity_others'] ?? '') ?>"
                                     placeholder="Specify other ethnicity"
                                     style="margin-top: 10px; width: 100%; padding: 8px; background: #ffffff36; border: 1px solid #00164578; color: var(--amd-dark); display: none;">
                             </div>
                         </div>
-
 
                         <!-- Permanent Address Section -->
                         <div style="width: 100%; text-align: left; margin: 20px 0;" class="">
@@ -155,13 +215,20 @@ echo $OUTPUT->doctype();
                             <div class="amd-lms-login-input-group">
                                 <select name="province_id" class="state-dropdown" required>
                                     <option value="">Select Province</option>
-                                    <option value="1">Koshi Province</option>
-                                    <option value="2">Madhesh Province</option>
-                                    <option value="3">Bagmati Province</option>
-                                    <option value="4">Gandaki Province</option>
-                                    <option value="5">Lumbini Province</option>
-                                    <option value="6">Karnali Province</option>
-                                    <option value="7">Sudurpashchim Province</option>
+                                    <option value="1" <?= ($formdata['province_id'] ?? '') == '1' ? 'selected' : '' ?>>
+                                        Koshi Province</option>
+                                    <option value="2" <?= ($formdata['province_id'] ?? '') == '2' ? 'selected' : '' ?>>
+                                        Madhesh Province</option>
+                                    <option value="3" <?= ($formdata['province_id'] ?? '') == '3' ? 'selected' : '' ?>>
+                                        Bagmati Province</option>
+                                    <option value="4" <?= ($formdata['province_id'] ?? '') == '4' ? 'selected' : '' ?>>
+                                        Gandaki Province</option>
+                                    <option value="5" <?= ($formdata['province_id'] ?? '') == '5' ? 'selected' : '' ?>>
+                                        Lumbini Province</option>
+                                    <option value="6" <?= ($formdata['province_id'] ?? '') == '6' ? 'selected' : '' ?>>
+                                        Karnali Province</option>
+                                    <option value="7" <?= ($formdata['province_id'] ?? '') == '7' ? 'selected' : '' ?>>
+                                        Sudurpashchim Province</option>
                                 </select>
                                 <label>Permanent Province<span class="text-danger mx-1">*</span></label>
                             </div>
@@ -177,26 +244,31 @@ echo $OUTPUT->doctype();
                                 </select>
                                 <label>Permanent Municipality<span class="text-danger mx-1">*</span></label>
                             </div>
-
                         </div>
 
-
                         <div class="grid-row grid-2">
-                            <div class="amd-lms-login-input-group"><input type="number" name="ward" placeholder=" "
-                                    required><label>Permanent Ward<span class="text-danger mx-1">*</span></label></div>
-                            <div class="amd-lms-login-input-group"><input type="text" name="tole"
-                                    placeholder=" "><label>Permanent Tole / Street Name</label></div>
+                            <div class="amd-lms-login-input-group">
+                                <input type="number" name="ward"
+                                    value="<?= htmlspecialchars($formdata['ward'] ?? '') ?>" required placeholder=" ">
+                                <label>Permanent Ward<span class="text-danger mx-1">*</span></label>
+                            </div>
+                            <div class="amd-lms-login-input-group">
+                                <input type="text" name="tole" value="<?= htmlspecialchars($formdata['tole'] ?? '') ?>"
+                                    placeholder=" ">
+                                <label>Permanent Tole / Street Name</label>
+                            </div>
                         </div>
 
                         <!-- Same Address Checkbox -->
                         <div class="amd-checkbox-group" style="max-width: 320px; margin: 20px 0;">
                             <label
-                                style="font-size: 1rem; color: var(--amd-dark); cursor: pointer; display: flex; align-items: center; align-items: center;">
+                                style="font-size: 1rem; color: var(--amd-dark); cursor: pointer; display: flex; align-items: center;">
                                 <input type="checkbox" id="sameAddress" class="amd-custom-input form-check-input"
                                     style="margin-right: 10px;">
                                 Temporary Address same as Permanent
                             </label>
                         </div>
+
                         <!-- Temporary Address Section -->
                         <div style="width: 100%; text-align: left; margin: 20px 0;">
                             <h5 style="color: var(--amd-dark); margin-bottom: 10px;"><i
@@ -206,13 +278,13 @@ echo $OUTPUT->doctype();
                             <div class="amd-lms-login-input-group">
                                 <select name="temp_province_id" class="temp-state-dropdown" required>
                                     <option value="">Select Province</option>
-                                    <option value="1">Koshi Province</option>
-                                    <option value="2">Madhesh Province</option>
-                                    <option value="3">Bagmati Province</option>
-                                    <option value="4">Gandaki Province</option>
-                                    <option value="5">Lumbini Province</option>
-                                    <option value="6">Karnali Province</option>
-                                    <option value="7">Sudurpashchim Province</option>
+                                    <option value="1" <?= ($formdata['temp_province_id'] ?? '') == '1' ? 'selected' : '' ?>>Koshi Province</option>
+                                    <option value="2" <?= ($formdata['temp_province_id'] ?? '') == '2' ? 'selected' : '' ?>>Madhesh Province</option>
+                                    <option value="3" <?= ($formdata['temp_province_id'] ?? '') == '3' ? 'selected' : '' ?>>Bagmati Province</option>
+                                    <option value="4" <?= ($formdata['temp_province_id'] ?? '') == '4' ? 'selected' : '' ?>>Gandaki Province</option>
+                                    <option value="5" <?= ($formdata['temp_province_id'] ?? '') == '5' ? 'selected' : '' ?>>Lumbini Province</option>
+                                    <option value="6" <?= ($formdata['temp_province_id'] ?? '') == '6' ? 'selected' : '' ?>>Karnali Province</option>
+                                    <option value="7" <?= ($formdata['temp_province_id'] ?? '') == '7' ? 'selected' : '' ?>>Sudurpashchim Province</option>
                                 </select>
                                 <label>Temporary Province<span class="text-danger mx-1">*</span></label>
                             </div>
@@ -228,13 +300,19 @@ echo $OUTPUT->doctype();
                                 </select>
                                 <label>Temporary Municipality<span class="text-danger mx-1">*</span></label>
                             </div>
-
                         </div>
                         <div class="grid-row grid-2">
-                            <div class="amd-lms-login-input-group"><input type="number" name="temp_ward" placeholder=" "
-                                    required><label>Temporary Ward <span class="text-danger mx-1">*</span></label></div>
-                            <div class="amd-lms-login-input-group"><input type="text" name="temp_tole"
-                                    placeholder=" "><label>Temporary Tole / Street Name</label></div>
+                            <div class="amd-lms-login-input-group">
+                                <input type="number" name="temp_ward"
+                                    value="<?= htmlspecialchars($formdata['temp_ward'] ?? '') ?>" required
+                                    placeholder=" ">
+                                <label>Temporary Ward <span class="text-danger mx-1">*</span></label>
+                            </div>
+                            <div class="amd-lms-login-input-group">
+                                <input type="text" name="temp_tole"
+                                    value="<?= htmlspecialchars($formdata['temp_tole'] ?? '') ?>" placeholder=" ">
+                                <label>Temporary Tole / Street Name</label>
+                            </div>
                         </div>
 
                         <!-- Contact & Professional Section -->
@@ -243,53 +321,83 @@ echo $OUTPUT->doctype();
                                 Contact & Professional Information</h5>
                         </div>
                         <div class="grid-row grid-3">
-                            <div class="amd-lms-login-input-group"><input type="tel" name="phone_number"
-                                    placeholder=" "><label>Phone Number</label></div>
-                            <div class="amd-lms-login-input-group"><input type="tel" name="mobile_number"
-                                    placeholder=" "><label>Mobile Number</label></div>
-                            <div class="amd-lms-login-input-group"><input type="email" name="email" required
-                                    placeholder=" "><label>Email Address<span class="text-danger mx-1">*</span></label>
+                            <div class="amd-lms-login-input-group">
+                                <input type="tel" name="phone_number"
+                                    value="<?= htmlspecialchars($formdata['phone_number'] ?? '') ?>" placeholder=" ">
+                                <label>Phone Number</label>
                             </div>
                             <div class="amd-lms-login-input-group">
-                                <input type="email" name="email2" required placeholder=" ">
+                                <input type="tel" name="mobile_number"
+                                    value="<?= htmlspecialchars($formdata['mobile_number'] ?? '') ?>" placeholder=" ">
+                                <label>Mobile Number</label>
+                            </div>
+                            <div class="amd-lms-login-input-group">
+                                <input type="email" name="email"
+                                    value="<?= htmlspecialchars($formdata['email'] ?? '') ?>" required placeholder=" ">
+                                <label>Email Address<span class="text-danger mx-1">*</span></label>
+                            </div>
+                            <div class="amd-lms-login-input-group">
+                                <input type="email" name="email2"
+                                    value="<?= htmlspecialchars($formdata['email2'] ?? '') ?>" required placeholder=" ">
                                 <label>Confirm Email</label>
                             </div>
 
                             <div class="amd-lms-login-input-group">
                                 <select name="age_group" id="AgeGroup" required>
                                     <option value="">-- Select Your Age Group --</option>
-                                    <option value="1">Below 18</option>
-                                    <option value="2">18-25</option>
-                                    <option value="3">26-40</option>
-                                    <option value="4">40+</option>
+                                    <option value="1" <?= ($formdata['age_group'] ?? '') == '1' ? 'selected' : '' ?>>Below
+                                        18</option>
+                                    <option value="2" <?= ($formdata['age_group'] ?? '') == '2' ? 'selected' : '' ?>>18-25
+                                    </option>
+                                    <option value="3" <?= ($formdata['age_group'] ?? '') == '3' ? 'selected' : '' ?>>26-40
+                                    </option>
+                                    <option value="4" <?= ($formdata['age_group'] ?? '') == '4' ? 'selected' : '' ?>>40+
+                                    </option>
                                 </select>
                                 <label for="AgeGroup">Age Group<span class="text-danger mx-1">*</span></label>
                             </div>
-                            <div class="amd-lms-login-input-group"><input type="text" name="organization_name"
-                                    placeholder=" "><label>Organization Name</label></div>
-                            <div class="amd-lms-login-input-group"><input type="text" name="qualification"
-                                    placeholder=" "><label>Qualification</label></div>
-                            <div class="amd-lms-login-input-group"><input type="text" name="designation"
-                                    placeholder=" "><label>Designation</label></div>
-                            <div class="amd-lms-login-input-group"><input type="text" name="expertise"
-                                    placeholder=" "><label>Expertise</label></div>
-                            <div class="amd-lms-login-input-group"><input type="number" name="years_experience" min="0"
-                                    placeholder=" "><label>Years of Experience</label></div>
-
+                            <div class="amd-lms-login-input-group">
+                                <input type="text" name="organization_name"
+                                    value="<?= htmlspecialchars($formdata['organization_name'] ?? '') ?>"
+                                    placeholder=" ">
+                                <label>Organization Name</label>
+                            </div>
+                            <div class="amd-lms-login-input-group">
+                                <input type="text" name="qualification"
+                                    value="<?= htmlspecialchars($formdata['qualification'] ?? '') ?>" placeholder=" ">
+                                <label>Qualification</label>
+                            </div>
+                            <div class="amd-lms-login-input-group">
+                                <input type="text" name="designation"
+                                    value="<?= htmlspecialchars($formdata['designation'] ?? '') ?>" placeholder=" ">
+                                <label>Designation</label>
+                            </div>
+                            <div class="amd-lms-login-input-group">
+                                <input type="text" name="expertise"
+                                    value="<?= htmlspecialchars($formdata['expertise'] ?? '') ?>" placeholder=" ">
+                                <label>Expertise</label>
+                            </div>
+                            <div class="amd-lms-login-input-group">
+                                <input type="number" name="years_experience" min="0"
+                                    value="<?= htmlspecialchars($formdata['years_experience'] ?? '') ?>"
+                                    placeholder=" ">
+                                <label>Years of Experience</label>
+                            </div>
                         </div>
-
-
 
                         <!-- Login Information Section -->
                         <div style="width: 100%; text-align: left; margin: 10px 0;">
                             <h5 style="color: var(--amd-dark); margin-bottom: 10px;"><i class="fas fa-lock"></i>
-                                Login
-                                Information</h5>
+                                Login Information</h5>
                         </div>
 
                         <div class="grid-row grid-3">
-                            <div class="amd-lms-login-input-group"><input type="text" name="username" required
-                                    placeholder=" "><label>User Name</label></div>
+                            <div class="amd-lms-login-input-group">
+                                <input type="text" name="username"
+                                    value="<?= htmlspecialchars($formdata['username'] ?? '') ?>" required
+                                    placeholder=" ">
+                                <label>User Name</label>
+                            </div>
                             <div class="amd-lms-login-input-group" style="position: relative;">
                                 <input type="password" name="password" required placeholder=" ">
                                 <label>Password</label>
@@ -330,6 +438,7 @@ echo $OUTPUT->doctype();
                             </button>
                         </div>
                     </form>
+
                 </div>
             </div>
 
@@ -564,6 +673,21 @@ echo $OUTPUT->doctype();
                 }
             });
         });
+    </script>
+
+    <script>
+        function showGlobalError(message) {
+            const box = document.getElementById('global-error-box');
+            const msg = document.getElementById('global-error-message');
+
+            msg.textContent = message;
+            box.style.display = 'flex';
+
+            // auto hide after 5 sec
+            setTimeout(() => {
+                box.style.display = 'none';
+            }, 5000);
+        }
     </script>
 
 

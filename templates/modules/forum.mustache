@@ -121,10 +121,6 @@
     background-color: #fdfefe;
     padding: 1.2rem 1.5rem;
     border-bottom: 1px solid #e9ecef;
-    display: none; /* Initially Hidden */
-}
-#main-discussion-form.visible {
-    display: block !important;
 }
 #main-discussion-form label {
     color: #2c3e50;
@@ -170,13 +166,9 @@
     border-left: 1px solid #e9ecef;
 }
 
-/* पुराना .visible लाई हटाएर यो नयाँ क्लास राख्नुहोस् */
-.amd-reply-form-wrapper {
-    display: none; /* सुरुमा लुकाउने */
-}
 
-.amd-reply-form-wrapper.show-form {
-    display: block !important; /* बटन थिच्दा देखाउने */
+.amd-forum-post #reply-form-{{id}}.visible {
+    display: block;
 }
 
 /* Micro‑spacing and readability fixes */
@@ -202,68 +194,62 @@
     <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center border-bottom">
         <div>
             <h5 class="mb-0 fw-bold text-dark">{{forumname}}</h5>
-            <div class="text-muted small mb-0">
+            <p class="text-muted small mb-0">
                 {{#forumintro}}{{{forumintro}}}{{/forumintro}}
                 {{^forumintro}}Join the conversation below{{/forumintro}}
-            </div>
+            </p>
         </div>
-        <!-- Only offer "New Topic" if this is a general/standard forum type -->
-        {{^issingle}}
-            {{#canpost}}
-            <button class="btn btn-sm btn-primary rounded-pill px-3" onclick="toggleMainForm()">
-                <i class="bi bi-plus-lg me-1"></i> New Topic
-            </button>
-            {{/canpost}}
-        {{/issingle}}
     </div>
 
-    <!-- Main Thread Creation Form (Prohibited for students in single layout configurations) -->
-    {{^issingle}}
-        {{#canpost}}
-        <div id="main-discussion-form" class="p-4 bg-white border-bottom">
-            <form id="forum-post-form" action="{{config.wwwroot}}/theme/mytheme/pages/submission/forum_handler.php" method="post">
-                <input type="hidden" name="sesskey" value="{{sesskey}}">
-                <input type="hidden" name="forum" value="{{forum_id}}">
-                <input type="hidden" name="action" value="adddiscussion">
-                <input type="hidden" name="post" value="1">
-                <input type="hidden" name="messageformat" value="1">
-                <input type="hidden" name="subscribe" value="0">
+    <!-- Hidden Main Create Form -->
+    {{#canpost}}
+    <div id="main-discussion-form" class="p-4 bg-white border-bottom hidden-form">
+        <form id="forum-post-form" action="{{config.wwwroot}}/theme/mytheme/pages/submission/forum_handler.php" method="post">
+            <input type="hidden" name="sesskey" value="{{sesskey}}">
+            <input type="hidden" name="forum" value="{{forum_id}}">
+            <input type="hidden" name="action" value="adddiscussion">
+            <input type="hidden" name="post" value="1">
+            <input type="hidden" name="messageformat" value="1">
+            <input type="hidden" name="subscribe" value="0">
 
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Discussion Subject <span class="text-danger">*</span></label>
-                    <input type="text" name="subject" class="form-control rounded-3" placeholder="Enter a clear topic title..." required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Your Message <span class="text-danger">*</span></label>
-                    <textarea name="message" class="form-control rounded-3" rows="5" placeholder="Share your thoughts..." required></textarea>
-                </div>
-                <div class="d-flex gap-2">
-                    <button type="submit" class="btn btn-primary rounded-pill px-4">
-                        <i class="bi bi-send me-2"></i>Post Discussion
-                    </button>
-                    <button type="button" class="btn btn-light rounded-pill px-4" onclick="toggleMainForm()">Cancel</button>
-                </div>
-            </form>
-        </div>
-        {{/canpost}}
-    {{/issingle}}
+            <div class="mb-3">
+                <label class="form-label fw-bold">response title <span class="text-danger">*</span></label>
+                <input type="text" name="subject"
+                       class="form-control rounded-3"
+                       placeholder="Enter a clear topic title..."
+                       required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label fw-bold">response detail <span class="text-danger">*</span></label>
+                <textarea name="message"
+                          class="form-control rounded-3"
+                          rows="5"
+                          placeholder="Share your thoughts..."
+                          required></textarea>
+            </div>
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary rounded-pill px-4">
+                    <i class="bi bi-send me-2"></i>Post Discussion
+                </button>
+                <button type="button" class="btn btn-light rounded-pill px-4"
+                        onclick="toggleMainForm()">Cancel</button>
+            </div>
+        </form>
+    </div>
+    {{/canpost}}
 
-    <!-- Discussions Container Area -->
+    <!-- Discussions List -->
     <div class="card-body bg-light-subtle p-4">
         {{#discussions}}
         <div class="amd-forum-post card border-0 shadow-sm mb-4 rounded-3 hover-animate" id="post-{{id}}">
             <div class="card-body p-4">
-                
-                <!-- Thread Anchor Header -->
+                <!-- Discussion Header -->
                 <div class="d-flex align-items-center justify-content-between mb-4 pb-3 border-bottom">
                     <div class="d-flex align-items-center gap-3 flex-grow-1">
                         <div class="amd-user-avatar border-0 rounded-circle p-1 bg-white flex-shrink-0">
-                            {{{userpicture}}}
-                            {{^userpicture}}
                             <div class="fallback-avatar">
                                 <i class="bi bi-person-circle"></i>
                             </div>
-                            {{/userpicture}}
                         </div>
                         <div class="flex-grow-1">
                             <h6 class="mb-1 fw-bold text-dark">{{name}}</h6>
@@ -273,55 +259,45 @@
                             </small>
                         </div>
                     </div>
-                    <div>
-                        <button class="btn btn-sm btn-outline-primary rounded-pill px-3" onclick="toggleReplyForm('{{id}}')">
-                            <i class="bi bi-reply-fill me-1"></i> Reply
-                        </button>
-                    </div>
                 </div>
 
-                <!-- Main Post Content Body -->
-
-                {{#post_message}}
+                <!-- Message Content -->
                 <div class="amd-post-content text-dark my-4 ps-md-4">
                     <div class="p-3 bg-white rounded-3 border-start border-primary border-4 shadow-sm post-text">
                         {{{post_message}}}
                     </div>
                 </div>
-                {{/post_message}}
 
-                <!-- Nested Replies Processing Loop -->
-                <div class="amd-replies-list-container">
-                    {{#replies}}
-                    <div class="ms-4 mt-3 p-3 border-start">
-                        <div class="d-flex gap-2 align-items-start justify-content-between">
-                            <div class="d-flex gap-2 align-items-start flex-grow-1">
-                                <div class="amd-user-avatar-sm flex-shrink-0">
-                                    {{{userpicture}}}
-                                    {{^userpicture}}
-                                    <div class="fallback-avatar">
-                                        <i class="bi bi-person-circle"></i>
-                                    </div>
-                                    {{/userpicture}}
+                {{#replies}}
+                <div class="ms-4 mt-3 p-3 border-start">
+                    <div class="d-flex gap-2 align-items-start justify-content-between">
+                        <div class="d-flex gap-2 align-items-start flex-grow-1">
+                            <div class="amd-user-avatar-sm">
+                                {{#userpicture}}
+                                <div class="fallback-avatar">
+                                    <i class="bi bi-person-circle"></i>
                                 </div>
-                                <div class="flex-grow-1">
-                                    <div class="d-flex justify-content-between align-items-center mb-1">
-                                        <strong class="text-dark">{{user}}</strong>
-                                        <small class="text-muted">{{timeago}}</small>
-                                    </div>
-                                    <div class="reply-message text-secondary post-text">
-                                        {{{message}}}
-                                    </div>
+                                {{/userpicture}}
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <strong>{{user}}</strong>
+                                    <small class="text-muted">{{timeago}}</small>
+                                </div>
+                                <div class="reply-message">
+                                    {{{message}}}
                                 </div>
                             </div>
                         </div>
                     </div>
-                    {{/replies}}
                 </div>
+                {{/replies}}
 
-                <!-- Inline Action Form -->
-                <div id="reply-form-{{id}}" class="mt-4 p-3 bg-light rounded-3 amd-reply-form-wrapper show-form">
-                    <form action="{{config.wwwroot}}/theme/mytheme/pages/submission/forum_handler.php" method="post" class="forum-reply-ajax-form">
+                <!-- Inline Reply Form (Initially Hidden) -->
+                <div id="reply-form-{{id}}" class="mt-4 p-3 bg-light rounded-3 hidden-form">
+                    <form action="{{config.wwwroot}}/theme/mytheme/pages/submission/forum_handler.php"
+                          method="post"
+                          class="forum-reply-ajax-form">
                         <input type="hidden" name="sesskey" value="{{sesskey}}">
                         <input type="hidden" name="forum" value="{{forum_id}}">
                         <input type="hidden" name="discussion" value="{{id}}">
@@ -330,23 +306,23 @@
                         <input type="hidden" name="messageformat" value="1">
 
                         <div class="mb-2">
-                            <textarea name="message" class="form-control rounded-2" placeholder="Write your response to this thread..." rows="3" required></textarea>
+                            <textarea name="message"
+                                      class="form-control rounded-2"
+                                      placeholder="Write your reply..."
+                                      rows="3"
+                                      required></textarea>
                         </div>
                         <div class="d-flex gap-2">
-                            <button type="submit" class="btn btn-sm btn-primary rounded-pill px-3">Send Reply</button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3" onclick="toggleReplyForm('{{id}}')">Cancel</button>
+                            <button type="submit" class="btn btn-sm btn-primary rounded-pill px-3">
+                                Send Reply
+                            </button>
+                            <button type="button"
+                                    class="btn btn-sm btn-outline-secondary rounded-pill px-3"
+                                    onclick="toggleReplyForm('{{id}}')">Cancel</button>
                         </div>
                     </form>
                 </div>
-
             </div>
-        </div>
-        {{/discussions}}
-        
-        {{^discussions}}
-        <div class="text-center py-5 bg-white rounded-3 shadow-xs">
-            <i class="bi bi-chat-square-text text-muted fs-1 d-block mb-2"></i>
-            <p class="text-muted mb-0">No forum communication logs found here yet.</p>
         </div>
         {{/discussions}}
     </div>

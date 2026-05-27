@@ -91,18 +91,6 @@
 
             {{! Progress bar }}
             <div class="amd-lesson-top-progress">
-                {{#ismanualcompletion}}
-                <a href="{{toggleurl}}" class="amd-lms-btn ms-3 {{#ismarkedcomplete}}amd-lms-prev-btn{{/ismarkedcomplete}}{{^ismarkedcomplete}}amd-lms-next-btn{{/ismarkedcomplete}}" style="white-space:nowrap;">
-                    {{#ismarkedcomplete}}
-                    <span class="amd-lms-icon"><i class="fa-solid fa-circle-check"></i></span>
-                    <span class="amd-lms-text">Completed</span>
-                    {{/ismarkedcomplete}}
-                    {{^ismarkedcomplete}}
-                    <span class="amd-lms-icon"><i class="fa-regular fa-circle"></i></span>
-                    <span class="amd-lms-text">Mark as done</span>
-                    {{/ismarkedcomplete}}
-                </a>
-                {{/ismanualcompletion}}
             </div>
 
               {{!  lesson detail attach  }}
@@ -134,6 +122,22 @@
                     </span>
                 </button>
                 {{/prevmodule}}
+
+                {{! ================= MARK AS DONE ================= }}
+                {{#ismanualcompletion}}
+                    {{#ismarkedcomplete}}
+                    <div class="amd-lms-btn ms-3 amd-lms-prev-btn" style="white-space:nowrap; opacity: 0.8; cursor: default;" title="You have completed this lesson">
+                        <span class="amd-lms-text">Completed</span>
+                        <span class="amd-lms-icon"><i class="fa-solid fa-circle-check" style="color: #198754;"></i></span>
+                    </div>
+                    {{/ismarkedcomplete}}
+                    {{^ismarkedcomplete}}
+                    <a href="{{toggleurl}}" class="amd-lms-btn ms-3 amd-lms-next-btn" style="white-space:nowrap; text-decoration: none;" title="Mark this lesson as done">
+                        <span class="amd-lms-text">Mark as done</span>
+                        <span class="amd-lms-icon"><i class="fa-regular fa-circle"></i></span>
+                    </a>
+                    {{/ismarkedcomplete}}
+                {{/ismanualcompletion}}
 
 
                 {{! ================= NEXT LESSON ================= }}

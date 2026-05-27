@@ -56,6 +56,31 @@ if ($currentindex > 0) {
     }
 }
 
+// Module Delay Lock Check
+if (file_exists($CFG->dirroot . '/local/moduledelay/lib.php')) {
+    require_once($CFG->dirroot . '/local/moduledelay/lib.php');
+    if (function_exists('local_moduledelay_can_access')) {
+        $delaycheck = local_moduledelay_can_access($USER->id, $courseid, $cmid);
+        if (!$delaycheck['allowed']) {
+            $minutes = floor($delaycheck['remaining'] / 60);
+            $seconds = $delaycheck['remaining'] % 60;
+            $timeText = $minutes > 0 ? $minutes . ' min ' . $seconds . ' sec' : $seconds . ' sec';
+
+            // Redirect back to the previous module if we have it, else course page
+            $redirecturl = (isset($prevmod) && $prevmod) ?
+                new moodle_url('/theme/mytheme/pages/lesson.php', ['id' => $courseid, 'cmid' => $prevmod->id]) :
+                new moodle_url('/theme/mytheme/pages/course.php', ['id' => $courseid]);
+
+            redirect(
+                $redirecturl,
+                'This lesson is locked. Please wait ' . $timeText . ' before accessing.',
+                null,
+                \core\output\notification::NOTIFY_ERROR
+            );
+        }
+    }
+}
+
 // Page setup
 $PAGE->set_url('/theme/mytheme/pages/lesson.php', ['id' => $courseid, 'cmid' => $cmid]);
 $PAGE->set_context($context);
@@ -68,9 +93,22 @@ $completion = new completion_info($course);
 if ($completion->is_enabled($cm)) {
     if ($cm->completion == COMPLETION_TRACKING_AUTOMATIC) {
         $completion->set_module_viewed($cm);
-    } elseif ($cm->completion == COMPLETION_TRACKING_MANUAL) {
-        $completion->update_state($cm, COMPLETION_COMPLETE);
     }
+}
+
+// Trigger course_module_viewed event so standard logs and plugins like local_moduledelay can track it
+try {
+    $eventclass = '\\mod_' . $cm->modname . '\\event\\course_module_viewed';
+    if (class_exists($eventclass)) {
+        $event = $eventclass::create([
+            'objectid' => $cm->instance,
+            'context' => $context,
+            'courseid' => $courseid
+        ]);
+        $event->trigger();
+    }
+} catch (\Exception $e) {
+    // Ignore if event class doesn't exist or fails to trigger
 }
 
 // Template context

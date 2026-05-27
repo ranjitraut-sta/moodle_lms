@@ -3,104 +3,102 @@ require_once('../../../config.php');
 require_once($CFG->dirroot . '/user/lib.php');
 require_once($CFG->dirroot . '/user/profile/lib.php');
 
-$PAGE->set_url('/theme/mytheme/pages/register.php');
+$PAGE->set_url('/theme/mytheme/pages/register.php', ['register' => 1]);
 $PAGE->set_context(context_system::instance());
+
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    redirect(new moodle_url('/login/index.php', ['register' => 1]));
+}
 
 require_sesskey();
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    redirect(new moodle_url('/login/index.php'));
-}
-
-if (empty($CFG->registerauth)) {
-    throw new moodle_exception('registrationdisabled', 'error');
-}
-
-/* ================= BASIC USER ================= */
+// ================= INPUT PARAMETERS =================
 $username = required_param('username', PARAM_USERNAME);
 $email = required_param('email', PARAM_EMAIL);
 $email2 = required_param('email2', PARAM_EMAIL);
 $firstname = required_param('firstname', PARAM_TEXT);
 $lastname = required_param('lastname', PARAM_TEXT);
 $password = required_param('password', PARAM_RAW);
+$password_confirmation = required_param('password_confirmation', PARAM_RAW);
 
-/* ================= VALIDATION ================= */
+// ================= VALIDATION =================
 $errors = [];
 
 if ($email !== $email2) {
-    $errors[] = "Email mismatch";
+    $errors['email'] = "Email address and confirmation do not match.";
+}
+
+if ($password !== $password_confirmation) {
+    $errors['password'] = "Password and confirmation do not match.";
 }
 
 if ($DB->record_exists('user', ['username' => $username])) {
-    $errors[] = "Username already exists";
+    $errors['username'] = "This username is already taken.";
 }
 
 if ($DB->record_exists('user', ['email' => $email])) {
-    $errors[] = "Email already exists";
+    $errors['email'] = "This email is already registered.";
 }
 
 $errmsg = '';
 if (!check_password_policy($password, $errmsg)) {
-    $errors[] = $errmsg;
+    $errors['password'] = $errmsg;
 }
 
+if (empty($firstname))
+    $errors['firstname'] = "First name is required.";
+if (empty($lastname))
+    $errors['lastname'] = "Last name is required.";
+if (empty($password))
+    $errors['password'] = "Password is required.";
+
+// ================= ERROR HANDLING =================
 if (!empty($errors)) {
-    throw new moodle_exception(implode(', ', $errors));
+    $_SESSION['register_errors'] = $errors;
+    $_SESSION['register_form_data'] = $_POST;
+
+    redirect(new moodle_url('/login/index.php', ['register' => 1]));
 }
 
-/* ================= CREATE USER ================= */
-// Email block/divert garna ko lagi temporary config overwrite
-$CFG->noemailever = true; // Moodle lai kunai pani obit email pathauna bata roki dinchha
+// ================= CREATE USER =================
+$CFG->noemailever = true;
 
-
-/* ================= CREATE USER ================= */
 $user = new stdClass();
-
 $user->username = $username;
 $user->email = $email;
 $user->firstname = $firstname;
 $user->lastname = $lastname;
-
 $user->auth = 'manual';
 $user->confirmed = 1;
 $user->mnethostid = $CFG->mnet_localhost_id;
-
 $user->password = hash_internal_user_password($password);
 
 $userid = user_create_user($user);
-/* ================= PROFILE FIELDS ================= */
+
+// ================= PROFILE FIELDS =================
 $profiledata = new stdClass();
 $profiledata->id = $userid;
 
-// Middle Name (Moodle default field haina bhane profile_field_ thapne)
 $profiledata->profile_field_middle_name = optional_param('middle_name', '', PARAM_TEXT);
-
-/* Permanent Address - HTML ko name sanga match gareko */
 $profiledata->profile_field_province_id = optional_param('province_id', 0, PARAM_INT);
 $profiledata->profile_field_district_id = optional_param('district_id', 0, PARAM_INT);
 $profiledata->profile_field_municipality_id = optional_param('municipality_id', 0, PARAM_INT);
 $profiledata->profile_field_ward = optional_param('ward', '', PARAM_TEXT);
 $profiledata->profile_field_tole = optional_param('tole', '', PARAM_TEXT);
 
-/* Temporary Address */
 $profiledata->profile_field_temp_province_id = optional_param('temp_province_id', 0, PARAM_INT);
 $profiledata->profile_field_temp_district_id = optional_param('temp_district_id', 0, PARAM_INT);
 $profiledata->profile_field_temp_municipality_id = optional_param('temp_municipality_id', 0, PARAM_INT);
 $profiledata->profile_field_temp_ward = optional_param('temp_ward', '', PARAM_TEXT);
 $profiledata->profile_field_temp_tole = optional_param('temp_tole', '', PARAM_TEXT);
 
-/* Extra Info */
 $profiledata->profile_field_citizenship_no = optional_param('citizenship_no', '', PARAM_TEXT);
-$profiledata->profile_field_citizenship_district = optional_param('citizenship_district', 0, PARAM_INT); // Tapaiko Issued District
+$profiledata->profile_field_citizenship_district = optional_param('citizenship_district', 0, PARAM_INT);
 $profiledata->profile_field_nid_no = optional_param('nid_no', '', PARAM_TEXT);
 $profiledata->profile_field_pan_no = optional_param('pan_no', '', PARAM_TEXT);
 $profiledata->profile_field_employed = optional_param('employed', '', PARAM_TEXT);
-
-/* Contact */
 $profiledata->profile_field_phone_number = optional_param('phone_number', '', PARAM_TEXT);
 $profiledata->profile_field_mobile_number = optional_param('mobile_number', '', PARAM_TEXT);
-
-/* Professional/Social */
 $profiledata->profile_field_organization_name = optional_param('organization_name', '', PARAM_TEXT);
 $profiledata->profile_field_designation = optional_param('designation', '', PARAM_TEXT);
 $profiledata->profile_field_expertise = optional_param('expertise', '', PARAM_TEXT);
@@ -111,14 +109,12 @@ $profiledata->profile_field_ethnicity = optional_param('ethnicity', '', PARAM_TE
 $profiledata->profile_field_ethnicity_others = optional_param('ethnicity_others', '', PARAM_TEXT);
 $profiledata->profile_field_qualification = optional_param('qualification', '', PARAM_TEXT);
 
-/* SAVE PROFILE */
 profile_save_data($profiledata);
 
-/* ================= LOGIN USER ================= */
+// ================= SUCCESS =================
 complete_user_login(get_complete_user_data('id', $userid));
 
-redirect(
-    new moodle_url('/theme/mytheme/layout/dashboard.php'),
-    'Registration successful',
-    2
-);
+unset($_SESSION['register_errors']);
+unset($_SESSION['register_form_data']);
+
+redirect(new moodle_url('/theme/mytheme/layout/dashboard.php'), 'Registration successful!', 2);

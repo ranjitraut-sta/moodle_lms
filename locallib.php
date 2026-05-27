@@ -125,7 +125,7 @@ function theme_mytheme_get_course_context($courseid): array
 
 function theme_mytheme_get_lesson_context($cmid): array
 {
-    global $DB, $USER;
+    global $DB, $USER, $CFG;
 
     $cm = get_coursemodule_from_id('', $cmid, 0, false, MUST_EXIST);
     $course = $DB->get_record('course', ['id' => $cm->course], '*', MUST_EXIST);
@@ -236,6 +236,17 @@ function theme_mytheme_get_lesson_context($cmid): array
                     }
                 }
 
+                // Module delay check for sidebar links
+                if (!$islocked && file_exists($CFG->dirroot . '/local/moduledelay/lib.php')) {
+                    require_once($CFG->dirroot . '/local/moduledelay/lib.php');
+                    if (function_exists('local_moduledelay_can_access')) {
+                        $delaycheck = local_moduledelay_can_access($USER->id, $course->id, $mod->id);
+                        if (!$delaycheck['allowed']) {
+                            $islocked = true;
+                        }
+                    }
+                }
+
                 $modules[] = [
                     'name' => $mod->name,
                     'url' => $islocked ? '#' : (new moodle_url('/theme/mytheme/pages/lesson.php', [
@@ -278,7 +289,18 @@ function theme_mytheme_get_lesson_context($cmid): array
     if ($currentindex < count($allmodules) - 1) {
         $next = $allmodules[$currentindex + 1];
 
-        $nextmodule = $iscurrentcomplete
+        $nextislocked = false;
+        if (file_exists($CFG->dirroot . '/local/moduledelay/lib.php')) {
+            require_once($CFG->dirroot . '/local/moduledelay/lib.php');
+            if (function_exists('local_moduledelay_can_access')) {
+                $delaycheck = local_moduledelay_can_access($USER->id, $course->id, $next->id);
+                if (!$delaycheck['allowed']) {
+                    $nextislocked = true;
+                }
+            }
+        }
+
+        $nextmodule = ($iscurrentcomplete && !$nextislocked)
             ? [
                 'name' => $next->name,
                 'url' => (new moodle_url('/theme/mytheme/pages/lesson.php', [
