@@ -4,6 +4,8 @@ namespace theme_mytheme\Report;
 
 defined('MOODLE_INTERNAL') || die();
 
+use theme_config; // 🔥 थिम कन्फिग क्लास लोड गरेको
+
 class Report
 {
     protected $user;
@@ -13,6 +15,7 @@ class Report
         global $USER;
         $this->user = $user ?? $USER;
     }
+
     public function getData(): array
     {
         global $PAGE;
@@ -28,10 +31,7 @@ class Report
             }
         }
 
-        // ⚠️ DEFAULT: empty reports
         $reports = [];
-
-        // ✅ ONLY FETCH WHEN FILTER APPLIED
         $has_filter = ($selected_course !== 'all' || $selected_status !== 'all');
 
         if ($has_filter) {
@@ -42,15 +42,10 @@ class Report
 
         return [
             'course_options' => $course_options,
-
-            // 🔥 default empty, search pachi matra data
             'reports' => $reports,
-
             'stats' => $stats,
             'chart_data_json' => json_encode($stats['chart']),
             'current_url' => $PAGE->url->out(false),
-
-            // optional flag for UI
             'has_filter' => $has_filter,
             'user_fullname' => fullname($this->user),
             'user_firstname' => $this->user->firstname,
@@ -69,10 +64,13 @@ class Report
         $total = count($reports);
         $completed = 0;
         $running = 0;
+        $dropout = 0; // 🔥 Drop out काउन्टर थपियो
 
         foreach ($reports as $r) {
             if ($r['status'] === 'Completed') {
                 $completed++;
+            } else if ($r['status'] === 'Drop Out') {
+                $dropout++;
             } else {
                 $running++;
             }
@@ -82,9 +80,11 @@ class Report
             'total' => $total,
             'completed' => $completed,
             'running' => $running,
+            'dropout' => $dropout,
             'chart' => [
-                'labels' => ['Completed', 'In Progress'],
-                'values' => [$completed, $running]
+                // 🔥 चार्टमा 'Drop Out' पनि थपियो
+                'labels' => ['Completed', 'In Progress', 'Drop Out'],
+                'values' => [$completed, $running, $dropout]
             ]
         ];
     }
@@ -93,21 +93,24 @@ class Report
     {
         global $DB;
 
-        // Dropdown ko lagi khali id ra fullname matra select garne
         $sql = "SELECT id, fullname 
             FROM {course} 
             WHERE id != 1 AND visible = 1 
             ORDER BY fullname ASC";
 
         $records = $DB->get_records_sql($sql);
-
-        // Array format ma convert garne (Mustache ma loop chalauna sajilo huncha)
         return array_values($records);
     }
 
     public function getDetailedReport($courseid, $status): array
     {
         global $DB;
+
+        // 🔥 १. थिम कन्फिगरेसनबाट दिन (Days) तान्ने
+        $themeconfig = theme_config::load('mytheme');
+        $valid_days = !empty($themeconfig->courseCompleteInBetween) ? (int) $themeconfig->courseCompleteInBetween : 1;
+        $seconds_allowed = $valid_days * DAYSECS; // दिनलाई seconds मा बदलियो (१ दिन = ८६४०० सेकेन्ड)
+        $now = time();
 
         $params = [];
         $where = "c.id != 1";
@@ -117,7 +120,6 @@ class Report
             $params['courseid'] = $courseid;
         }
 
-        // Fix: MD5 use garera userid ra courseid bata unique string banaune jasle error hataunchha
         $sql = "SELECT 
                 CONCAT(u.id, '_', c.id) as uniqueid, 
                 u.id as userid, u.firstname, u.lastname, 
@@ -132,15 +134,33 @@ class Report
             WHERE $where
             ORDER BY enrolled_date DESC";
 
-        // get_records_sql le pahilo column (uniqueid) lai key mandinchha
         $records = $DB->get_records_sql($sql, $params);
 
         $data = [];
         foreach ($records as $r) {
-            // Status logic based on filter if needed
-            $current_status = $r->timecompleted ? 'completed' : 'running';
 
-            // PHP side status filter (yadi SQL ma garne vaye ali complex hunchha, so hami yehi garchhau)
+            // 🔥 २. STATUS LOGIC (कन्फिगरेसन दिनको आधारमा)
+            $is_completed = !empty($r->timecompleted);
+            $enrolled_time = (int) $r->enrolled_date;
+            $expiry_time = $enrolled_time + $seconds_allowed;
+
+            if ($is_completed) {
+                $current_status = 'completed';
+                $status_label = 'Completed';
+                $status_class = 'success';
+            } else if ($now > $expiry_time) {
+                // यदि कोर्स सकिएको छैन र हालको समय (now) तोकिएको समय भन्दा नाघिसक्यो भने
+                $current_status = 'dropout';
+                $status_label = 'Drop Out';
+                $status_class = 'danger'; // रातो रङको Badge को लागि
+            } else {
+                // यदि समय बाँकी नै छ र कोर्स चलिरहेको छ भने
+                $current_status = 'running';
+                $status_label = 'In Progress';
+                $status_class = 'warning'; // पहेलो/सुन्तला रङको Badge को लागि
+            }
+
+            // PHP side फिल्टर चेक (dropdown मा 'status' फिल्टर गर्दा काम गर्छ)
             if ($status !== 'all' && $current_status !== $status) {
                 continue;
             }
@@ -149,11 +169,11 @@ class Report
                 'user' => $r->firstname . ' ' . $r->lastname,
                 'course' => $r->coursename,
                 'date' => userdate($r->enrolled_date, '%Y-%m-%d'),
-                'status' => $r->timecompleted ? 'Completed' : 'In Progress',
-                'status_class' => $r->timecompleted ? 'success' : 'warning'
+                'completed_date' => $is_completed ? userdate($r->timecompleted, '%Y-%m-%d') : '-',
+                'status' => $status_label,
+                'status_class' => $status_class
             ];
         }
         return $data;
     }
-
 }

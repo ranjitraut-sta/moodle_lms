@@ -180,7 +180,6 @@ class Quiz implements LessonModuleInterface
     }
 
 
-
     /**
      * एटेम्प्ट हिस्ट्री र सबैभन्दा उच्च अंक निकाल्ने
      */
@@ -218,10 +217,19 @@ class Quiz implements LessonModuleInterface
 
     private function format_attempt_result($finished): array
     {
+        global $CFG;
+        require_once($CFG->libdir . '/gradelib.php');
+
         $sumgrades = round((float) $finished->sumgrades, 2);
         $maxgrade = round((float) $this->quiz->sumgrades, 2);
-        // gradepass नहुन सक्छ, त्यसैले 0 डिफल्ट राखिएको छ
-        $gradepass = isset($this->quiz->gradepass) ? (float) $this->quiz->gradepass : 0;
+        
+        $grade_item = \grade_item::fetch([
+            'itemtype' => 'mod',
+            'itemmodule' => 'quiz',
+            'iteminstance' => $this->quiz->id
+        ]);
+        $gradepass = $grade_item ? (float) $grade_item->gradepass : 0;
+        
         $passed = $gradepass > 0 && $sumgrades >= $gradepass;
 
         return [

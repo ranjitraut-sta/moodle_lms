@@ -541,6 +541,7 @@
                 width: 100%;
                 z-index: 1001;
                 border-radius: 0;
+                margin: 56px 0px;
             }
 
             .amd-lms-quiz-mobile-header {
@@ -648,7 +649,8 @@
                     <label class="amd-lms-quiz-option amd-mcq-option" data-answerid="{{answerid}}">
                         <input type="{{#ismcqsingle}}radio{{/ismcqsingle}}{{^ismcqsingle}}checkbox{{/ismcqsingle}}" 
                                name="q{{slot}}" 
-                               {{#checked}}checked{{/checked}}>
+                               {{#checked}}checked
+                               {{/checked}}>
                                
                         <span>{{{answertext}}}</span>
                     </label>
@@ -722,7 +724,7 @@
                 {{/inprogress}}
 
                 {{#inprogress}}
-                <button class="amd-lms-quiz-submit-quiz-btn amd-quiz-submit-btn">Submit Quiz</button>
+                <button class="amd-lms-quiz-submit-quiz-btn amd-quiz-submit-btn">Submit</button>
                 {{/inprogress}}
             </div>
         </div>
@@ -730,7 +732,7 @@
 
     <!-- Mobile Submit Button -->
     {{#inprogress}}
-    <button class="amd-lms-quiz-submit-quiz-btn amd-quiz-submit-btn d-lg-none">Submit Quiz</button>
+    <button class="amd-lms-quiz-submit-quiz-btn amd-quiz-submit-btn d-lg-none">Submit</button>
     {{/inprogress}}
 
 </div>

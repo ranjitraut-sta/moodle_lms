@@ -65,6 +65,14 @@ $templatecontext = array_merge(
     ]
 );
 
+$access = \theme_mytheme\lib\CourseAccess::checkUserCourseAccess($courseid);
+$templatecontext['course_access'] = $access;
+
+// echo '<pre>';
+// print_r($templatecontext['course_access']);
+// echo '</pre>';
+// exit;
+
 echo $OUTPUT->doctype();
 ?>
 <html <?php echo $OUTPUT->htmlattributes(); ?>>

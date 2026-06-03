@@ -22,6 +22,42 @@ function theme_mytheme_get_last_accessed_lesson($courseid, $userid): ?int
     return $result ? $result->id : null;
 }
 
+function theme_mytheme_check_module_completed($cm, $userid, $course) {
+    global $CFG, $DB;
+    
+    // Strict Quiz Pass Check (Forces lock even if completion tracking is disabled in settings)
+    if ($cm->modname === 'quiz') {
+        require_once($CFG->libdir . '/gradelib.php');
+        $grade_item = \grade_item::fetch([
+            'itemtype' => 'mod',
+            'itemmodule' => 'quiz',
+            'iteminstance' => $cm->instance
+        ]);
+        
+        $gradepass = $grade_item ? (float)$grade_item->gradepass : 0;
+        if ($gradepass > 0) {
+            $grade_grade = \grade_grade::fetch([
+                'itemid' => $grade_item->id,
+                'userid' => $userid
+            ]);
+            $bestgrade = $grade_grade ? (float)$grade_grade->finalgrade : null;
+            
+            return ($bestgrade !== null && $bestgrade >= $gradepass);
+        }
+    }
+
+    if ($cm->completion == COMPLETION_TRACKING_NONE) {
+        return true;
+    }
+    
+    $completion = new completion_info($course);
+    $cdata = $completion->get_data($cm, false, $userid);
+    
+    $iscomplete = in_array($cdata->completionstate, [COMPLETION_COMPLETE, COMPLETION_COMPLETE_PASS]);
+    
+    return $iscomplete;
+}
+
 function theme_mytheme_get_course_context($courseid): array
 {
     global $DB, $USER;
@@ -146,16 +182,9 @@ function theme_mytheme_get_lesson_context($cmid): array
 
     $ismarkedcomplete = $ismanualcompletion
         && isset($cdata->completionstate)
-        && $cdata->completionstate == COMPLETION_COMPLETE
-        && $DB->record_exists('course_modules_completion', [
-            'coursemoduleid' => $cmid,
-            'userid' => $USER->id,
-            'completionstate' => COMPLETION_COMPLETE,
-        ]);
+        && in_array($cdata->completionstate, [COMPLETION_COMPLETE, COMPLETION_COMPLETE_PASS]);
 
-    $iscurrentcomplete = ($currentcm->completion == COMPLETION_TRACKING_NONE)
-        || ($currentcm->completion == COMPLETION_TRACKING_AUTOMATIC && in_array($cdata->completionstate, [COMPLETION_COMPLETE, COMPLETION_COMPLETE_PASS]))
-        || ($currentcm->completion == COMPLETION_TRACKING_MANUAL && $ismarkedcomplete);
+    $iscurrentcomplete = theme_mytheme_check_module_completed($currentcm, $USER->id, $course);
 
     $toggleurl = (new moodle_url('/theme/mytheme/pages/togglecompletion.php', [
         'id' => $course->id,
@@ -212,27 +241,14 @@ function theme_mytheme_get_lesson_context($cmid): array
 
                 $modindex = array_search($mod, $allmodules);
 
-                $modcompleted = $DB->record_exists('course_modules_completion', [
-                    'coursemoduleid' => $mod->id,
-                    'userid' => $USER->id,
-                    'completionstate' => COMPLETION_COMPLETE,
-                ]);
+                $modcompleted = theme_mytheme_check_module_completed($mod, $USER->id, $course);
 
                 $islocked = false;
 
                 if ($modindex > 0) {
                     $prevmod = $allmodules[$modindex - 1];
-
-                    if ($prevmod->completion != COMPLETION_TRACKING_NONE) {
-                        $prevdone = $DB->record_exists('course_modules_completion', [
-                            'coursemoduleid' => $prevmod->id,
-                            'userid' => $USER->id,
-                            'completionstate' => COMPLETION_COMPLETE,
-                        ]);
-
-                        if (!$prevdone) {
-                            $islocked = true;
-                        }
+                    if (!theme_mytheme_check_module_completed($prevmod, $USER->id, $course)) {
+                        $islocked = true;
                     }
                 }
 

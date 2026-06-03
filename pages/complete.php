@@ -2,12 +2,12 @@
 require_once('../../../config.php');
 require_once($CFG->libdir . '/completionlib.php');
 
-$courseid  = required_param('id', PARAM_INT);
+$courseid = required_param('id', PARAM_INT);
 $from_cmid = optional_param('from_cmid', 0, PARAM_INT); // function बाट पठाइएको ID समात्ने
 
 require_login($courseid);
 
-$course  = $DB->get_record('course', ['id' => $courseid], '*', MUST_EXIST);
+$course = $DB->get_record('course', ['id' => $courseid], '*', MUST_EXIST);
 $context = context_course::instance($courseid);
 
 $PAGE->set_url('/theme/mytheme/pages/complete.php', ['id' => $courseid]);
@@ -33,69 +33,53 @@ if ($from_cmid > 0) {
 if ($completion->is_enabled()) {
     // Mark course complete
     $ccompletion = new completion_completion(['userid' => $USER->id, 'course' => $courseid]);
-    $CFG->noemailever = true;
+
+    // 🔥 FIX 1: $CFG->noemailever लाई म्यानुअल टगल नगर्ने, Moodle लाई आफ्नो काम गर्न दिने
     $ccompletion->mark_complete();
-    $CFG->noemailever = false;
 
-    $modinfo = get_fast_modinfo($course);
+    // ==================================================
+    // 🔥 COURSE COMPLETION EMAIL NOTIFICATION START
+    // ==================================================
+    if (empty($_SESSION['course_completed_email_sent_' . $courseid . '_' . $USER->id])) {
 
-    // Auto issue first visible certificate
-    foreach ($modinfo->get_instances_of('customcert') as $cm) {
-        if ($cm->uservisible) {
-            $issue = $DB->get_record('customcert_issues', [
-                'userid' => $USER->id,
-                'customcertid' => $cm->instance
-            ]);
-            if (!$issue) {
-                $issueid = $DB->insert_record('customcert_issues', [
-                    'code' => 'auto',
-                    'userid' => $USER->id,
-                    'customcertid' => $cm->instance,
-                    'timecreated' => time()
-                ]);
-            } else {
-                $issueid = $issue->id;
-            }
+        $supportuser = core_user::get_support_user(); // System support user (From User)
+        $coursesiteurl = (new moodle_url('/theme/mytheme/pages/course.php', ['id' => $courseid]))->out(false);
 
-            $certurl = (new moodle_url('/mod/customcert/view.php', [
-                'id' => $cm->id,
-                'downloadown' => 1,
-                'issueid' => $issueid
-            ]))->out(false);
+        $subject = "Congratulations! You have completed " . format_string($course->fullname);
 
-            break; // only first visible certificate
+        $message = "Hello " . fullname($USER) . ",\n\n";
+        $message .= "Congratulations! You have successfully completed the course \"" . format_string($course->fullname) . "\".\n\n";
+        $message .= "You can view your course details and review the materials here:\n" . $coursesiteurl . "\n\n";
+
+        // 🔥 FIX 2: Undefined property warning हटाउन property_exists वा कन्डिसन चेकर प्रयोग गर्ने
+        // सामान्यतया Moodle मा 'showgrades' वा 'showreports' हुन्छ, प्रमाणपत्रको लागि कस्ट्युम चेक:
+        if (isset($course->showcertificates) && $course->showcertificates) {
+            $message .= "If eligible, your certificate is also ready for download on the completion page.\n\n";
         }
+
+        $message .= "Thank you and happy learning!\nBest Regards,\n" . format_string($SITE->fullname);
+
+        // Moodle standard इमेल फंक्शन (To, From, Subject, Message)
+        email_to_user($USER, $supportuser, $subject, $message);
+
+        // सेसनमा फ्ल्याग राख्ने
+        $_SESSION['course_completed_email_sent_' . $courseid . '_' . $USER->id] = true;
     }
+    // ==================================================
+    // 🔥 COURSE COMPLETION EMAIL NOTIFICATION END
+    // ==================================================
 
-    // २. फलब्याक फिक्स: यदि कुनै कारणले $from_cmid खाली भएमा मात्र यो डेटाबेस लुप चल्छ
-    if (empty($lessonurl)) {
-        $lastlesson = null;
-        $allcms = $modinfo->get_cms(); 
-        foreach ($allcms as $cm) {
-            if ($cm->uservisible && $cm->modname !== 'customcert') {
-                $completiondata = $completion->get_data($cm, true, $USER->id);
-                if (!empty($completiondata->timemodified)) {
-                    $lastlesson = $cm; 
-                }
-            }
-        }
-
-        if ($lastlesson) {
-            $lessonurl = (new moodle_url('/theme/mytheme/pages/lesson.php', [
-                'id' => $courseid,
-                'cmid' => $lastlesson->id
-            ]))->out(false);
-        }
-    }
+    // 🔥 FIX 3: Undefined property warning हटाउन property_exists वा कन्डिसन चेकर प्रयोग गर्ने
 }
 
 $bootstrapcss = (new moodle_url('/theme/mytheme/styles/bootstrap.min.css'))->out(false);
-$allcss       = (new moodle_url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css'))->out(false);
-$coursecss    = (new moodle_url('/theme/mytheme/styles/course.css'))->out(false);
+$allcss = (new moodle_url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css'))->out(false);
+$coursecss = (new moodle_url('/theme/mytheme/styles/course.css'))->out(false);
 
 echo $OUTPUT->doctype();
 ?>
 <html <?php echo $OUTPUT->htmlattributes(); ?>>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -104,43 +88,47 @@ echo $OUTPUT->doctype();
     <link rel="stylesheet" href="<?php echo $allcss; ?>">
     <link rel="stylesheet" href="<?php echo $coursecss; ?>">
 </head>
+
 <body style="background:#f8f9fa;">
 
-<div class="d-flex flex-column align-items-center justify-content-center" style="min-height:100vh; text-align:center; padding:2rem;">
+    <div class="d-flex flex-column align-items-center justify-content-center"
+        style="min-height:100vh; text-align:center; padding:2rem;">
 
-    <div class="mb-4">
-        <i class="fa-solid fa-circle-check" style="font-size:5rem; color:#28a745;"></i>
+        <div class="mb-4">
+            <i class="fa-solid fa-circle-check" style="font-size:5rem; color:#28a745;"></i>
+        </div>
+
+        <h1 class="fw-bold mb-2" style="color:#1a1a2e;">Congratulations!</h1>
+        <p class="text-muted mb-1" style="font-size:1.1rem;">You have successfully completed</p>
+        <h3 class="fw-bold mb-4" style="color:var(--amd-secondary);"><?php echo format_string($course->fullname); ?>
+        </h3>
+
+        <div class="d-flex flex-wrap gap-3 justify-content-center mt-2">
+
+            <!-- सर्टिफिकेट बटन -->
+            <?php if ($certurl): ?>
+                <a href="<?php echo $certurl; ?>" class="btn btn-success px-4 py-2 text-white">
+                    <span class="me-2"><i class="fa-solid fa-file-pdf"></i></span>
+                    <span>Download Certificate</span>
+                </a>
+            <?php endif; ?>
+
+            <!-- 'Back to Lesson' बटन -->
+            <?php if ($lessonurl): ?>
+                <a href="<?php echo $lessonurl; ?>" class="amd-lms-btn amd-lms-prev-btn px-4 py-2">
+                    <span class="amd-lms-icon"><i class="fa-solid fa-arrow-left"></i></span>
+                    <span class="amd-lms-text">Back to Lesson</span>
+                </a>
+            <?php endif; ?>
+
+            <!-- सिधै मुख्य कोर्स होमपेजमा फर्किने सुरक्षित बटन -->
+            <a href="<?php echo $backtocourseurl; ?>" class="btn btn-outline-secondary px-4 py-2">
+                <span class="me-2"><i class="fa-solid fa-house"></i></span>
+                <span>Back to Course Home</span>
+            </a>
+        </div>
     </div>
-
-    <h1 class="fw-bold mb-2" style="color:#1a1a2e;">Congratulations!</h1>
-    <p class="text-muted mb-1" style="font-size:1.1rem;">You have successfully completed</p>
-    <h3 class="fw-bold mb-4" style="color:var(--amd-secondary);"><?php echo format_string($course->fullname); ?></h3>
-
-    <div class="d-flex flex-wrap gap-3 justify-content-center mt-2">
-
-        <!-- सर्टिफिकेट बटन -->
-        <?php if ($certurl): ?>
-        <a href="<?php echo $certurl; ?>" class="btn btn-success px-4 py-2 text-white">
-            <span class="me-2"><i class="fa-solid fa-file-pdf"></i></span>
-            <span>Download Certificate</span>
-        </a>
-        <?php endif; ?>
-
-        <!-- 'Back to Lesson' बटन (केस सेन्सिटिभिटी फिक्स गरिएको र रिएकटिभेट) -->
-        <?php if ($lessonurl): ?>
-        <a href="<?php echo $lessonurl; ?>" class="amd-lms-btn amd-lms-prev-btn px-4 py-2">
-            <span class="amd-lms-icon"><i class="fa-solid fa-arrow-left"></i></span>
-            <span class="amd-lms-text">Back to Lesson</span>
-        </a>
-        <?php endif; ?>
-
-        <!-- सिधै मुख्य कोर्स होमपेजमा फर्किने सुरक्षित बटन -->
-        <a href="<?php echo $backtocourseurl; ?>" class="btn btn-outline-secondary px-4 py-2">
-            <span class="me-2"><i class="fa-solid fa-house"></i></span>
-            <span>Back to Course Home</span>
-        </a>
-    </div>
-</div>
 
 </body>
+
 </html>

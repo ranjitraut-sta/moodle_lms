@@ -40,11 +40,7 @@ $currentindex = array_search($cmid, array_column($allcms, 'id'));
 if ($currentindex > 0) {
     $prevmod = $allcms[$currentindex - 1];
     if ($prevmod->completion != COMPLETION_TRACKING_NONE) {
-        $prevdone = $DB->record_exists('course_modules_completion', [
-            'coursemoduleid' => $prevmod->id,
-            'userid' => $USER->id,
-            'completionstate' => COMPLETION_COMPLETE,
-        ]);
+        $prevdone = theme_mytheme_check_module_completed($prevmod, $USER->id, $course);
         if (!$prevdone) {
             redirect(
                 new moodle_url('/theme/mytheme/pages/lesson.php', ['id' => $courseid, 'cmid' => $prevmod->id]),

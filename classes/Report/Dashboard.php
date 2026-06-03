@@ -6,9 +6,6 @@ defined('MOODLE_INTERNAL') || die();
 
 class Dashboard
 {
-    /**
-     * सम्पूर्ण ड्यासबोर्ड (System-wide) डेटा तयार गर्ने मुख्य फङ्सन
-     */
     protected $user;
 
     public function __construct($user = null)
@@ -16,151 +13,210 @@ class Dashboard
         global $USER;
         $this->user = $user ?? $USER;
     }
+
+    /**
+     * MAIN DASHBOARD DATA
+     */
     public function getData(): array
     {
         return [
-            // Stats Cards
+            // Stats
             'total_courses' => $this->getTotalCoursesCount(),
             'total_users' => $this->getTotalUsersCount(),
             'total_enrollments' => $this->getTotalEnrollmentsCount(),
+            'dropout_rate' => $this->getDropoutRate(),
+
+            // Charts
+            'active_users_chart' => $this->getActiveUsersChart(30),
+            'enrollment_chart' => $this->getEnrollmentChart(5),
+
+            // Tables
             'top_3_enrolled' => $this->getTopEnrolledCourses(3),
             'most_completed' => $this->getMostCompletedCourse(),
 
-            // Charts Data
-            'active_users_chart' => $this->getActiveUsersData(30), // Last 30 days
-            'enrollment_chart' => $this->getCourseEnrollmentChart(5),
-            'dropout_rate' => $this->getDropoutRate(),
+            // User info
             'user_fullname' => fullname($this->user),
             'user_firstname' => $this->user->firstname,
-            'user_profile_pix' => $this->get_user_picture(),
+            'user_profile_pix' => $this->getUserPicture(),
         ];
     }
 
-    protected function get_user_picture()
+    /**
+     * USER PICTURE
+     */
+    protected function getUserPicture()
     {
         global $OUTPUT;
-        return $OUTPUT->user_picture($this->user, array('size' => 100, 'link' => false));
+        return $OUTPUT->user_picture($this->user, [
+            'size' => 100,
+            'link' => false
+        ]);
     }
 
     /**
-     * १. कुल कोर्सहरूको संख्या
+     * TOTAL COURSES
      */
     protected function getTotalCoursesCount(): int
     {
         global $DB;
-        return (int) $DB->count_records('course', ['visible' => 1]) - 1; // Frontpage हटाएर
+
+        return (int)$DB->count_records_sql("
+            SELECT COUNT(1)
+            FROM {course}
+            WHERE id != 1 AND visible = 1
+        ");
     }
 
     /**
-     * २. कुल युजरहरूको संख्या
+     * TOTAL USERS
      */
     protected function getTotalUsersCount(): int
     {
         global $DB;
-        return (int) $DB->count_records('user', ['deleted' => 0, 'suspended' => 0]);
+
+        return (int)$DB->count_records_sql("
+            SELECT COUNT(1)
+            FROM {user}
+            WHERE deleted = 0 AND suspended = 0
+        ");
     }
 
     /**
-     * ३. कुल इन्रोलमेन्ट संख्या
+     * TOTAL ENROLLMENTS
      */
     protected function getTotalEnrollmentsCount(): int
     {
         global $DB;
-        return (int) $DB->count_records('user_enrolments');
+
+        return (int)$DB->count_records('user_enrolments');
     }
 
     /**
-     * ४. धेरै इन्रोल भएका टप ३ कोर्सहरू
+     * TOP ENROLLED COURSES
      */
-    protected function getTopEnrolledCourses($limit = 3): array
+    protected function getTopEnrolledCourses(int $limit = 3): array
     {
         global $DB;
-        $sql = "SELECT c.id, c.fullname, COUNT(ue.id) as enrollments
-                FROM {course} c
-                JOIN {enrol} e ON e.courseid = c.id
-                JOIN {user_enrolments} ue ON ue.enrolid = e.id
-                WHERE c.id != 1
-                GROUP BY c.id, c.fullname
-                ORDER BY enrollments DESC";
+
+        $sql = "
+            SELECT 
+                c.id,
+                c.fullname,
+                COUNT(ue.id) AS enrollments
+            FROM {course} c
+            JOIN {enrol} e ON e.courseid = c.id
+            JOIN {user_enrolments} ue ON ue.enrolid = e.id
+            WHERE c.id != 1
+            GROUP BY c.id, c.fullname
+            ORDER BY enrollments DESC
+        ";
+
         return array_values($DB->get_records_sql($sql, null, 0, $limit));
     }
 
     /**
-     * ५. सबैभन्दा धेरै कप्लिट गरिएको कोर्स
+     * MOST COMPLETED COURSE
      */
     protected function getMostCompletedCourse(): ?\stdClass
     {
         global $DB;
-        $sql = "SELECT c.id, c.fullname, COUNT(cc.id) as completions
-                FROM {course} c
-                JOIN {course_completions} cc ON cc.course = c.id
-                WHERE cc.timecompleted > 0
-                GROUP BY c.id, c.fullname
-                ORDER BY completions DESC";
+
+        $sql = "
+            SELECT 
+                c.id,
+                c.fullname,
+                COUNT(cc.id) AS completions
+            FROM {course} c
+            JOIN {course_completions} cc ON cc.course = c.id
+            WHERE cc.timecompleted > 0
+            GROUP BY c.id, c.fullname
+            ORDER BY completions DESC
+        ";
+
         $records = $DB->get_records_sql($sql, null, 0, 1);
+
         return !empty($records) ? reset($records) : null;
     }
 
     /**
-     * ६. एक्टिभ युजर चार्ट (Last 7/30 Days)
+     * ACTIVE USERS (LAST N DAYS) - OPTIMIZED (NO LOOP QUERIES)
      */
-    protected function getActiveUsersData($days = 30): array
+    protected function getActiveUsersChart(int $days = 30): array
     {
         global $DB;
+
+        $startTime = strtotime("-$days days");
+
+        $sql = "
+            SELECT 
+                DATE(FROM_UNIXTIME(timecreated)) AS day,
+                COUNT(DISTINCT userid) AS total
+            FROM {logstore_standard_log}
+            WHERE timecreated >= :starttime
+            GROUP BY DATE(FROM_UNIXTIME(timecreated))
+            ORDER BY day ASC
+        ";
+
+        $records = $DB->get_records_sql($sql, [
+            'starttime' => $startTime
+        ]);
+
         $labels = [];
         $data = [];
 
-        for ($i = $days; $i >= 0; $i--) {
-            $date = date('Y-m-d', strtotime("-$i days"));
-            $start = strtotime("$date 00:00:00");
-            $end = strtotime("$date 23:59:59");
-
-            $count = $DB->count_records_select(
-                'user',
-                "lastaccess BETWEEN ? AND ?",
-                [$start, $end]
-            );
-
-            $labels[] = date('M d', $start);
-            $data[] = $count;
+        foreach ($records as $r) {
+            $labels[] = $r->day;
+            $data[] = (int)$r->total;
         }
 
-        return ['labels' => $labels, 'data' => $data];
+        return [
+            'labels' => $labels,
+            'data' => $data
+        ];
     }
 
     /**
-     * ७. ड्रपआउट रेट (Enroll vs Not Completed %)
-     * Formula: ((Enrollments - Completions) / Enrollments) * 100
+     * DROP OUT RATE
      */
     protected function getDropoutRate(): float
     {
-        $totalEnroll = $this->getTotalEnrollmentsCount();
-        if ($totalEnroll == 0)
-            return 0;
-
         global $DB;
-        $totalComplete = $DB->count_records_select('course_completions', "timecompleted > 0");
 
-        $dropoutCount = max($totalEnroll - $totalComplete, 0);
-        $rate = ($dropoutCount / $totalEnroll) * 100;
+        $totalEnroll = $this->getTotalEnrollmentsCount();
 
-        return round($rate, 2);
+        if ($totalEnroll <= 0) {
+            return 0;
+        }
+
+        $completed = (int)$DB->count_records_sql("
+            SELECT COUNT(1)
+            FROM {course_completions}
+            WHERE timecompleted > 0
+        ");
+
+        $dropout = max($totalEnroll - $completed, 0);
+
+        return round(($dropout / $totalEnroll) * 100, 2);
     }
 
     /**
-     * ८. कोर्स अनुसार इन्रोलमेन्ट चार्ट
+     * ENROLLMENT DISTRIBUTION CHART
      */
-    protected function getCourseEnrollmentChart($limit = 5): array
+    protected function getEnrollmentChart(int $limit = 5): array
     {
         $courses = $this->getTopEnrolledCourses($limit);
+
         $labels = [];
         $data = [];
 
         foreach ($courses as $c) {
             $labels[] = $c->fullname;
-            $data[] = (int) $c->enrollments;
+            $data[] = (int)$c->enrollments;
         }
 
-        return ['labels' => $labels, 'data' => $data];
+        return [
+            'labels' => $labels,
+            'data' => $data
+        ];
     }
 }

@@ -90,30 +90,60 @@
                     </ul>
                 </div>
 
-                <div class="amd-lms-course-detail-actions">
-                    {{#isenrolled}}
-                        {{#iscompleted}}
-                        <a href="{{firstlessonurl}}" class="amd-lms-btn-register text-decoration-none">
-                            Review Course <i class="ri-refresh-line"></i>
-                        </a>
-                        {{#certurl}}
-                        <a href="{{certificate_url}}" target="_blank" class="amd-lms-btn-register text-decoration-none">
-                            Certificate <i class="ri-award-line"></i>
-                        </a>
-                        {{/certurl}}
-                        {{/iscompleted}}
-                        {{^iscompleted}}
+          <div class="amd-lms-course-detail-actions">
+
+    {{#course_access}}
+
+        {{#status}}
+            {{#isenrolled}}
+
+                {{#iscompleted}}
+                    <a href="{{firstlessonurl}}" class="amd-lms-btn-register text-decoration-none">
+                        Review Course <i class="ri-refresh-line"></i>
+                    </a>
+
+                    {{#certurl}}
+                    <a href="{{certificate_url}}" target="_blank" class="amd-lms-btn-register text-decoration-none">
+                        Certificate <i class="ri-award-line"></i>
+                    </a>
+                    {{/certurl}}
+                {{/iscompleted}}
+
+                {{^iscompleted}}
+
+                    {{#is_active}}
                         <a href="{{firstlessonurl}}" class="amd-lms-btn-register text-decoration-none">
                             Continue Learning <i class="ri-play-circle-line"></i>
                         </a>
-                        {{/iscompleted}}
-                    {{/isenrolled}}
-                    {{^isenrolled}}
-                    <a href="{{wwwroot}}theme/mytheme/pages/enroll.php?id={{courseid}}&sesskey={{sesskey}}" class="amd-lms-btn-register text-decoration-none">
-                        Enroll Now <i class="ri-play-circle-line"></i>
-                    </a>
-                    {{/isenrolled}}
-                </div>
+                    {{/is_active}}
+
+                    {{#is_expired}}
+                        <a href="{{wwwroot}}theme/mytheme/pages/reset_access.php?courseid={{courseid}}"
+                           class="amd-lms-btn-register text-decoration-none bg-danger">
+                            Re-Start Course <i class="ri-refresh-line"></i>
+                        </a>
+
+                        <small class="text-danger d-block mt-2">
+                            Course access expired. You need to restart.
+                        </small>
+                    {{/is_expired}}
+
+                {{/iscompleted}}
+
+            {{/isenrolled}}
+
+        {{/status}}
+
+    {{/course_access}}
+
+    {{^isenrolled}}
+        <a href="{{wwwroot}}theme/mytheme/pages/enroll.php?id={{courseid}}&sesskey={{sesskey}}"
+           class="amd-lms-btn-register text-decoration-none">
+            Enroll Now <i class="ri-play-circle-line"></i>
+        </a>
+    {{/isenrolled}}
+
+</div>
 
                 {{#teachername}}
                 <div class="amd-lms-course-detail-sidebar-card amd-lms-course-detail-author">

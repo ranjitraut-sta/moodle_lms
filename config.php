@@ -9,6 +9,7 @@ $THEME->parents = ['boost'];
 $THEME->sheets = [];
 
 $THEME->editor_sheets = [];
+$THEME->courseCompleteInBetween = 1;
 
 $THEME->layouts = [
     'base' => [

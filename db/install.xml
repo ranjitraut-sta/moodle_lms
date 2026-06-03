@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="theme/mytheme/db" VERSION="2026060300" COMMENT="Course attempts table">
+    <TABLES>
+
+        <TABLE NAME="course_attempts" COMMENT="User course attempts tracking">
+            <FIELDS>
+
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+
+                <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true"/>
+                <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true"/>
+
+                <FIELD NAME="attempt_no" TYPE="int" LENGTH="3" NOTNULL="true" DEFAULT="1"/>
+
+                <FIELD NAME="timestart" TYPE="int" LENGTH="10" NOTNULL="true"/>
+                <FIELD NAME="timeend" TYPE="int" LENGTH="10" NOTNULL="false"/>
+
+                <FIELD NAME="status" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="active"/>
+
+            </FIELDS>
+
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+
+            <INDEXES>
+                <INDEX NAME="user_course" UNIQUE="true" FIELDS="userid, courseid, attempt_no"/>
+            </INDEXES>
+
+        </TABLE>
+
+    </TABLES>
+</XMLDB>

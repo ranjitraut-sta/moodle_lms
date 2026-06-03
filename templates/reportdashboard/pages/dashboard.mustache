@@ -52,7 +52,7 @@
     <!-- Active Users (Line Chart) -->
     <div class="col-lg-8">
         <div class="card border-0 shadow-sm p-3">
-            <h6 class="fw-bold mb-3 small">Active Users (Last 30 Days)</h6>
+            <h6 class="fw-bold mb-3 small">Number of Active Users per Day (Last 30 Days)</h6>
             <div style="height: 300px;"><canvas id="activeUsersChart"></canvas></div>
         </div>
     </div>
@@ -60,7 +60,7 @@
     <!-- Top Enrolled Courses (Bar/Doughnut Chart) -->
     <div class="col-lg-4">
         <div class="card border-0 shadow-sm p-3 h-100">
-            <h6 class="fw-bold mb-3 small">Enrollment Distribution</h6>
+            <h6 class="fw-bold mb-3 small">Enrollments by Course</h6>
             <div style="height: 300px;"><canvas id="enrollmentChart"></canvas></div>
         </div>
     </div>
@@ -117,10 +117,25 @@ document.addEventListener('DOMContentLoaded', function() {
             responsive: true,
             maintainAspectRatio: false,
             scales: {
-                y: { beginAtZero: true, grid: { display: false } },
-                x: { grid: { display: false }, ticks: { maxRotation: 45, minRotation: 45 } }
+                y: {
+                    beginAtZero: true,
+                    grid: { display: false },
+                    ticks: {
+                        precision: 0,
+                        stepSize: 1
+                    }
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: {
+                        maxRotation: 45,
+                        minRotation: 45
+                    }
+                }
             },
-            plugins: { legend: { display: false } }
+            plugins: {
+                legend: { display: false }
+            }
         }
     });
 
