@@ -93,8 +93,8 @@
 
       // --- ४. Submit Logic (यही हो मुख्य भाग) ---
       // --- ४. Submit Logic (Fixed Formatting for Moodle MCQ Matrix & DDWTOS Blanks) ---
-      const submitBtn = wrap.querySelector(".amd-quiz-submit-btn");
-      if (submitBtn) {
+      const submitBtns = wrap.querySelectorAll(".amd-quiz-submit-btn");
+      submitBtns.forEach(submitBtn => {
         submitBtn.addEventListener("click", function (e) {
           e.preventDefault();
           let answers = [];
@@ -210,7 +210,7 @@
               submitBtn.innerText = "Submit Quiz";
             });
         });
-      }
+      });
 
       // --- ५. Start/Retake Quiz Logic ---
       const startBtns = wrap.querySelectorAll(
@@ -237,6 +237,61 @@
             });
         });
       });
+      // --- ६. Pagination Logic ---
+      const questions = wrap.querySelectorAll(".amd-quiz-question");
+      if (questions.length > 0) {
+        let currentIndex = 0;
+        const prevBtn = wrap.querySelector("#amd-quiz-prev-btn");
+        const nextBtn = wrap.querySelector("#amd-quiz-next-btn");
+        const inlineSubmitBtn = wrap.querySelector("#amd-quiz-submit-btn-inline");
+        
+        const originalSubmitBtns = wrap.querySelectorAll(".amd-quiz-submit-btn:not(#amd-quiz-submit-btn-inline)");
+        originalSubmitBtns.forEach(btn => btn.style.display = 'none');
+
+        function showQuestion(index) {
+            questions.forEach((q, i) => {
+                if (i === index) {
+                    q.classList.add("active");
+                } else {
+                    q.classList.remove("active");
+                }
+            });
+
+            if (index === 0) {
+                if(prevBtn) prevBtn.style.display = "none";
+            } else {
+                if(prevBtn) prevBtn.style.display = "inline-block";
+            }
+
+            if (index === questions.length - 1) {
+                if(nextBtn) nextBtn.style.display = "none";
+                if(inlineSubmitBtn) inlineSubmitBtn.style.display = "inline-block";
+            } else {
+                if(nextBtn) nextBtn.style.display = "inline-block";
+                if(inlineSubmitBtn) inlineSubmitBtn.style.display = "none";
+            }
+        }
+
+        if (prevBtn && nextBtn) {
+            prevBtn.addEventListener("click", function(e) {
+                e.preventDefault();
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    showQuestion(currentIndex);
+                }
+            });
+
+            nextBtn.addEventListener("click", function(e) {
+                e.preventDefault();
+                if (currentIndex < questions.length - 1) {
+                    currentIndex++;
+                    showQuestion(currentIndex);
+                }
+            });
+        }
+
+        showQuestion(currentIndex);
+      }
     });
   }
 
