@@ -27,6 +27,8 @@ $logo = !empty($templatecontext['setting']['logo']) ? $templatecontext['setting'
 
 // Show friendly error for login failures (e.g. redirected with ?errorcode=3)
 $errorcode = optional_param('errorcode', 0, PARAM_INT);
+$username = optional_param('username', '', PARAM_RAW_TRIMMED);
+
 $errormessage = '';
 if (!empty($errorcode)) {
     switch ($errorcode) {
@@ -96,7 +98,8 @@ echo $OUTPUT->doctype();
                         <h2>Welcome Back!</h2>
                         <p>Enter your credentials to access your account.</p>
                         <div class="amd-lms-login-input-group">
-                            <input type="text" name="username" id="login-user" required placeholder=" ">
+                            <input type="text" name="username" id="login-user" required placeholder=" "
+                                value="<?php echo s($username); ?>">
                             <label for="login-user">User Name</label>
                         </div>
                         <div class="amd-lms-login-input-group" style="position: relative;">
@@ -156,9 +159,9 @@ echo $OUTPUT->doctype();
                     <div class="amd-right-side-content">
                         <img src="<?php echo $CFG->wwwroot . '/theme/mytheme/amd/pix/login.jpg'; ?>" alt="Login Image">
                     </div>
-
                 </div>
             </div>
+        </div>
     </main>
 
     <div style="display:none;"><?php echo $OUTPUT->main_content(); ?></div>

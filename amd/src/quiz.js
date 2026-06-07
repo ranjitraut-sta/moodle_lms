@@ -94,7 +94,7 @@
       // --- ४. Submit Logic (यही हो मुख्य भाग) ---
       // --- ४. Submit Logic (Fixed Formatting for Moodle MCQ Matrix & DDWTOS Blanks) ---
       const submitBtns = wrap.querySelectorAll(".amd-quiz-submit-btn");
-      submitBtns.forEach(submitBtn => {
+      submitBtns.forEach((submitBtn) => {
         submitBtn.addEventListener("click", function (e) {
           e.preventDefault();
           let answers = [];
@@ -214,7 +214,7 @@
 
       // --- ५. Start/Retake Quiz Logic ---
       const startBtns = wrap.querySelectorAll(
-        ".amd-quiz-start-btn, .amd-quiz-retake-btn",
+        ".amd-quiz-start-btn, .amd-quiz-retake-btn, .quiz-restart-btn",
       );
       startBtns.forEach((btn) => {
         btn.addEventListener("click", function () {
@@ -232,8 +232,22 @@
           })
             .then((r) => r.json())
             .then((data) => {
-              if (data.success) location.reload();
-              else alert(data.error || "Error starting quiz");
+              if (data.success) {
+                // Hide start button and its container
+                btn.style.display = "none";
+                const startSection = btn.closest(".mb-4");
+                if (startSection) startSection.style.display = "none";
+                location.reload();
+              } else {
+                alert(data.error || "Error starting quiz");
+                btn.disabled = false;
+                btn.innerText = "Start Quiz";
+              }
+            })
+            .catch((err) => {
+              console.error(err);
+              btn.disabled = false;
+              btn.innerText = "Start Quiz";
             });
         });
       });
@@ -243,51 +257,55 @@
         let currentIndex = 0;
         const prevBtn = wrap.querySelector("#amd-quiz-prev-btn");
         const nextBtn = wrap.querySelector("#amd-quiz-next-btn");
-        const inlineSubmitBtn = wrap.querySelector("#amd-quiz-submit-btn-inline");
-        
-        const originalSubmitBtns = wrap.querySelectorAll(".amd-quiz-submit-btn:not(#amd-quiz-submit-btn-inline)");
-        originalSubmitBtns.forEach(btn => btn.style.display = 'none');
+        const inlineSubmitBtn = wrap.querySelector(
+          "#amd-quiz-submit-btn-inline",
+        );
+
+        const originalSubmitBtns = wrap.querySelectorAll(
+          ".amd-quiz-submit-btn:not(#amd-quiz-submit-btn-inline)",
+        );
+        originalSubmitBtns.forEach((btn) => (btn.style.display = "none"));
 
         function showQuestion(index) {
-            questions.forEach((q, i) => {
-                if (i === index) {
-                    q.classList.add("active");
-                } else {
-                    q.classList.remove("active");
-                }
-            });
-
-            if (index === 0) {
-                if(prevBtn) prevBtn.style.display = "none";
+          questions.forEach((q, i) => {
+            if (i === index) {
+              q.classList.add("active");
             } else {
-                if(prevBtn) prevBtn.style.display = "inline-block";
+              q.classList.remove("active");
             }
+          });
 
-            if (index === questions.length - 1) {
-                if(nextBtn) nextBtn.style.display = "none";
-                if(inlineSubmitBtn) inlineSubmitBtn.style.display = "inline-block";
-            } else {
-                if(nextBtn) nextBtn.style.display = "inline-block";
-                if(inlineSubmitBtn) inlineSubmitBtn.style.display = "none";
-            }
+          if (index === 0) {
+            if (prevBtn) prevBtn.style.display = "none";
+          } else {
+            if (prevBtn) prevBtn.style.display = "inline-block";
+          }
+
+          if (index === questions.length - 1) {
+            if (nextBtn) nextBtn.style.display = "none";
+            if (inlineSubmitBtn) inlineSubmitBtn.style.display = "inline-block";
+          } else {
+            if (nextBtn) nextBtn.style.display = "inline-block";
+            if (inlineSubmitBtn) inlineSubmitBtn.style.display = "none";
+          }
         }
 
         if (prevBtn && nextBtn) {
-            prevBtn.addEventListener("click", function(e) {
-                e.preventDefault();
-                if (currentIndex > 0) {
-                    currentIndex--;
-                    showQuestion(currentIndex);
-                }
-            });
+          prevBtn.addEventListener("click", function (e) {
+            e.preventDefault();
+            if (currentIndex > 0) {
+              currentIndex--;
+              showQuestion(currentIndex);
+            }
+          });
 
-            nextBtn.addEventListener("click", function(e) {
-                e.preventDefault();
-                if (currentIndex < questions.length - 1) {
-                    currentIndex++;
-                    showQuestion(currentIndex);
-                }
-            });
+          nextBtn.addEventListener("click", function (e) {
+            e.preventDefault();
+            if (currentIndex < questions.length - 1) {
+              currentIndex++;
+              showQuestion(currentIndex);
+            }
+          });
         }
 
         showQuestion(currentIndex);

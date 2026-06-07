@@ -212,14 +212,18 @@
                     </div>
 
                     <!-- Status Filter -->
-                    <div>
-                        <label class="small fw-bold text-muted d-block mb-2">Status</label>
-                        <select id="filter-status" name="status" class="form-select filter-control">
-                            <option value="all">All Status</option>
-                            <option value="completed">Completed Only</option>
-                            <option value="running">In Progress Only</option>
-                        </select>
-                    </div>
+              <div>
+                <label class="small fw-bold text-muted d-block mb-2">Status</label>
+                <select id="filter-status" name="status" class="form-select filter-control">
+
+                    {{#status_options}}
+                        <option value="{{value}}" {{#selected}}selected{{/selected}}>
+                            {{label}}
+                        </option>
+                    {{/status_options}}
+
+                </select>
+            </div>
 
                     <!-- Action Buttons -->
                     <div class="filter-actions">
@@ -235,6 +239,7 @@
         </div>
 
         <!-- Summary Cards Section -->
+        {{#show_dashboard}}
         <div class="row g-3 mb-4">
             <!-- Total Enrollments -->
             <div class="col-md-3">
@@ -295,8 +300,23 @@
                                 <i class="fas fa-times-circle fa-2x text-danger"></i>
                             </div>
                             <div class="flex-grow-1 ms-3">
-                                <h6 class="text-muted small fw-bold mb-1">DROP OUT</h6>
+                                <h6 class="text-muted small fw-bold mb-1">TOTAL DROP OUT</h6>
                                 <h3 class="mb-0 fw-bold text-dark" id="dropout-count">{{stats.dropout}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card stat-card border-0" style="border-left: 5px solid #c9098f !important;">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-shrink-0 bg-danger bg-opacity-10 p-3 rounded-3">
+                                <i class="fas fa-times-circle fa-2x text-danger"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h6 class="text-muted small fw-bold mb-1">DROP OUT RATE</h6>
+                                <h3 class="mb-0 fw-bold text-dark" id="dropout-rate">{{stats.dropout_rate}}%</h3>
                             </div>
                         </div>
                     </div>
@@ -373,6 +393,14 @@
                 </div>
             </div>
         </div>
+
+{{/show_dashboard}}
+{{^show_dashboard}}
+<div class="text-center py-5">
+    <i class="fas fa-filter fa-3x text-muted mb-3"></i>
+    <h5 class="text-muted">Select filters to view reports</h5>
+</div>
+{{/show_dashboard}}
     </div>
 </main>
 

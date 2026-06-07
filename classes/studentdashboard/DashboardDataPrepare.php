@@ -33,6 +33,7 @@ class DashboardDataPrepare
             'course_progress' => $this->getCourseProgressChart(),
             'assignment' => $this->getAssignmentChart(),
             'activity' => $this->getWeeklyActivity(),
+            'last_login' => $this->getLastLoginTime(),
         ];
     }
 
@@ -213,5 +214,14 @@ class DashboardDataPrepare
             'labels' => $labels,
             'data' => $data,
         ];
+    }
+
+    protected function getLastLoginTime()
+    {
+        if (empty($this->user->lastlogin)) {
+            return 'Never logged in';
+        }
+
+        return format_time(time() - $this->user->lastlogin) . ' ago';
     }
 }

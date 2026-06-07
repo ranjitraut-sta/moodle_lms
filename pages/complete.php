@@ -37,6 +37,40 @@ if ($completion->is_enabled()) {
     // 🔥 FIX 1: $CFG->noemailever लाई म्यानुअल टगल नगर्ने, Moodle लाई आफ्नो काम गर्न दिने
     $ccompletion->mark_complete();
 
+    // --- AUTO-ISSUE CUSTOM CERTIFICATE CODE ---
+    // Insert a unique code into customcert_issues for each visible customcert in this course.
+    // This always creates a new unique code when the user completes the course.
+    global $DB, $USER;
+
+    if ($DB->get_manager()->table_exists('customcert_issues')) {
+        $certs = $DB->get_records_sql(
+            "SELECT cm.id, cm.instance AS customcertid
+             FROM {course_modules} cm
+             JOIN {modules} m ON m.id = cm.module
+             WHERE cm.course = ? AND m.name = 'customcert' AND cm.visible = 1",
+            [$courseid]
+        );
+
+        if ($certs) {
+            foreach ($certs as $cert) {
+                try {
+                    $code = strtoupper(bin2hex(random_bytes(6))); // 12 hex chars
+                } catch (\Exception $e) {
+                    $code = strtoupper(substr(md5(uniqid((string)$USER->id, true)), 0, 12));
+                }
+
+                $record = new stdClass();
+                $record->userid = $USER->id;
+                $record->customcertid = $cert->customcertid;
+                $record->code = $code;
+                $record->timecreated = time();
+
+                // Insert a new issue record (multiple issues allowed)
+                $DB->insert_record('customcert_issues', $record);
+            }
+        }
+    }
+
     // ==================================================
     // 🔥 COURSE COMPLETION EMAIL NOTIFICATION START
     // ==================================================

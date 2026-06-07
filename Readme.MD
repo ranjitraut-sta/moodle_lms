@@ -45,6 +45,7 @@ Debugging garne tarika
 die();
 
 <!-- Moodle ma h5p library download garne way  -->
+
 cd c:/xampp/htdocs/moodle
 c:\xampp\php\php.exe admin/cli/scheduled_task.php --execute="\core\task\h5p_get_content_types_task"
 
@@ -52,9 +53,7 @@ c:\xampp\php\php.exe admin/cli/scheduled_task.php --execute="\core\task\h5p_get_
 
 - - mod_customcert_moodle45_2024042217
 
-
-
-✅ Best Practice  User Table ma Field thapne
+✅ Best Practice User Table ma Field thapne
 
 Moodle le already solution deko xa:
 Site administration → Users → Accounts → User profile fields
@@ -66,43 +65,46 @@ Province
 District
 Municipality
 
-# province district and mun 
-* yasko lagi aafnai plugin banako  xu jasko name location xa 
+# province district and mun
+
+- yasko lagi aafnai plugin banako xu jasko name location xa
 
 <!-- database ma data pathauna  -->
+
 http://localhost/moodle/local/location/seed_provinces.php
 http://localhost/moodle/local/location/seed_districts.php
 http://localhost/moodle/local/location/seed_municipalities.php
 
-
 <!-- extension -->
-# Moodle pack 
 
-# new role banaune tarike 
---- user-permission-define roles -- 
+# Moodle pack
 
-# role banauda System context enable garepaxi matra user lai role assign garna milxa 
+# new role banaune tarike
 
+--- user-permission-define roles --
 
-https://learntiti.amdsoft.com.np/my/ yaha jada default ma 
-# comment 
+# role banauda System context enable garepaxi matra user lai role assign garna milxa
+
+https://learntiti.amdsoft.com.np/my/ yaha jada default ma
+
+# comment
+
 6630187
 
 pan number mandatory
 select
 citizenship district ma all district
 
+# aba fill in the blank ni tanne quiz ma
 
-# aba fill in the blank ni tanne quiz ma 
+# smtp setup garne tarika
 
-
-# smtp setup garne tarika 
 -- Site administration → Server → Email → Outgoing mail configuration
 
-# mark as complete button 
---  yadi completion ma student mark as a complete manually tick lagako xa vani 
+# mark as complete button
 
+-- yadi completion ma student mark as a complete manually tick lagako xa vani
 
-# user changer self password change 
+# user changer self password change
 
-# Happy Coding 
+# Happy Coding

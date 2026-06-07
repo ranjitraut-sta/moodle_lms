@@ -4,20 +4,28 @@ defined('MOODLE_INTERNAL') || die;
 $page = new admin_settingpage('theme_mytheme_menu', get_string('menusettings', 'theme_mytheme'));
 
 // Number of menu items
-$name        = 'theme_mytheme/menucount';
-$title       = 'Number of Menu Items';
-$description = 'How many menu items to show (max 10)';
-$setting     = new admin_setting_configselect($name, $title, $description, 5, [
-    1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5,
-    6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10,
-]);
-$page->add($setting);
-
-$menucount = get_config('theme_mytheme', 'menucount') ?: 5;
+$page->add(new admin_setting_configselect(
+    'theme_mytheme/menucount',
+    'Number of Menu Items',
+    'How many menu items to show (max 10)',
+    5,
+    [
+        1 => 1,
+        2 => 2,
+        3 => 3,
+        4 => 4,
+        5 => 5,
+        6 => 6,
+        7 => 7,
+        8 => 8,
+        9 => 9,
+        10 => 10
+    ]
+));
 
 for ($i = 1; $i <= 10; $i++) {
 
-    // Menu item heading
+    // Heading
     $page->add(new admin_setting_heading(
         "theme_mytheme/menuheading{$i}",
         "Menu Item {$i}",
@@ -25,27 +33,43 @@ for ($i = 1; $i <= 10; $i++) {
     ));
 
     // Label
-    $name        = "theme_mytheme/menulabel{$i}";
-    $title       = "Label";
-    $description = '';
-    $defaults    = ['Home', 'Courses', 'Categories', 'About', 'Contact', '', '', '', '', ''];
-    $setting     = new admin_setting_configtext($name, $title, $description, $defaults[$i - 1] ?? '');
-    $page->add($setting);
+    $page->add(new admin_setting_configtext(
+        "theme_mytheme/menulabel{$i}",
+        "Label",
+        '',
+        ''
+    ));
 
     // URL
-    $name        = "theme_mytheme/menuurl{$i}";
-    $title       = "URL";
-    $description = '';
-    $defaulturls = ['/', '/course/index.php', '/course/index.php', '/about', '/contact', '', '', '', '', ''];
-    $setting     = new admin_setting_configtext($name, $title, $description, $defaulturls[$i - 1] ?? '');
-    $page->add($setting);
+    $page->add(new admin_setting_configtext(
+        "theme_mytheme/menuurl{$i}",
+        "URL",
+        '',
+        ''
+    ));
 
     // Open in new tab
-    $name        = "theme_mytheme/menunewtab{$i}";
-    $title       = "Open in new tab";
-    $description = '';
-    $setting     = new admin_setting_configcheckbox($name, $title, $description, 0);
-    $page->add($setting);
+    $page->add(new admin_setting_configcheckbox(
+        "theme_mytheme/menunewtab{$i}",
+        "Open in new tab",
+        '',
+        0
+    ));
+
+    // =========================
+    // 📄 PDF UPLOAD (FIXED)
+    // =========================
+    $page->add(new admin_setting_configstoredfile(
+        "theme_mytheme/menupdf{$i}",
+        "Menu PDF File",
+        "Upload PDF file for Menu Item {$i}",
+        "menupdf{$i}",
+        0,
+        [
+            'maxfiles' => 1,
+            'accepted_types' => ['application/pdf']
+        ]
+    ));
 }
 
 $settings->add($page);

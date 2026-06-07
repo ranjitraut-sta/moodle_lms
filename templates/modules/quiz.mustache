@@ -169,7 +169,7 @@
 
         /* Question Cards */
         .amd-lms-quiz-question-card {
-            background-color: var(--amd-secondary-light);
+            background-color: #fff;
             border: 1px solid var(--amd-secondary-light);
             /* border-radius: 5px; */
             padding: 1.5rem 2rem;
@@ -595,11 +595,6 @@
             }
         }
 
-        .list-group {
-                height: 200px;
-    overflow: auto;
-        }
-
         /* Quiz Pagination Styles */
         .amd-quiz-question {
             display: none;
@@ -647,16 +642,15 @@
      data-attemptid="{{#inprogress}}{{attemptid}}{{/inprogress}}{{^inprogress}}0{{/inprogress}}">
 
     <!-- Main Questions Section -->
-    <main class="amd-lms-quiz-questions-section {{^inprogress}}d-none{{/inprogress}}">
+    <main class="amd-lms-quiz-questions-section">
 
    {{#hasattempts}}
     <div class="mb-3">
-        <div><strong>Your attempts:</strong></div>
+        <div><strong>Your last attempt:</strong></div>
         <div class="list-group">
             {{#attempts}}
             <div class="list-group-item">
                 <div><strong>Attempt {{attemptnumber}}</strong> — {{status}}</div>
-                <div>Started: {{started}}, Completed: {{completed}}, Duration: {{duration}}</div>
                 <div>Marks: {{marks}}/{{maxmarks}}, Grade: {{grade}}%</div>
             </div>
             {{/attempts}}
@@ -664,7 +658,15 @@
     </div>
     {{/hasattempts}}
 
+    {{^inprogress}}
+    <div class="mb-4">
+        <button class="amd-lms-quiz-submit-quiz-btn amd-quiz-start-btn quiz-restart-btn">
+            {{#hasattempts}}Restart Quiz{{/hasattempts}}{{^hasattempts}}Start Quiz{{/hasattempts}}
+        </button>
+    </div>
+    {{/inprogress}}
 
+    {{#inprogress}}
         {{#questions}}
         <div class="amd-lms-quiz-question-card amd-quiz-question" 
              id="question-{{slot}}"
@@ -726,35 +728,14 @@
         </div>
         {{/questions}}
         
-        {{#inprogress}}
         <div class="amd-quiz-nav-buttons">
             <button type="button" class="amd-quiz-nav-btn secondary-btn" id="amd-quiz-prev-btn" style="display: none;">&laquo; Previous</button>
             <button type="button" class="amd-quiz-nav-btn" id="amd-quiz-next-btn" style="margin-left: auto;">Next &raquo;</button>
             <button type="button" class="amd-quiz-nav-btn amd-quiz-submit-btn" id="amd-quiz-submit-btn-inline" style="display: none; background-color: #4d47c3; margin-left: auto;">Submit Quiz</button>
         </div>
-        {{/inprogress}}
+    {{/inprogress}}
 
     </main>
-
-    <!-- Sidebar Section -->
-    <div class="amd-lms-quiz-overlay"></div>
-    <aside class="amd-lms-quiz-sidebar" id="quiz-sidebar">
-        <div class="amd-lms-quiz-sidebar-content" style="position: sticky; top: 0px; z-index: 2; background-color: oklch(0.59187 0.0686231 294.427 / 0.3);">
-            
-            <!-- Action Buttons -->
-            <div class="mt-3">
-                {{^inprogress}}
-                <button class="amd-lms-quiz-submit-quiz-btn amd-quiz-start-btn">
-                    {{#hasresult}}Retake{{/hasresult}}{{^hasresult}}Start Quiz{{/hasresult}}
-                </button>
-                {{/inprogress}}
-
-                {{#inprogress}}
-                <button class="amd-lms-quiz-submit-quiz-btn amd-quiz-submit-btn">Submit</button>
-                {{/inprogress}}
-            </div>
-        </div>
-    </aside>
 
     <!-- Mobile Submit Button -->
     {{#inprogress}}

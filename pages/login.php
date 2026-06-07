@@ -54,6 +54,8 @@ if ($user) {
 
 } else {
     // लगइन फेल भयो भने
-    $loginurl = new moodle_url('/login/index.php', ['errorcode' => 3]);
+    $loginurl = new moodle_url('/login/index.php', ['errorcode' => 3
+        , 'username' => $username
+    ]);
     redirect($loginurl, "Invalid username or password.", 3);
 }

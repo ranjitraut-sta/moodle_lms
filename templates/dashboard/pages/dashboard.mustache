@@ -1,89 +1,136 @@
 <div class="row g-4 mt-4">
+
+    <!-- Courses Card -->
     <div class="col-12 col-sm-6 col-md-6 col-xl-4">
         <div class="amd-lms-user-dash-card amd-lms-user-dash-stat-card-courses">
             <div class="amd-lms-user-dash-card-body">
-                <p>Courses</p>
-                <h3>{{completed_courses_count}}/{{enrolled_courses_count}}</h3>
-                <p class="mb-0 mt-2">Completed</p>
-                <i class="fa fa-book amd-lms-user-dash-stat-icon" aria-hidden="true"></i>
+
+                <p class="text-muted mb-1">Course Progress</p>
+                <h3>{{completed_courses_count}} / {{enrolled_courses_count}}</h3>
+                <p class="mb-0 mt-2 text-muted">Completed Courses</p>
+
+                <i class="fa fa-book amd-lms-user-dash-stat-icon"></i>
             </div>
         </div>
     </div>
+ 
 
+    <!-- Last Login Card -->
     <div class="col-12 col-sm-6 col-md-6 col-xl-4">
-        <div class="amd-lms-user-dash-card amd-lms-user-dash-stat-card-leaderboard">
+        <div class="amd-lms-user-dash-card amd-lms-user-dash-stat-card-leaderboard" style="background-color: #e3e3e3e0;">
             <div class="amd-lms-user-dash-card-body">
-                <p>Pending Assignments</p>
-                <h3>{{pending_assignments}}</h3>
-                <p class="mb-0">To be submitted</p>
-                <i class="fa fa-tasks amd-lms-user-dash-stat-icon" aria-hidden="true"></i>
+
+                <p class="text-muted mb-1">Last Login</p>
+                <h3>{{last_login}}</h3>
+                <p class="mb-0 text-muted mt-1">Recent activity</p>
+
+                <i class="fa fa-clock-o amd-lms-user-dash-stat-icon"></i>
             </div>
         </div>
     </div>
 
+    <!-- Certificates Card -->
     <div class="col-12 col-sm-6 col-md-6 col-xl-4">
         <div class="amd-lms-user-dash-card amd-lms-user-dash-stat-card-attendance">
             <div class="amd-lms-user-dash-card-body">
-                <p>Total Certificates</p>
+
+                <p class="text-muted mb-1">Earned Certificates</p>
                 <h3>{{total_certificates}}</h3>
-                <p class="mb-0">Earned</p>
-                <i class="fa fa-certificate amd-lms-user-dash-stat-icon" aria-hidden="true"></i>
+                <p class="mb-0 text-muted">Successfully Completed</p>
+
+                <i class="fa fa-certificate amd-lms-user-dash-stat-icon"></i>
             </div>
         </div>
     </div>
+
 </div>
 
+<!-- Charts Section -->
 <div class="row mt-5">
+
+    <!-- Course Progress Chart -->
     <div class="col-md-6">
         <div class="card border-0 shadow-sm p-3">
-            <h6 class="fw-bold mb-3 small">Course Progress</h6>
-            <div style="height: 250px;"><canvas id="courseChart"></canvas></div>
+            <h6 class="fw-bold mb-3">Learning Progress <small class="text-muted">(Your course completion status)</small></h6>
+            <div style="height: 250px;">
+                <canvas id="courseChart"></canvas>
+            </div>
         </div>
     </div>
 
+    <!-- Activity Chart -->
     <div class="col-md-6">
         <div class="card border-0 shadow-sm p-3">
-            <h6 class="fw-bold mb-3 small">Weekly Activity</h6>
-            <div style="height: 250px;"><canvas id="activityChart"></canvas></div>
+            <h6 class="fw-bold mb-3">Weekly Learning Activity</h6>
+            <div style="height: 250px;">
+                <canvas id="activityChart"></canvas>
+            </div>
         </div>
     </div>
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-// Wait for DOM to load
-document.addEventListener('DOMContentLoaded', function() {
-    
-    // 1. Course Progress (Doughnut)
-    const courseCtx = document.getElementById('courseChart').getContext('2d');
-    new Chart(courseCtx, {
-        type: 'doughnut',
-        data: {
-            labels: [{{#course_progress.labels}}"{{.}}",{{/course_progress.labels}}],
-            datasets: [{
-                data: [{{#course_progress.data}}{{.}},{{/course_progress.data}}],
-                backgroundColor: ['#28a745', '#ffc107'],
-                borderWidth: 0
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { position: 'bottom' } }
+document.addEventListener('DOMContentLoaded', function () {
+
+    // =====================
+    // Course Progress Chart
+    // =====================
+const courseCtx = document.getElementById('courseChart').getContext('2d');
+
+new Chart(courseCtx, {
+    type: 'doughnut',
+    data: {
+        labels: [
+            {{#course_progress.labels}}
+                "{{.}} Course"
+                {{^last}},{{/last}}
+            {{/course_progress.labels}}
+        ],
+        datasets: [{
+            data: [
+                {{#course_progress.data}}
+                    {{.}}
+                    {{^last}},{{/last}}
+                {{/course_progress.data}}
+            ],
+            backgroundColor: ['#28a745', '#ffc107'],
+            borderWidth: 0
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'bottom'
+            }
         }
-    });
+    }
+});
 
-
-    // 3. Activity (Line)
+    // =====================
+    // Activity Chart
+    // =====================
     const activityCtx = document.getElementById('activityChart').getContext('2d');
+
     new Chart(activityCtx, {
         type: 'line',
         data: {
-            labels: [{{#activity.labels}}"{{.}}",{{/activity.labels}}],
+            labels: [
+                {{#activity.labels}}
+                    "{{.}}",
+                {{/activity.labels}}
+            ],
             datasets: [{
-                label: 'Activity',
-                data: [{{#activity.data}}{{.}},{{/activity.data}}],
+                label: 'Daily Activity',
+                data: [
+                    {{#activity.data}}
+                        {{.}},
+                    {{/activity.data}}
+                ],
                 borderColor: '#6f42c1',
                 backgroundColor: 'rgba(111, 66, 193, 0.1)',
                 fill: true,
@@ -93,8 +140,18 @@ document.addEventListener('DOMContentLoaded', function() {
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            plugins: { legend: { display: false } }
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
         }
     });
+
 });
 </script>

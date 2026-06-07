@@ -26,8 +26,14 @@
                     <a href="{{url}}" class="lesson {{#active}}active{{/active}} {{#locked}}amd-lesson-locked{{/locked}}" tabindex="0" title="{{name}}">
                         <span class="number"><i class="bi bi-{{icon}}"></i></span>
                         <span class="text-label">{{name}}</span>
-                        {{#completed}}
-                        <i class="fa fa-check amd-course-sidebar-icon" aria-hidden="true"></i>
+                    {{#completed}}
+                        <i class="fa fa-check amd-course-sidebar-icon"
+                        aria-hidden="true"
+                        style="color: #4d47c3;"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        title="_complete">
+                        </i>
                         {{/completed}}
                         {{^completed}}
                         {{#locked}}

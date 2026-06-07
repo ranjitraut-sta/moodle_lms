@@ -391,20 +391,28 @@ function theme_mytheme_get_general_context(): array
     }
 
     // Custom menu from theme menu settings
+
     $custommenu = [];
     $menucount = (int) (get_config('theme_mytheme', 'menucount') ?: 5);
     for ($i = 1; $i <= $menucount; $i++) {
         $label = get_config('theme_mytheme', "menulabel{$i}");
         $url = get_config('theme_mytheme', "menuurl{$i}");
         $newtab = get_config('theme_mytheme', "menunewtab{$i}");
+        $pdfurl = theme_mytheme_get_file_url("menupdf{$i}", 0);
         if (empty($label))
             continue;
         $custommenu[] = [
             'label' => $label,
-            'url' => $url ?: '#',
+            'url' => $pdfurl ?: ($url ?: '#'),
             'newtab' => !empty($newtab),
+            'fileurl' => $fileurl ?? null,
         ];
     }
+
+    // echo '<pre>';
+    // print_r($custommenu);
+    // echo '</pre>';
+    // exit;
 
     return [
         'logo' => theme_mytheme_get_file_url('logo'),

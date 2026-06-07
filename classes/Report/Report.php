@@ -37,8 +37,17 @@ class Report
         if ($has_filter) {
             $reports = $this->getDetailedReport($selected_course, $selected_status);
         }
+        $has_results = !empty($reports);
+        $show_dashboard = $has_filter; // only show dashboard when filter applied
 
         $stats = $this->calculateSummaryStats($reports);
+
+        $status_options = [
+            (object) ['value' => 'all', 'label' => 'All Status', 'selected' => $selected_status === 'all'],
+            (object) ['value' => 'completed', 'label' => 'Completed Only', 'selected' => $selected_status === 'completed'],
+            (object) ['value' => 'running', 'label' => 'In Progress Only', 'selected' => $selected_status === 'running'],
+            (object) ['value' => 'dropout', 'label' => 'Dropped Out Only', 'selected' => $selected_status === 'dropout'],
+        ];
 
         return [
             'course_options' => $course_options,
@@ -50,6 +59,9 @@ class Report
             'user_fullname' => fullname($this->user),
             'user_firstname' => $this->user->firstname,
             'user_profile_pix' => $this->get_user_picture(),
+            'status_options' => $status_options,
+            'show_dashboard' => $has_filter,
+            'has_results' => $has_results,
         ];
     }
 
@@ -65,6 +77,7 @@ class Report
         $completed = 0;
         $running = 0;
         $dropout = 0; // 🔥 Drop out काउन्टर थपियो
+        $dropout_rate = 0;
 
         foreach ($reports as $r) {
             if ($r['status'] === 'Completed') {
@@ -76,11 +89,16 @@ class Report
             }
         }
 
+        if (($total) > 0) {
+            $dropout_rate = round(($dropout / $total) * 100, 2);
+        }
+
         return [
             'total' => $total,
             'completed' => $completed,
             'running' => $running,
             'dropout' => $dropout,
+            'dropout_rate' => $dropout_rate,
             'chart' => [
                 // 🔥 चार्टमा 'Drop Out' पनि थपियो
                 'labels' => ['Completed', 'In Progress', 'Drop Out'],

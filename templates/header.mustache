@@ -69,7 +69,17 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{config.wwwroot}}/theme/mytheme/pages/courselist.php">My Courses</a>
                     </li>
-                </ul>
+
+                        {{#setting.custommenu}}
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                href="{{{url}}}"
+                                {{#newtab}}target="_blank"{{/newtab}}>
+                                    {{label}}
+                                </a>
+                            </li>
+                        {{/setting.custommenu}}
+                    </ul>
 
                 <div class="d-lg-none mt-3 border-top pt-3">
                     {{#setting.isloggedin}}

@@ -38,6 +38,7 @@ class Dashboard
             'user_fullname' => fullname($this->user),
             'user_firstname' => $this->user->firstname,
             'user_profile_pix' => $this->getUserPicture(),
+            'active_users_today' => $this->getTodayActiveUsersCount(),
         ];
     }
 
@@ -60,7 +61,7 @@ class Dashboard
     {
         global $DB;
 
-        return (int)$DB->count_records_sql("
+        return (int) $DB->count_records_sql("
             SELECT COUNT(1)
             FROM {course}
             WHERE id != 1 AND visible = 1
@@ -74,7 +75,7 @@ class Dashboard
     {
         global $DB;
 
-        return (int)$DB->count_records_sql("
+        return (int) $DB->count_records_sql("
             SELECT COUNT(1)
             FROM {user}
             WHERE deleted = 0 AND suspended = 0
@@ -88,7 +89,7 @@ class Dashboard
     {
         global $DB;
 
-        return (int)$DB->count_records('user_enrolments');
+        return (int) $DB->count_records('user_enrolments');
     }
 
     /**
@@ -166,7 +167,7 @@ class Dashboard
 
         foreach ($records as $r) {
             $labels[] = $r->day;
-            $data[] = (int)$r->total;
+            $data[] = (int) $r->total;
         }
 
         return [
@@ -188,7 +189,7 @@ class Dashboard
             return 0;
         }
 
-        $completed = (int)$DB->count_records_sql("
+        $completed = (int) $DB->count_records_sql("
             SELECT COUNT(1)
             FROM {course_completions}
             WHERE timecompleted > 0
@@ -211,12 +212,27 @@ class Dashboard
 
         foreach ($courses as $c) {
             $labels[] = $c->fullname;
-            $data[] = (int)$c->enrollments;
+            $data[] = (int) $c->enrollments;
         }
 
         return [
             'labels' => $labels,
             'data' => $data
         ];
+    }
+
+    protected function getTodayActiveUsersCount(): int
+    {
+        global $DB;
+
+        $start = strtotime('today midnight');
+        $end = time();
+
+        return (int) $DB->count_records_sql("
+        SELECT COUNT(DISTINCT userid)
+        FROM {logstore_standard_log}
+        WHERE action = 'loggedin'
+        AND timecreated BETWEEN ? AND ?
+    ", [$start, $end]);
     }
 }

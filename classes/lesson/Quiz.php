@@ -186,19 +186,23 @@ class Quiz implements LessonModuleInterface
     private function get_all_attempts_history(): array
     {
         global $DB;
-        $all = $DB->get_records('quiz_attempts', ['quiz' => $this->quiz->id, 'userid' => $this->userid], 'attempt DESC');
+        $last = $DB->get_record_sql(
+            'SELECT * FROM {quiz_attempts} WHERE quiz = ? AND userid = ? AND state = ? ORDER BY attempt DESC LIMIT 1',
+            [$this->quiz->id, $this->userid, 'finished']
+        );
 
         $history = [];
         $highest = 0.0;
-        foreach ($all as $a) {
-            $grade = (float) $a->sumgrades;
-            $highest = max($highest, $grade);
+        if ($last) {
+            $grade = (float) $last->sumgrades;
+            $highest = $grade;
             $history[] = [
-                'attemptnumber' => $a->attempt,
-                'status' => ucfirst($a->state),
+                'attemptnumber' => $last->attempt,
+                'status' => ucfirst($last->state),
                 'marks' => number_format($grade, 2),
+                'maxmarks' => number_format((float) $this->quiz->sumgrades, 2),
                 'grade' => ($this->quiz->sumgrades > 0) ? number_format(($grade / $this->quiz->sumgrades) * 100, 2) : 0,
-                'reviewurl' => (new \moodle_url('/mod/quiz/review.php', ['attempt' => $a->id]))->out(false),
+                'reviewurl' => (new \moodle_url('/mod/quiz/review.php', ['attempt' => $last->id]))->out(false),
             ];
         }
         return ['history' => $history, 'highest' => $highest];
