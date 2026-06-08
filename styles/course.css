@@ -2107,3 +2107,10 @@ a {
 }
 
 /*  */
+
+.amd-course-lessons-list.collapsed {
+  display: none !important;
+}
+.amd-course-lessons-list.expanded {
+  display: block !important;
+}

@@ -36,3 +36,11 @@ CREATE TABLE mdl_course_attempts (
 - smtp user name :test@amdsoft.com.np
 - ani pass :Test@99999#
 
+
+# Random Question Bata Kun Bata Kati Wata Aaune vanne kura
+- category choose garisakepaxi pencil jasto bata kati wata dekhaune vanera tyaa setup garna milxa 
+
+
+# Moodle ma module lai grouping garne concept
+
+

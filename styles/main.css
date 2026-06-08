@@ -4075,5 +4075,10 @@ a {
 }
 
 
+/*  Menu Ko Nav Ko CSS bata border hatako */
+.nav-link:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
 
 

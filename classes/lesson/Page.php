@@ -41,7 +41,11 @@ class Page implements LessonModuleInterface
             $content = format_text(
                 $content,
                 $page->contentformat,
-                ['context' => $context]
+                [
+                    'context' => $context,
+                    'noclean' => true,  // Yesle HTML content clean huna bata rokxa, inline styles ra custom tags safe rakhxa
+                    'trusted' => true   // Yesle content trusted ho vanera treat garna pathaucha
+                ]
             );
 
             // Convert PDF links into iframe viewers

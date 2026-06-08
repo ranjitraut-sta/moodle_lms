@@ -57,7 +57,7 @@ class Quiz implements LessonModuleInterface
     }
 
     /**
-     * प्रश्नहरू र तिनका विकल्पहरू तयार पार्ने
+     * प्रश्नहरू र तिनका विकल्पहरू तयार पार्ने (Random Question र s6 Error फिक्स)
      */
     private function get_quiz_questions(): array
     {
@@ -72,37 +72,109 @@ class Quiz implements LessonModuleInterface
         $structure = structure::create_for_quiz($quizobj);
         $quizdata = [];
 
-        foreach ($structure->get_slots() as $slot) {
-            if (empty($slot->questionid))
-                continue;
+        // युजरको इन-प्रोग्रेस वा हालै सकिएको एटेम्प्ट हेर्ने
+        $attempt = $DB->get_record('quiz_attempts', [
+            'quiz' => $this->quiz->id,
+            'userid' => $USER->id,
+            'state' => 'inprogress'
+        ], '*', IGNORE_MULTIPLE);
 
-            $q = $DB->get_record('question', ['id' => $slot->questionid], '*', MUST_EXIST);
-            $item = [
-                'id' => $q->id,
-                'slotid' => $slot->id,
-                'slot' => $slot->slot,
-                'type' => $q->qtype,
-                'mark' => (float) $slot->maxmark,
-            ];
-
-            // प्रकार अनुसार डेटा थप्ने
-            if (in_array($q->qtype, ['multichoice', 'truefalse'])) {
-                $item = array_merge($item, $this->get_choice_data($q));
-            } elseif ($q->qtype === 'ddwtos') {
-                $item = array_merge($item, $this->get_ddwtos_data($q));
-            } else {
-                $item['text'] = format_text($q->questiontext, FORMAT_HTML);
-            }
-
-            $quizdata[] = $item;
+        if (!$attempt) {
+            $attempt = $DB->get_record_sql(
+                'SELECT * FROM {quiz_attempts} WHERE quiz = ? AND userid = ? AND state = ? ORDER BY attempt DESC LIMIT 1',
+                [$this->quiz->id, $USER->id, 'finished']
+            );
         }
+
+        // स्थिति १: यदि युजरको एटेम्प्ट (Attempt) छ भने र्‍यान्डम प्रश्नहरू स्वतः वास्तविक प्रश्नमा परिणत हुन्छन्
+        if ($attempt) {
+            $attemptobj = \mod_quiz\quiz_attempt::create($attempt->id);
+            $slots = $attemptobj->get_slots();
+
+            foreach ($slots as $slotno) {
+                $clean_slotno = (int) ltrim((string) $slotno, 's');
+
+                try {
+                    $qa = $attemptobj->get_question_attempt($clean_slotno);
+                    $q = $qa->get_question(false);
+                } catch (\Exception $e) {
+                    continue;
+                }
+
+                $qtype = is_object($q->qtype) ? $q->qtype->name() : (string) $q->qtype;
+
+                $maxmark = 1.0;
+                if (method_exists($attemptobj->get_quiz(), 'get_slot_max_mark')) {
+                    $maxmark = (float) $attemptobj->get_quiz()->get_slot_max_mark($clean_slotno);
+                } else {
+                    $slot_obj = $structure->get_slot_by_number($clean_slotno);
+                    if ($slot_obj) {
+                        $maxmark = (float) $slot_obj->maxmark;
+                    }
+                }
+
+                $item = [
+                    'id' => (int) $q->id,
+                    'slotid' => $clean_slotno,
+                    'slot' => $clean_slotno,
+                    'type' => $qtype,
+                    'mark' => $maxmark,
+                ];
+
+                if (in_array($qtype, ['multichoice', 'truefalse'])) {
+                    $item = array_merge($item, $this->get_choice_data($q, $qtype));
+                } elseif ($qtype === 'ddwtos') {
+                    $item = array_merge($item, $this->get_ddwtos_data($q));
+                } else {
+                    $item['text'] = format_text($q->questiontext, FORMAT_HTML);
+                }
+
+                $quizdata[] = $item;
+            }
+        } else {
+            // स्थिति २: एटेम्प्ट नभएको बेला पुरानै स्ट्याटिक लोजिक चल्ने
+            foreach ($structure->get_slots() as $slot) {
+
+                // फिक्स: यदि questionid खाली छ वा अंक होइन (जस्तै 's6') भने यसलाई सुरक्षित रूपमा स्किप गर्ने
+                if (empty($slot->questionid) || !is_numeric($slot->questionid)) {
+                    continue;
+                }
+
+                try {
+                    $q = $DB->get_record('question', ['id' => $slot->questionid], '*', MUST_EXIST);
+                } catch (\Exception $e) {
+                    continue; // यदि कुनै कारणले डेटाबेसमा भेटिएन भने क्र्यास हुन नदिने
+                }
+
+                $qtype = is_object($q->qtype) ? $q->qtype->name() : (string) $q->qtype;
+
+                $item = [
+                    'id' => (int) $q->id,
+                    'slotid' => $slot->id,
+                    'slot' => $slot->slot,
+                    'type' => $qtype,
+                    'mark' => (float) $slot->maxmark,
+                ];
+
+                if (in_array($qtype, ['multichoice', 'truefalse'])) {
+                    $item = array_merge($item, $this->get_choice_data($q, $qtype));
+                } elseif ($qtype === 'ddwtos') {
+                    $item = array_merge($item, $this->get_ddwtos_data($q));
+                } else {
+                    $item['text'] = format_text($q->questiontext, FORMAT_HTML);
+                }
+
+                $quizdata[] = $item;
+            }
+        }
+
         return $quizdata;
     }
 
     /**
      * MCQ र True/False को लागि विकल्पहरू
      */
-    private function get_choice_data($q): array
+    private function get_choice_data($q, $qtype = null): array
     {
         global $DB;
         $answers = [];
@@ -115,8 +187,12 @@ class Quiz implements LessonModuleInterface
             ];
         }
 
+        if ($qtype === null) {
+            $qtype = is_object($q->qtype) ? $q->qtype->name() : (string) $q->qtype;
+        }
+
         $mcqsingle = true;
-        if ($q->qtype === 'multichoice') {
+        if ($qtype === 'multichoice') {
             $table = $DB->get_manager()->table_exists('question_multichoice') ? 'question_multichoice' : 'qtype_multichoice_options';
             $field = ($table === 'question_multichoice') ? 'question' : 'questionid';
             $mcq = $DB->get_record($table, [$field => $q->id], 'single', IGNORE_MISSING);
@@ -125,18 +201,15 @@ class Quiz implements LessonModuleInterface
 
         return [
             'text' => format_text($q->questiontext, FORMAT_HTML),
-            'ismcq' => $q->qtype === 'multichoice',
+            'ismcq' => $qtype === 'multichoice',
             'ismcqsingle' => $mcqsingle,
-            'istruefalse' => $q->qtype === 'truefalse',
+            'istruefalse' => $qtype === 'truefalse',
             'answers' => $answers
         ];
     }
 
     /**
      * Drag & Drop into Text को डेटा
-     */
-/**
-     * Drag & Drop into Text data collection
      */
     private function get_ddwtos_data($q): array
     {
@@ -145,9 +218,8 @@ class Quiz implements LessonModuleInterface
         $items = [];
         $text = $q->questiontext;
 
-        // Fetch choices sorted strictly by ID order to match step initialization sequence
         $answers = $DB->get_records('question_answers', ['question' => $q->id], 'id ASC');
-        
+
         $no = 1;
         foreach ($answers as $ans) {
             $draggroup = 1;
@@ -158,13 +230,12 @@ class Quiz implements LessonModuleInterface
                 }
             }
             $options[] = [
-                'no' => $no++, // This maps cleanly to the index matching _choiceorder items
+                'no' => $no++,
                 'groupno' => $draggroup,
                 'text' => strip_tags($ans->answer),
             ];
         }
 
-        // Process placeholders mapping layout slots
         preg_match_all('/\[\[(\d+)\]\]/', $text, $matches, PREG_SET_ORDER);
         foreach ($matches as $match) {
             $blankNo = $match[1];
@@ -178,7 +249,6 @@ class Quiz implements LessonModuleInterface
             'ddwtosoptions' => $options
         ];
     }
-
 
     /**
      * एटेम्प्ट हिस्ट्री र सबैभन्दा उच्च अंक निकाल्ने
@@ -226,14 +296,14 @@ class Quiz implements LessonModuleInterface
 
         $sumgrades = round((float) $finished->sumgrades, 2);
         $maxgrade = round((float) $this->quiz->sumgrades, 2);
-        
+
         $grade_item = \grade_item::fetch([
             'itemtype' => 'mod',
             'itemmodule' => 'quiz',
             'iteminstance' => $this->quiz->id
         ]);
         $gradepass = $grade_item ? (float) $grade_item->gradepass : 0;
-        
+
         $passed = $gradepass > 0 && $sumgrades >= $gradepass;
 
         return [

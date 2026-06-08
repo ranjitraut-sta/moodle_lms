@@ -22,9 +22,10 @@ function theme_mytheme_get_last_accessed_lesson($courseid, $userid): ?int
     return $result ? $result->id : null;
 }
 
-function theme_mytheme_check_module_completed($cm, $userid, $course) {
+function theme_mytheme_check_module_completed($cm, $userid, $course)
+{
     global $CFG, $DB;
-    
+
     // Strict Quiz Pass Check (Forces lock even if completion tracking is disabled in settings)
     if ($cm->modname === 'quiz') {
         require_once($CFG->libdir . '/gradelib.php');
@@ -33,15 +34,15 @@ function theme_mytheme_check_module_completed($cm, $userid, $course) {
             'itemmodule' => 'quiz',
             'iteminstance' => $cm->instance
         ]);
-        
-        $gradepass = $grade_item ? (float)$grade_item->gradepass : 0;
+
+        $gradepass = $grade_item ? (float) $grade_item->gradepass : 0;
         if ($gradepass > 0) {
             $grade_grade = \grade_grade::fetch([
                 'itemid' => $grade_item->id,
                 'userid' => $userid
             ]);
-            $bestgrade = $grade_grade ? (float)$grade_grade->finalgrade : null;
-            
+            $bestgrade = $grade_grade ? (float) $grade_grade->finalgrade : null;
+
             return ($bestgrade !== null && $bestgrade >= $gradepass);
         }
     }
@@ -49,12 +50,12 @@ function theme_mytheme_check_module_completed($cm, $userid, $course) {
     if ($cm->completion == COMPLETION_TRACKING_NONE) {
         return true;
     }
-    
+
     $completion = new completion_info($course);
     $cdata = $completion->get_data($cm, false, $userid);
-    
+
     $iscomplete = in_array($cdata->completionstate, [COMPLETION_COMPLETE, COMPLETION_COMPLETE_PASS]);
-    
+
     return $iscomplete;
 }
 
@@ -196,10 +197,11 @@ function theme_mytheme_get_lesson_context($cmid): array
     $iconmap = [
         'page' => 'file-earmark-text',
         'resource' => 'file-earmark-pdf',
-        'url' => 'link-45deg',
+        'url' => 'bi bi-youtube',
         'quiz' => 'question-circle',
         'forum' => 'chat-dots',
-        'book' => 'book'
+        'book' => 'book',
+        'scorm' => 'box-seam',
     ];
 
     $allmodules = [];

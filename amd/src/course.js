@@ -1,219 +1,223 @@
 (() => {
-  // Existing sidebar toggle logic
-  const amdcoursesidebar = document.getElementById("amdcoursesidebar");
-  const toggleBtn = document.getElementById("amdcoursesidebarToggle");
-  const amdcoursesidebarOpenBtn = document.getElementById("amdcoursesidebarOpenBtn");
+  document.addEventListener('DOMContentLoaded', () => {
+    
+    // ==========================================
+    // 1. SIDEBAR TOGGLE LOGIC (Open / Close)
+    // ==========================================
+    const sidebar = document.getElementById("amdcoursesidebar");
+    const toggleBtn = document.getElementById("amdcoursesidebarToggle");
+    const openBtn = document.getElementById("amdcoursesidebarOpenBtn");
 
-  const updateamdcoursesidebarButtons = () => {
-    if (!amdcoursesidebar || !amdcoursesidebarOpenBtn) return;
-    const isCollapsed = amdcoursesidebar.classList.contains("collapsed");
-    amdcoursesidebarOpenBtn.style.display = isCollapsed ? "flex" : "none";
-  };
-  updateamdcoursesidebarButtons();
+    const updateSidebarButtons = () => {
+      if (!sidebar || !openBtn) return;
+      const isCollapsed = sidebar.classList.contains("collapsed");
+      openBtn.style.display = isCollapsed ? "flex" : "none";
+    };
 
-  if (toggleBtn) {
-    toggleBtn.addEventListener("click", () => {
-      if (!amdcoursesidebar) return;
-      amdcoursesidebar.classList.toggle("collapsed");
-      const isCollapsed = amdcoursesidebar.classList.contains("collapsed");
-      toggleBtn.setAttribute("aria-expanded", !isCollapsed);
+    updateSidebarButtons();
 
-      const icon = toggleBtn.querySelector("i");
-      if (icon)
-        icon.className = isCollapsed
-          ? "ri-arrow-right-s-line"
-          : "ri-arrow-left-s-line";
+    if (toggleBtn) {
+      toggleBtn.addEventListener("click", () => {
+        if (!sidebar) return;
+        sidebar.classList.toggle("collapsed");
+        const isCollapsed = sidebar.classList.contains("collapsed");
+        
+        toggleBtn.setAttribute("aria-expanded", !isCollapsed);
+        toggleBtn.setAttribute("aria-label", isCollapsed ? "Expand sidebar" : "Collapse sidebar");
+        
+        const icon = toggleBtn.querySelector("i");
+        if (icon) {
+          icon.className = isCollapsed ? "ri-arrow-right-s-line" : "ri-arrow-left-s-line";
+        }
+        updateSidebarButtons();
+      });
+    }
 
-      toggleBtn.setAttribute(
-        "aria-label",
-        isCollapsed ? "Expand amdcoursesidebar" : "Collapse amdcoursesidebar",
-      );
-      updateamdcoursesidebarButtons();
+    if (openBtn) {
+      openBtn.addEventListener("click", () => {
+        if (!sidebar) return;
+        sidebar.classList.remove("collapsed");
+        openBtn.classList.remove("show");
+        
+        if (toggleBtn) {
+          toggleBtn.setAttribute("aria-expanded", "true");
+          toggleBtn.setAttribute("aria-label", "Collapse sidebar");
+          const icon = toggleBtn.querySelector("i");
+          if (icon) icon.className = "ri-arrow-left-s-line";
+        }
+        updateSidebarButtons();
+      });
+    }
+
+    // ==========================================
+    // 2. CHAPTER/SECTION TOGGLE (Accordion Logic)
+    // ==========================================
+    const chapterHeaders = document.querySelectorAll('.amd-course-chapter-header');
+
+    chapterHeaders.forEach(header => {
+      header.addEventListener('click', function() {
+        const lessonsList = this.nextElementSibling; // .amd-course-lessons-list
+        if (!lessonsList) return;
+
+        // क्लिक गर्दा अरु सबै खुला सेक्सनहरू बन्द गर्ने (Accordion Effect)
+        document.querySelectorAll('.amd-course-lessons-list').forEach(list => {
+          if (list !== lessonsList) {
+            list.classList.remove('expanded');
+            if (list.previousElementSibling) {
+              list.previousElementSibling.classList.remove('expanded');
+              list.previousElementSibling.setAttribute('aria-expanded', 'false');
+            }
+          }
+        });
+
+        // हालको सेक्सन टोगल गर्ने
+        const isExpanded = lessonsList.classList.toggle('expanded');
+        this.classList.toggle('expanded');
+        this.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+      });
     });
-  }
 
-  if (amdcoursesidebarOpenBtn) {
-    amdcoursesidebarOpenBtn.addEventListener("click", () => {
-      if (!amdcoursesidebar || !toggleBtn) return;
-      amdcoursesidebar.classList.remove("collapsed");
-      toggleBtn.setAttribute("aria-expanded", true);
+    // ==========================================
+    // 3. ACTIVE ELEMENT FOCUS, AUTO-OPEN & SCROLL LOGIC (सच्चाइएको भाग)
+    // ==========================================
+    const sidebarInner = document.querySelector(".amdcoursesidebar-inner");
+    const activeLesson = document.querySelector(".lesson.active");
 
-      const icon = toggleBtn.querySelector("i");
-      if (icon) icon.className = "ri-arrow-left-s-line";
-
-      toggleBtn.setAttribute("aria-label", "Collapse amdcoursesidebar");
-      updateamdcoursesidebarButtons();
-    });
-  }
-
-  // Accordion open/close for amd-course-chapters
-  document.querySelectorAll(".amd-course-chapter-header").forEach((header) => {
-    header.addEventListener("click", () => {
-      const isExpanded = header.classList.contains("expanded");
-      const listId = header.getAttribute("aria-controls");
-      const list = listId ? document.getElementById(listId) : null;
-
-      if (isExpanded) {
-        header.classList.remove("expanded");
-        header.classList.add("collapsed");
-        if (list) list.classList.remove("expanded");
-        header.setAttribute("aria-expanded", "false");
-
-        const icon = header.querySelector("i");
-        if (icon) icon.className = "ri-arrow-right-s-line";
-      } else {
-        header.classList.remove("collapsed");
-        header.classList.add("expanded");
-        if (list) list.classList.add("expanded");
-        header.setAttribute("aria-expanded", "true");
-
-        const icon = header.querySelector("i");
-        if (icon) icon.className = "ri-arrow-down-s-line";
+    // पहिले सबै च्याप्टर बन्द गर्ने (डिफल्टमा CSS बाट खुला छ भने पनि बन्द होस्)
+    document.querySelectorAll('.amd-course-lessons-list').forEach(list => {
+      list.classList.remove('expanded');
+      if (list.previousElementSibling) {
+        list.previousElementSibling.classList.remove('expanded');
+        list.previousElementSibling.setAttribute('aria-expanded', 'false');
       }
     });
-  });
 
-  // --- NAYA UMEDWAR: Active element focus ra scroll logic ---
-  // DOM element fully load huna sath run garne
-window.addEventListener("DOMContentLoaded", () => {
+    if (sidebarInner && activeLesson) {
+      const chapter = activeLesson.closest(".amd-course-chapter");
+      const header = chapter?.querySelector(".amd-course-chapter-header");
+      const lessonsList = header?.nextElementSibling; // .amd-course-lessons-list
 
-  // Main scrollable sidebar
-  const sidebar = document.querySelector(".amdcoursesidebar-inner");
+      // एक्टिभ लेसन भएको च्याप्टरलाई मात्र अटोमेटिक खोल्ने
+      if (header && lessonsList) {
+        header.classList.add('expanded');
+        header.setAttribute('aria-expanded', 'true');
+        lessonsList.classList.add('expanded');
+      }
 
-  // Current active lesson
-  const activeLesson = document.querySelector(".lesson.active");
+      // एक्टिभ च्याप्टरको हेडरमा स्क्रोल गर्ने
+      if (header) {
+        const sidebarTop = sidebarInner.getBoundingClientRect().top;
+        const headerTop = header.getBoundingClientRect().top;
 
-  if (!sidebar || !activeLesson) return;
+        sidebarInner.scrollTo({
+          top: sidebarInner.scrollTop + (headerTop - sidebarTop) - 20,
+          behavior: "smooth",
+        });
+      }
 
-  // Parent chapter
-  const chapter = activeLesson.closest(".amd-course-chapter");
+      // एक्टिभ लेसनलाई सेन्टरमा स्क्रोल गर्ने
+      setTimeout(() => {
+        activeLesson.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+          inline: "nearest",
+        });
+      }, 300);
+    }
 
-  // Chapter header
-  const header = chapter?.querySelector(".amd-course-chapter-header");
-
-  // Focus header first
-  if (header) {
-    //header.focus();
-
-    // Scroll sidebar so clicked/open chapter stays visible
-    const sidebarTop = sidebar.getBoundingClientRect().top;
-    const headerTop = header.getBoundingClientRect().top;
-
-    sidebar.scrollTo({
-      top:
-        sidebar.scrollTop +
-        (headerTop - sidebarTop) -
-        20,
-      behavior: "smooth"
-    });
-  }
-
-  // Then bring active lesson nicely into center view
-  setTimeout(() => {
-   // activeLesson.focus();
-
-    activeLesson.scrollIntoView({
-      behavior: "smooth",
-      block: "center",
-      inline: "nearest"
-    });
-
-  }, 300);
-
-});
-
-
-
-    // Next, Previous, and Review buttons alerts
+    // ==========================================
+    // 4. NAVIGATION BUTTONS (Next, Prev, Review)
+    // ==========================================
     const nextBtn = document.getElementById("nextLessonBtn");
-    if (nextBtn) nextBtn.addEventListener("click", () => alert("Next lesson clicked (static demo)"));
+    if (nextBtn) {
+      nextBtn.addEventListener("click", () => alert("Next lesson clicked (static demo)"));
+    }
 
     const prevBtn = document.getElementById("prevLessonBtn");
-    if (prevBtn) prevBtn.addEventListener("click", () => alert("Previous lesson clicked (static demo)"));
+    if (prevBtn) {
+      prevBtn.addEventListener("click", () => alert("Previous lesson clicked (static demo)"));
+    }
 
-    // Review modal logic
     const reviewBtn = document.getElementById("reviewBtn");
-    const reviewModalElement = document.getElementById('reviewModal');
+    const reviewModalElement = document.getElementById("reviewModal");
     let reviewModal;
+    
     if (reviewBtn && reviewModalElement && window.bootstrap) {
-        reviewModal = new bootstrap.Modal(reviewModalElement);
-        reviewBtn.addEventListener("click", () => reviewModal.show());
+      reviewModal = new bootstrap.Modal(reviewModalElement);
+      reviewBtn.addEventListener("click", () => reviewModal.show());
     }
 
     const reviewForm = document.getElementById("reviewForm");
     if (reviewForm && reviewModal) {
-        reviewForm.addEventListener("submit", e => {
-            e.preventDefault();
-            alert("Thank you for your review!");
-            reviewModal.hide();
-            e.target.reset();
-        });
+      reviewForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        alert("Thank you for your review!");
+        reviewModal.hide();
+        e.target.reset();
+      });
     }
 
-    // ===== NEW: Right Canvas Toggle Logic =====
+    // ==========================================
+    // 5. RIGHT CANVAS TOGGLE LOGIC
+    // ==========================================
     const rightCanvas = document.getElementById("rightCanvas");
     const fabToggleBtn = document.getElementById("fabToggleBtn");
     const closeCanvasBtn = document.getElementById("closeCanvasBtn");
 
     if (fabToggleBtn && rightCanvas) {
-        fabToggleBtn.addEventListener("click", () => {
-            rightCanvas.classList.add("show");
-            rightCanvas.setAttribute("aria-hidden", "false");
-            fabToggleBtn.setAttribute("aria-expanded", "true");
-        });
+      fabToggleBtn.addEventListener("click", () => {
+        rightCanvas.classList.add("show");
+        rightCanvas.setAttribute("aria-hidden", "false");
+        fabToggleBtn.setAttribute("aria-expanded", "true");
+      });
     }
 
-    if (closeCanvasBtn && rightCanvas && fabToggleBtn) {
-        closeCanvasBtn.addEventListener("click", () => {
-            rightCanvas.classList.remove("show");
-            rightCanvas.setAttribute("aria-hidden", "true");
-            fabToggleBtn.setAttribute("aria-expanded", "false");
-        });
+    const closeRightCanvas = () => {
+      if (!rightCanvas) return;
+      rightCanvas.classList.remove("show");
+      rightCanvas.setAttribute("aria-hidden", "true");
+      if (fabToggleBtn) fabToggleBtn.setAttribute("aria-expanded", "false");
+    };
+
+    if (closeCanvasBtn) {
+      closeCanvasBtn.addEventListener("click", closeRightCanvas);
     }
 
-    // Optional: Close right canvas on Escape key press
     document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape" && rightCanvas.classList.contains("show")) {
-            rightCanvas.classList.remove("show");
-            rightCanvas.setAttribute("aria-hidden", "true");
-            fabToggleBtn.setAttribute("aria-expanded", "false");
-        }
+      if (e.key === "Escape" && rightCanvas && rightCanvas.classList.contains("show")) {
+        closeRightCanvas();
+      }
     });
-})();
 
+    // ==========================================
+    // 6. VIDEO FULLSCREEN TOGGLE LOGIC
+    // ==========================================
+    const fullscreenBtn = document.querySelector(".amd-course-video-fullscreen-btn");
+    if (fullscreenBtn) {
+      fullscreenBtn.addEventListener("click", () => {
+        const container = document.querySelector(".amd-app-wrap");
+        if (!container) return;
 
-
-// video fullscreen toggle login
-// Get the video element and fullscreen button
-document.querySelector('.amd-course-video-fullscreen-btn').addEventListener('click', () => {
-    const container = document.querySelector('.amd-app-wrap');
-
-    if (!document.fullscreenElement &&
-        !document.webkitFullscreenElement &&
-        !document.mozFullScreenElement &&
-        !document.msFullscreenElement) {
-
-        if (container.requestFullscreen) {
-            container.requestFullscreen();
-        } else if (container.mozRequestFullScreen) {
-            container.mozRequestFullScreen();
-        } else if (container.webkitRequestFullscreen) {
-            container.webkitRequestFullscreen();
-        } else if (container.msRequestFullscreen) {
-            container.msRequestFullscreen();
+        if (!document.fullscreenElement &&
+            !document.webkitFullscreenElement &&
+            !document.mozFullScreenElement &&
+            !document.msFullscreenElement) {
+          
+          if (container.requestFullscreen) container.requestFullscreen();
+          else if (container.mozRequestFullScreen) container.mozRequestFullScreen();
+          else if (container.webkitRequestFullscreen) container.webkitRequestFullscreen();
+          else if (container.msRequestFullscreen) container.msRequestFullscreen();
+          
+        } else {
+          
+          if (document.exitFullscreen) document.exitFullscreen();
+          else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+          else if (document.mozCancelFullScreen) document.mozCancelFullScreen();
+          else if (document.msExitFullscreen) document.msExitFullscreen();
+          
         }
-    } else {
-        if (document.exitFullscreen) {
-            document.exitFullscreen();
-        } else if (document.mozCancelFullScreen) {
-            document.mozCancelFullScreen();
-        } else if (document.webkitExitFullscreen) {
-            document.webkitExitFullscreen();
-        } else if (document.msExitFullscreen) {
-            document.msExitFullscreen();
-        }
+      });
     }
-});
-// fullscreen toggle end
 
-
+  });
+})();
