@@ -49,3 +49,10 @@ CREATE TABLE mdl_course_attempts (
 
 # 
 
+# Certificate Varification Check Garne Thau Banaune 
+
+
+# Fix It Today 
+
+-- Register Grda Proper District ani tesko dropdown retan garne error aauda 
+-- District Xuteko xa

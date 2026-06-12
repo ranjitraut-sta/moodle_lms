@@ -8,7 +8,6 @@ use mod_quiz\structure;
 
 class Quiz implements LessonModuleInterface
 {
-
     protected $cmid;
     protected $quiz;
     protected $userid;
@@ -57,7 +56,21 @@ class Quiz implements LessonModuleInterface
     }
 
     /**
-     * प्रश्नहरू र तिनका विकल्पहरू तयार पार्ने (Random Question र s6 Error फिक्स)
+     * स्ट्रिङबाट सबै HTML ट्याग र नचाहिने स्पेस सफा गर्ने हेल्पर फंक्शन
+     */
+    private function clean_html_content($text): string
+    {
+        // पहिले HTML ट्यागहरू हटाउने
+        $clean = strip_tags($text);
+        // &nbsp; जस्ता HTML entities लाई वास्तविक क्यारेक्टरमा बदल्ने
+        $clean = html_entity_decode($clean, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        // लाइन ब्रेक र अनावश्यक स्पेसहरूलाई एउटा सिंगल स्पेस बनाउने
+        $clean = preg_replace('/\s+/', ' ', $clean);
+        return trim($clean);
+    }
+
+    /**
+     * प्रश्नहरू र तिनका विकल्पहरू तयार पार्ने
      */
     private function get_quiz_questions(): array
     {
@@ -72,7 +85,6 @@ class Quiz implements LessonModuleInterface
         $structure = structure::create_for_quiz($quizobj);
         $quizdata = [];
 
-        // युजरको इन-प्रोग्रेस वा हालै सकिएको एटेम्प्ट हेर्ने
         $attempt = $DB->get_record('quiz_attempts', [
             'quiz' => $this->quiz->id,
             'userid' => $USER->id,
@@ -86,7 +98,6 @@ class Quiz implements LessonModuleInterface
             );
         }
 
-        // स्थिति १: यदि युजरको एटेम्प्ट (Attempt) छ भने र्‍यान्डम प्रश्नहरू स्वतः वास्तविक प्रश्नमा परिणत हुन्छन्
         if ($attempt) {
             $attemptobj = \mod_quiz\quiz_attempt::create($attempt->id);
             $slots = $attemptobj->get_slots();
@@ -126,16 +137,13 @@ class Quiz implements LessonModuleInterface
                 } elseif ($qtype === 'ddwtos') {
                     $item = array_merge($item, $this->get_ddwtos_data($q));
                 } else {
-                    $item['text'] = format_text($q->questiontext, FORMAT_HTML);
+                    $item['text'] = $this->clean_html_content(format_text($q->questiontext, FORMAT_HTML));
                 }
 
                 $quizdata[] = $item;
             }
         } else {
-            // स्थिति २: एटेम्प्ट नभएको बेला पुरानै स्ट्याटिक लोजिक चल्ने
             foreach ($structure->get_slots() as $slot) {
-
-                // फिक्स: यदि questionid खाली छ वा अंक होइन (जस्तै 's6') भने यसलाई सुरक्षित रूपमा स्किप गर्ने
                 if (empty($slot->questionid) || !is_numeric($slot->questionid)) {
                     continue;
                 }
@@ -143,7 +151,7 @@ class Quiz implements LessonModuleInterface
                 try {
                     $q = $DB->get_record('question', ['id' => $slot->questionid], '*', MUST_EXIST);
                 } catch (\Exception $e) {
-                    continue; // यदि कुनै कारणले डेटाबेसमा भेटिएन भने क्र्यास हुन नदिने
+                    continue;
                 }
 
                 $qtype = is_object($q->qtype) ? $q->qtype->name() : (string) $q->qtype;
@@ -161,7 +169,7 @@ class Quiz implements LessonModuleInterface
                 } elseif ($qtype === 'ddwtos') {
                     $item = array_merge($item, $this->get_ddwtos_data($q));
                 } else {
-                    $item['text'] = format_text($q->questiontext, FORMAT_HTML);
+                    $item['text'] = $this->clean_html_content(format_text($q->questiontext, FORMAT_HTML));
                 }
 
                 $quizdata[] = $item;
@@ -172,7 +180,7 @@ class Quiz implements LessonModuleInterface
     }
 
     /**
-     * MCQ र True/False को लागि विकल्पहरू
+     * MCQ र True/False को विकल्पहरूलाई सफा टेक्स्ट बनाउने
      */
     private function get_choice_data($q, $qtype = null): array
     {
@@ -183,7 +191,7 @@ class Quiz implements LessonModuleInterface
         foreach ($rows as $row) {
             $answers[] = [
                 'answerid' => $row->id,
-                'answertext' => format_text($row->answer, FORMAT_HTML),
+                'answertext' => $this->clean_html_content(format_text($row->answer, FORMAT_HTML)),
             ];
         }
 
@@ -200,7 +208,7 @@ class Quiz implements LessonModuleInterface
         }
 
         return [
-            'text' => format_text($q->questiontext, FORMAT_HTML),
+            'text' => $this->clean_html_content(format_text($q->questiontext, FORMAT_HTML)),
             'ismcq' => $qtype === 'multichoice',
             'ismcqsingle' => $mcqsingle,
             'istruefalse' => $qtype === 'truefalse',
@@ -209,7 +217,7 @@ class Quiz implements LessonModuleInterface
     }
 
     /**
-     * Drag & Drop into Text को डेटा
+     * Drag & Drop into Text को डेटा सफा गर्ने
      */
     private function get_ddwtos_data($q): array
     {
@@ -232,7 +240,7 @@ class Quiz implements LessonModuleInterface
             $options[] = [
                 'no' => $no++,
                 'groupno' => $draggroup,
-                'text' => strip_tags($ans->answer),
+                'text' => $this->clean_html_content($ans->answer),
             ];
         }
 
@@ -243,16 +251,13 @@ class Quiz implements LessonModuleInterface
         }
 
         return [
-            'text' => format_text($text, FORMAT_HTML),
+            'text' => $this->clean_html_content(format_text($text, FORMAT_HTML)),
             'isddwtos' => true,
             'ddwtositems' => $items,
             'ddwtosoptions' => $options
         ];
     }
 
-    /**
-     * एटेम्प्ट हिस्ट्री र सबैभन्दा उच्च अंक निकाल्ने
-     */
     private function get_all_attempts_history(): array
     {
         global $DB;

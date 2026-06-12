@@ -34,6 +34,60 @@
 
 <style>
 
+/* पुराना CSS हरू यथावत् राख्दै तलका कोड थप्नुहोस् */
+
+/* प्रोग्रेस बारको बाहिरी भाग */
+.progress-container {
+    width: 100%;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+/* नयाँ प्रोग्रेस बार (स्लाइडर) को स्टाइल */
+.progress-bar {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.3);
+    outline: none;
+    cursor: pointer;
+    transition: height 0.1s ease;
+}
+
+/* माउस लैजाँदा प्रोग्रेस बार अलिकति मोटो हुने */
+.progress-container:hover .progress-bar {
+    height: 8px;
+}
+
+/* स्क्रोल गर्ने गोलो बटन (Slider Thumb) को स्टाइल */
+.progress-bar::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #ff0000; /* YouTube को जस्तै रातो रंग */
+    cursor: pointer;
+}
+
+.progress-bar::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    border: none;
+    border-radius: 50%;
+    background: #ff0000;
+    cursor: pointer;
+}
+
+/* यो परिवर्तन जरुरी छ: कन्ट्रोल एरियामा माउस लैजाँदा मात्र होइन, भिडियो एरियामा लैजाँदा कन्ट्रोल्स देखिनुपर्छ */
+.video-wrapper:hover .custom-controls {
+    opacity: 1;
+    pointer-events: auto; 
+}
+
 .custom-video-player{
     position:relative;
     width:100%;

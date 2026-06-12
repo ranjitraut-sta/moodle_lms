@@ -19,17 +19,17 @@ require_sesskey();
 // ०. EMAIL VERIFICATION CONFIGURATION FLAG
 // ==========================================
 // 🔥 यो Flag लाई true गराए इमेल भेरिफिकेसन लिंक जान्छ, false राखे सिधै दर्ता हुन्छ।
-$isEmailSend = false; 
+$isEmailSend = true;
 
 // ==========================================
 // 1. INPUT PARAMETERS
 // ==========================================
-$username              = required_param('username', PARAM_USERNAME);
-$email                 = required_param('email', PARAM_EMAIL);
-$email2                = required_param('email2', PARAM_EMAIL);
-$firstname             = required_param('firstname', PARAM_TEXT);
-$lastname              = required_param('lastname', PARAM_TEXT);
-$password              = required_param('password', PARAM_RAW);
+$username = required_param('username', PARAM_USERNAME);
+$email = required_param('email', PARAM_EMAIL);
+$email2 = required_param('email2', PARAM_EMAIL);
+$firstname = required_param('firstname', PARAM_TEXT);
+$lastname = required_param('lastname', PARAM_TEXT);
+$password = required_param('password', PARAM_RAW);
 $password_confirmation = required_param('password_confirmation', PARAM_RAW);
 
 // ==========================================
@@ -58,13 +58,16 @@ if (!check_password_policy($password, $errmsg)) {
     $errors['password'] = $errmsg;
 }
 
-if (empty($firstname)) $errors['firstname'] = "First name is required.";
-if (empty($lastname))  $errors['lastname'] = "Last name is required.";
-if (empty($password))  $errors['password'] = "Password is required.";
+if (empty($firstname))
+    $errors['firstname'] = "First name is required.";
+if (empty($lastname))
+    $errors['lastname'] = "Last name is required.";
+if (empty($password))
+    $errors['password'] = "Password is required.";
 
 // Handle Validation Errors
 if (!empty($errors)) {
-    $_SESSION['register_errors']    = $errors;
+    $_SESSION['register_errors'] = $errors;
     $_SESSION['register_form_data'] = $_POST;
     redirect(new moodle_url('/login/index.php', ['register' => 1]));
 }
@@ -73,19 +76,20 @@ if (!empty($errors)) {
 // 3. CREATE USER OBJECT
 // ==========================================
 $user = new stdClass();
-$user->username    = $username;
-$user->email       = $email;
-$user->firstname   = $firstname;
-$user->lastname    = $lastname;
-$user->auth        = 'manual'; 
-$user->mnethostid  = $CFG->mnet_localhost_id;
-$user->password    = hash_internal_user_password($password);
+$user->username = $username;
+$user->email = $email;
+$user->firstname = $firstname;
+$user->lastname = $lastname;
+$user->auth = 'email'; // 🔥 'manual' बाट 'email' बनाउनुहोस् ताकि Moodle ले Secret Key जेनरेट गरोस्
+$user->mnethostid = $CFG->mnet_localhost_id;
+$user->password = hash_internal_user_password($password);
 
 // झण्डा (Flag) अनुसार अकाउन्टको status तय गर्ने
 if ($isEmailSend) {
     $user->confirmed = 0; // इमेल नबाँधिएसम्म बन्द रहने
 } else {
     $user->confirmed = 1; // सिधै खुल्ला (Active) हुने
+    $user->auth = 'manual'; // यदि सिधै एक्टिभ गर्ने हो भने चाहिँ 'manual' नै उत्तम हुन्छ।
 }
 
 // Insert into Moodle database
@@ -101,60 +105,86 @@ $profiledata = new stdClass();
 $profiledata->id = $userid;
 
 // Permanent Address
-$profiledata->profile_field_middle_name       = optional_param('middle_name', '', PARAM_TEXT);
-$profiledata->profile_field_province_id       = optional_param('province_id', 0, PARAM_INT);
-$profiledata->profile_field_district_id       = optional_param('district_id', 0, PARAM_INT);
-$profiledata->profile_field_municipality_id   = optional_param('municipality_id', 0, PARAM_INT);
-$profiledata->profile_field_ward              = optional_param('ward', '', PARAM_TEXT);
-$profiledata->profile_field_tole              = optional_param('tole', '', PARAM_TEXT);
+$profiledata->profile_field_middle_name = optional_param('middle_name', '', PARAM_TEXT);
+$profiledata->profile_field_province_id = optional_param('province_id', 0, PARAM_INT);
+$profiledata->profile_field_district_id = optional_param('district_id', 0, PARAM_INT);
+$profiledata->profile_field_municipality_id = optional_param('municipality_id', 0, PARAM_INT);
+$profiledata->profile_field_ward = optional_param('ward', '', PARAM_TEXT);
+$profiledata->profile_field_tole = optional_param('tole', '', PARAM_TEXT);
 
 // Temporary Address
-$profiledata->profile_field_temp_province_id     = optional_param('temp_province_id', 0, PARAM_INT);
-$profiledata->profile_field_temp_district_id     = optional_param('temp_district_id', 0, PARAM_INT);
+$profiledata->profile_field_temp_province_id = optional_param('temp_province_id', 0, PARAM_INT);
+$profiledata->profile_field_temp_district_id = optional_param('temp_district_id', 0, PARAM_INT);
 $profiledata->profile_field_temp_municipality_id = optional_param('temp_municipality_id', 0, PARAM_INT);
-$profiledata->profile_field_temp_ward            = optional_param('temp_ward', '', PARAM_TEXT);
-$profiledata->profile_field_temp_tole            = optional_param('temp_tole', '', PARAM_TEXT);
+$profiledata->profile_field_temp_ward = optional_param('temp_ward', '', PARAM_TEXT);
+$profiledata->profile_field_temp_tole = optional_param('temp_tole', '', PARAM_TEXT);
 
 // Documentation & Others
-$profiledata->profile_field_citizenship_no       = optional_param('citizenship_no', '', PARAM_TEXT);
+$profiledata->profile_field_citizenship_no = optional_param('citizenship_no', '', PARAM_TEXT);
 $profiledata->profile_field_citizenship_district = optional_param('citizenship_district', 0, PARAM_INT);
-$profiledata->profile_field_nid_no               = optional_param('nid_no', '', PARAM_TEXT);
-$profiledata->profile_field_pan_no               = optional_param('pan_no', '', PARAM_TEXT);
-$profiledata->profile_field_employed             = optional_param('employed', '', PARAM_TEXT);
-$profiledata->profile_field_phone_number         = optional_param('phone_number', '', PARAM_TEXT);
-$profiledata->profile_field_mobile_number        = optional_param('mobile_number', '', PARAM_TEXT);
-$profiledata->profile_field_organization_name    = optional_param('organization_name', '', PARAM_TEXT);
-$profiledata->profile_field_designation          = optional_param('designation', '', PARAM_TEXT);
-$profiledata->profile_field_expertise            = optional_param('expertise', '', PARAM_TEXT);
-$profiledata->profile_field_years_experience     = optional_param('years_experience', 0, PARAM_INT);
-$profiledata->profile_field_gender               = optional_param('gender', '', PARAM_TEXT);
-$profiledata->profile_field_age_group            = optional_param('age_group', '', PARAM_TEXT);
-$profiledata->profile_field_ethnicity            = optional_param('ethnicity', '', PARAM_TEXT);
-$profiledata->profile_field_ethnicity_others     = optional_param('ethnicity_others', '', PARAM_TEXT);
-$profiledata->profile_field_qualification        = optional_param('qualification', '', PARAM_TEXT);
+$profiledata->profile_field_nid_no = optional_param('nid_no', '', PARAM_TEXT);
+$profiledata->profile_field_pan_no = optional_param('pan_no', '', PARAM_TEXT);
+$profiledata->profile_field_employed = optional_param('employed', '', PARAM_TEXT);
+$profiledata->profile_field_phone_number = optional_param('phone_number', '', PARAM_TEXT);
+$profiledata->profile_field_mobile_number = optional_param('mobile_number', '', PARAM_TEXT);
+$profiledata->profile_field_organization_name = optional_param('organization_name', '', PARAM_TEXT);
+$profiledata->profile_field_designation = optional_param('designation', '', PARAM_TEXT);
+$profiledata->profile_field_expertise = optional_param('expertise', '', PARAM_TEXT);
+$profiledata->profile_field_years_experience = optional_param('years_experience', 0, PARAM_INT);
+$profiledata->profile_field_gender = optional_param('gender', '', PARAM_TEXT);
+$profiledata->profile_field_age_group = optional_param('age_group', '', PARAM_TEXT);
+$profiledata->profile_field_ethnicity = optional_param('ethnicity', '', PARAM_TEXT);
+$profiledata->profile_field_ethnicity_others = optional_param('ethnicity_others', '', PARAM_TEXT);
+$profiledata->profile_field_qualification = optional_param('qualification', '', PARAM_TEXT);
 
 profile_save_data($profiledata);
 
+
+// सेसन खाली गर्ने (दुवै केसमा चाहिन्छ)
 // ==========================================
 // 5. HANDLING REDIRECTION & CONDITIONAL EMAIL
 // ==========================================
-// सेसन खाली गर्ने (दुवै केसमा चाहिन्छ)
+// ==========================================
+// 5. HANDLING REDIRECTION & CONDITIONAL EMAIL
+// ==========================================
 unset($_SESSION['register_errors']);
 unset($_SESSION['register_form_data']);
 
-$loginurl = new moodle_url('/login/index.php');
-
 if ($isEmailSend) {
-    // यदि Flag TRUE छ भने मात्र मेल पठाउने प्रयास गर्ने
-    if (send_confirmation_email($userobj)) {
-        $notice_message = "Registration successful! A verification email has been sent to " . s($userobj->email) . ". Please check your inbox and confirm your account before logging in.";
-        redirect($loginurl, $notice_message, 15);
+    // १. पहिले Moodle को कोर फङ्गसनलाई सेक्रेट जनरेट गर्न र पहिलो ड्राफ्ट पठाउन दिने, 
+    // वा हामी आफैँ सेक्रेट कुँदेर कस्टुम मेल पठाउने (हामीले अघि कस्टुम मेल बनाएका थियौँ)
+    
+    // सेक्रेट की डेटाबेसमा छ कि छैन निश्चित गर्न फ्रेस रेकर्ड तान्ने
+    $userobj = $DB->get_record('user', ['id' => $userid]);
+    
+    // यदि Moodle ले सेक्रेट बनाएको छैन भने कस्टुम जनरेट गरिदिने (ताकि खाली कहिल्यै नहोस्)
+    if (empty($userobj->secret)) {
+        $userobj->secret = random_string(15);
+        $DB->set_field('user', 'secret', $userobj->secret, ['id' => $userobj->id]);
+    }
+
+    // २. कस्टुम लिङ्क तयार गर्ने (अब `s` प्यारामिटर १००% भरिन्छ)
+    $custom_confirm_url = new moodle_url('/theme/mytheme/pages/email_confirm.php', [
+        'p' => $userobj->username,
+        's' => $userobj->secret
+    ]);
+
+    $site = get_site();
+    $from = core_user::get_support_user();
+    $subject = format_string($site->fullname) . ": Account Confirmation";
+
+    $message  = "Hi " . fullname($userobj) . ",\n\n";
+    $message .= "To confirm your new account, please go to this web address:\n\n";
+    $message .= $custom_confirm_url->out(false) . "\n\n";
+    $message .= "If you need help, please contact the site administrator.\n";
+
+    if (email_to_user($userobj, $from, $subject, $message)) {
+        $sentpageurl = new moodle_url('/theme/mytheme/pages/mail_sent.php', ['email' => $userobj->email]);
+        redirect($sentpageurl);
     } else {
-        // यदि SMTP वा कुनै कारणले मेल जान सकेन भने एरर फाल्ने
         print_error('emailnoerr', 'auth_email');
     }
 } else {
-    // यदि Flag FALSE छ भने मेल नपठाई सिधै सफलताको सन्देश दिने
-    $notice_message = "Registration successful! You can now log in using your username and password.";
-    redirect($loginurl, $notice_message, 5);
+    $loginurl = new moodle_url('/login/index.php');
+    redirect($loginurl, "Registration successful!", 5);
 }

@@ -1117,7 +1117,7 @@ body.amd-lms-search-active .amd-lms-search-overlay {
     background-color: #fff;
     border: 1px solid #e2e8f0;
 
-    padding: 1.5rem;
+    padding:8px;
     margin-bottom: 1rem;
     display: grid;
     grid-template-columns: 3fr 1fr 1fr 1fr;

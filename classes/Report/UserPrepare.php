@@ -20,6 +20,7 @@ class UserPrepare
             'user_fullname' => fullname($this->user),
             'user_firstname' => $this->user->firstname,
             'user_profile_pix' => $this->get_user_picture(),
+            'logo' => $this->get_logo_url(),
         ];
     }
 
@@ -104,5 +105,24 @@ class UserPrepare
         }
 
         return $result;
+    }
+
+    
+      protected function get_logo_url()
+    {
+        global $PAGE, $OUTPUT;
+
+        // 1. Moodle ko theme object bata direct image ko url line (Yesle settings ko 'logo' file check garchha)
+        $logourl = $PAGE->theme->setting_file_url('logo', 'logo');
+
+        // 2. Yadi logo upload bhako chha bhane link return garchha
+        if ($logourl) {
+            return $logourl;
+        }
+
+        // 3. Yadi setting ma logo chaina bhane, fallback ko rupma theme ko pix folder bata default image dina sakincha (Optional)
+        // return $OUTPUT->image_url('default_logo', 'theme_mytheme'); 
+
+        return false;
     }
 }

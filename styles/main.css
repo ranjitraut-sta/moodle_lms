@@ -1476,7 +1476,7 @@ a {
   transform: translateY(-50%);
   width: 25px;
   height: 2px;
-  background-color: var(--accent-color);
+  background-color: var(--amd-secondary);
 }
 
 .amd-lms-about__title {
