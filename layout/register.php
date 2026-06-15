@@ -7,7 +7,8 @@ $sesskey = sesskey();
 $templatecontext = theme_mytheme_get_base_context();
 $logo = !empty($templatecontext['setting']['logo']) ? $templatecontext['setting']['logo'] : false;
 $PAGE->requires->css('/theme/mytheme/styles/login.css');
-
+$forgotpassurl = (new moodle_url('/theme/mytheme/pages/forgetpassword.php'))->out(false);
+$loginurl = new moodle_url('/login/index.php');
 
 echo $OUTPUT->doctype();
 ?>
@@ -60,10 +61,13 @@ echo $OUTPUT->doctype();
 
                     <!-- Form Controls (Buttons) -->
                     <div class="amd-lms-login-form-controls">
-                        <a href="?login=1"><button class="amd-lms-login-control-btn"
+                        <a href="<?php echo $loginurl; ?>"><button class="amd-lms-login-control-btn"
                                 data-form="login">Login</button></a>
                         <a href="?register=1"> <button class="amd-lms-login-control-btn amd-lms-login-active-btn"
                                 data-form="register">Register</button>
+                        </a>
+                        <a href="<?php echo $forgotpassurl; ?>"> <button class="amd-lms-login-control-btn"
+                                data-form="forgot">Forgot Password</button>
                         </a>
                     </div>
                 </div>
@@ -447,171 +451,171 @@ echo $OUTPUT->doctype();
         </div>
     </main>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const wwwroot = "<?php echo $CFG->wwwroot; ?>";
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const wwwroot = "<?php echo $CFG->wwwroot; ?>";
 
-        // 🔥 सुधार १: json_json_encode लाई json_encode मात्र बनाइयो
-        // यदि डेटा छैन भने खाली अब्जेक्ट आउँछ जसले गर्दा JS क्र्यास हुँदैन
-        const oldData = <?php echo json_encode($formdata ?? (object) []); ?>;
-        
-        console.log("Retained Form Data:", oldData); // डिबग गर्न सजिलोको लागि
+            // 🔥 सुधार १: json_json_encode लाई json_encode मात्र बनाइयो
+            // यदि डेटा छैन भने खाली अब्जेक्ट आउँछ जसले गर्दा JS क्र्यास हुँदैन
+            const oldData = <?php echo json_encode($formdata ?? (object) []); ?>;
 
-        // =========================================================================
-        // HELPER FUNCTIONS (Fetch & Populate Dropdowns)
-        // =========================================================================
+            console.log("Retained Form Data:", oldData); // डिबग गर्न सजिलोको लागि
 
-        // १. जिल्ला लोड गर्ने र आवश्यक परे पुराना भ्यालु सेलेक्ट गराउने
-        async function loadDistricts(provinceId, districtSelect, selectedId = null) {
-            if (!provinceId) {
-                districtSelect.innerHTML = '<option value="">Select District</option>';
-                return;
-            }
-            try {
-                const res = await fetch(`${wwwroot}/theme/mytheme/pages/ajax/locations.php?action=districts&province_id=${provinceId}`);
-                const data = await res.json();
+            // =========================================================================
+            // HELPER FUNCTIONS (Fetch & Populate Dropdowns)
+            // =========================================================================
 
-                districtSelect.innerHTML = '<option value="">Select District</option>';
-                data.forEach(d => {
-                    const isSelected = (selectedId && d.id == selectedId) ? 'selected' : '';
-                    districtSelect.innerHTML += `<option value="${d.id}" ${isSelected}>${d.name}</option>`;
-                });
-            } catch (err) {
-                console.error('Error loading districts:', err);
-            }
-        }
+            // १. जिल्ला लोड गर्ने र आवश्यक परे पुराना भ्यालु सेलेक्ट गराउने
+            async function loadDistricts(provinceId, districtSelect, selectedId = null) {
+                if (!provinceId) {
+                    districtSelect.innerHTML = '<option value="">Select District</option>';
+                    return;
+                }
+                try {
+                    const res = await fetch(`${wwwroot}/theme/mytheme/pages/ajax/locations.php?action=districts&province_id=${provinceId}`);
+                    const data = await res.json();
 
-        // २. नगरपालिका लोड गर्ने र आवश्यक परे पुराना भ्यालु सेलेक्ट गराउने
-        async function loadMunicipalities(districtId, muniSelect, selectedId = null) {
-            if (!districtId) {
-                muniSelect.innerHTML = '<option value="">Select Municipality</option>';
-                return;
-            }
-            try {
-                const res = await fetch(`${wwwroot}/theme/mytheme/pages/ajax/locations.php?action=municipalities&district_id=${districtId}`);
-                const data = await res.json();
-
-                muniSelect.innerHTML = '<option value="">Select Municipality</option>';
-                data.forEach(m => {
-                    const isSelected = (selectedId && m.id == selectedId) ? 'selected' : '';
-                    muniSelect.innerHTML += `<option value="${m.id}" ${isSelected}>${m.name}</option>`;
-                });
-            } catch (err) {
-                console.error('Error loading municipalities:', err);
-            }
-        }
-
-        // =========================================================================
-        // INITIALIZATION ON PAGE LOAD (Validation Error हुँदा डेटा बचाउने लोजिक)
-        // =========================================================================
-
-        // Citizenship District Load
-        const citizenDistrictSelect = document.getElementById('citizenship_district_dropdown');
-        if (citizenDistrictSelect) {
-            fetch(`${wwwroot}/theme/mytheme/pages/ajax/locations.php?action=districts`)
-                .then(res => res.json())
-                .then(data => {
-                    citizenDistrictSelect.innerHTML = '<option value="">Select Issued District</option>';
+                    districtSelect.innerHTML = '<option value="">Select District</option>';
                     data.forEach(d => {
-                        // 🔥 सुधार २: ब्याकइन्डको optional_param नेम 'citizenship_district' सँग म्याच गरियो
-                        const isSelected = (oldData.citizenship_district && d.id == oldData.citizenship_district) ? 'selected' : '';
-                        citizenDistrictSelect.innerHTML += `<option value="${d.id}" ${isSelected}>${d.name}</option>`;
+                        const isSelected = (selectedId && d.id == selectedId) ? 'selected' : '';
+                        districtSelect.innerHTML += `<option value="${d.id}" ${isSelected}>${d.name}</option>`;
                     });
+                } catch (err) {
+                    console.error('Error loading districts:', err);
+                }
+            }
+
+            // २. नगरपालिका लोड गर्ने र आवश्यक परे पुराना भ्यालु सेलेक्ट गराउने
+            async function loadMunicipalities(districtId, muniSelect, selectedId = null) {
+                if (!districtId) {
+                    muniSelect.innerHTML = '<option value="">Select Municipality</option>';
+                    return;
+                }
+                try {
+                    const res = await fetch(`${wwwroot}/theme/mytheme/pages/ajax/locations.php?action=municipalities&district_id=${districtId}`);
+                    const data = await res.json();
+
+                    muniSelect.innerHTML = '<option value="">Select Municipality</option>';
+                    data.forEach(m => {
+                        const isSelected = (selectedId && m.id == selectedId) ? 'selected' : '';
+                        muniSelect.innerHTML += `<option value="${m.id}" ${isSelected}>${m.name}</option>`;
+                    });
+                } catch (err) {
+                    console.error('Error loading municipalities:', err);
+                }
+            }
+
+            // =========================================================================
+            // INITIALIZATION ON PAGE LOAD (Validation Error हुँदा डेटा बचाउने लोजिक)
+            // =========================================================================
+
+            // Citizenship District Load
+            const citizenDistrictSelect = document.getElementById('citizenship_district_dropdown');
+            if (citizenDistrictSelect) {
+                fetch(`${wwwroot}/theme/mytheme/pages/ajax/locations.php?action=districts`)
+                    .then(res => res.json())
+                    .then(data => {
+                        citizenDistrictSelect.innerHTML = '<option value="">Select Issued District</option>';
+                        data.forEach(d => {
+                            // 🔥 सुधार २: ब्याकइन्डको optional_param नेम 'citizenship_district' सँग म्याच गरियो
+                            const isSelected = (oldData.citizenship_district && d.id == oldData.citizenship_district) ? 'selected' : '';
+                            citizenDistrictSelect.innerHTML += `<option value="${d.id}" ${isSelected}>${d.name}</option>`;
+                        });
+                    });
+            }
+
+            // डोम एलिमेन्टहरू
+            const provinceSelect = document.querySelector('.state-dropdown');
+            const districtSelect = document.querySelector('.district-dropdown');
+            const muniSelect = document.querySelector('.municipality-dropdown');
+
+            const tempProvince = document.querySelector('.temp-state-dropdown');
+            const tempDistrict = document.querySelector('.temp-district-dropdown');
+            const tempMuni = document.querySelector('.temp-municipality-dropdown');
+
+            // पेज लोड हुँदा पुराना भ्यालुहरू छन् भने स्वतः चेन (Chain) मा लोड गराउने
+            async function initOldAddresses() {
+                // स्थायी ठेगाना (Permanent Address)
+                // 🔥 सुधार ३: $_POST बाट आउने की 'province_id', 'district_id', 'municipality_id' सँग म्याच गरियो
+                if (provinceSelect && provinceSelect.value) {
+                    await loadDistricts(provinceSelect.value, districtSelect, oldData.district_id);
+                    if (districtSelect.value) {
+                        await loadMunicipalities(districtSelect.value, muniSelect, oldData.municipality_id);
+                    }
+                }
+                // अस्थायी ठेगाना (Temporary Address)
+                if (tempProvince && tempProvince.value) {
+                    await loadDistricts(tempProvince.value, tempDistrict, oldData.temp_district_id);
+                    if (tempDistrict.value) {
+                        await loadMunicipalities(tempDistrict.value, tempMuni, oldData.temp_municipality_id);
+                    }
+                }
+            }
+
+            // फङ्गसन कल गर्ने
+            initOldAddresses();
+
+            // =========================================================================
+            // INTERACTIVE EVENT LISTENERS (User Interactions)
+            // =========================================================================
+
+            // स्थायी ठेगाना चेन्ज इभेन्टहरू
+            if (provinceSelect) {
+                provinceSelect.addEventListener('change', async function () {
+                    muniSelect.innerHTML = '<option value="">Select Municipality</option>';
+                    await loadDistricts(this.value, districtSelect);
                 });
-        }
-
-        // डोम एलिमेन्टहरू
-        const provinceSelect = document.querySelector('.state-dropdown');
-        const districtSelect = document.querySelector('.district-dropdown');
-        const muniSelect = document.querySelector('.municipality-dropdown');
-
-        const tempProvince = document.querySelector('.temp-state-dropdown');
-        const tempDistrict = document.querySelector('.temp-district-dropdown');
-        const tempMuni = document.querySelector('.temp-municipality-dropdown');
-
-        // पेज लोड हुँदा पुराना भ्यालुहरू छन् भने स्वतः चेन (Chain) मा लोड गराउने
-        async function initOldAddresses() {
-            // स्थायी ठेगाना (Permanent Address)
-            // 🔥 सुधार ३: $_POST बाट आउने की 'province_id', 'district_id', 'municipality_id' सँग म्याच गरियो
-            if (provinceSelect && provinceSelect.value) {
-                await loadDistricts(provinceSelect.value, districtSelect, oldData.district_id);
-                if (districtSelect.value) {
-                    await loadMunicipalities(districtSelect.value, muniSelect, oldData.municipality_id);
-                }
             }
-            // अस्थायी ठेगाना (Temporary Address)
-            if (tempProvince && tempProvince.value) {
-                await loadDistricts(tempProvince.value, tempDistrict, oldData.temp_district_id);
-                if (tempDistrict.value) {
-                    await loadMunicipalities(tempDistrict.value, tempMuni, oldData.temp_municipality_id);
-                }
+
+            if (districtSelect) {
+                districtSelect.addEventListener('change', async function () {
+                    await loadMunicipalities(this.value, muniSelect);
+                });
             }
-        }
-        
-        // फङ्गसन कल गर्ने
-        initOldAddresses();
 
-        // =========================================================================
-        // INTERACTIVE EVENT LISTENERS (User Interactions)
-        // =========================================================================
+            // अस्थायी ठेगाना चेन्ज इभेन्टहरू
+            if (tempProvince) {
+                tempProvince.addEventListener('change', async function () {
+                    tempMuni.innerHTML = '<option value="">Select Municipality</option>';
+                    await loadDistricts(this.value, tempDistrict);
+                });
+            }
 
-        // स्थायी ठेगाना चेन्ज इभेन्टहरू
-        if (provinceSelect) {
-            provinceSelect.addEventListener('change', async function () {
-                muniSelect.innerHTML = '<option value="">Select Municipality</option>';
-                await loadDistricts(this.value, districtSelect);
-            });
-        }
+            if (tempDistrict) {
+                tempDistrict.addEventListener('change', async function () {
+                    await loadMunicipalities(this.value, tempMuni);
+                });
+            }
 
-        if (districtSelect) {
-            districtSelect.addEventListener('change', async function () {
-                await loadMunicipalities(this.value, muniSelect);
-            });
-        }
+            // =========================================================================
+            // SAME AS PERMANENT CHECKBOX LOGIC
+            // =========================================================================
+            const sameAddress = document.getElementById('sameAddress');
+            if (sameAddress) {
+                sameAddress.addEventListener('change', async function () {
+                    if (!this.checked) return;
 
-        // अस्थायी ठेगाना चेन्ज इभेन्टहरू
-        if (tempProvince) {
-            tempProvince.addEventListener('change', async function () {
-                tempMuni.innerHTML = '<option value="">Select Municipality</option>';
-                await loadDistricts(this.value, tempDistrict);
-            });
-        }
+                    const ward = document.querySelector('input[name="ward"]');
+                    const tole = document.querySelector('input[name="tole"]');
+                    const tempWard = document.querySelector('input[name="temp_ward"]');
+                    const tempTole = document.querySelector('input[name="temp_tole"]');
 
-        if (tempDistrict) {
-            tempDistrict.addEventListener('change', async function () {
-                await loadMunicipalities(this.value, tempMuni);
-            });
-        }
+                    // १. प्रदेश कपि गर्ने
+                    tempProvince.value = provinceSelect.value;
 
-        // =========================================================================
-        // SAME AS PERMANENT CHECKBOX LOGIC
-        // =========================================================================
-        const sameAddress = document.getElementById('sameAddress');
-        if (sameAddress) {
-            sameAddress.addEventListener('change', async function () {
-                if (!this.checked) return;
+                    // २. जिल्ला लोड गरेर भ्यालु कपि गर्ने
+                    await loadDistricts(provinceSelect.value, tempDistrict, districtSelect.value);
 
-                const ward = document.querySelector('input[name="ward"]');
-                const tole = document.querySelector('input[name="tole"]');
-                const tempWard = document.querySelector('input[name="temp_ward"]');
-                const tempTole = document.querySelector('input[name="temp_tole"]');
+                    // ३. नगरपालिका लोड गरेर भ्यालु कपि गर्ने
+                    await loadMunicipalities(districtSelect.value, tempMuni, muniSelect.value);
 
-                // १. प्रदेश कपि गर्ने
-                tempProvince.value = provinceSelect.value;
-
-                // २. जिल्ला लोड गरेर भ्यालु कपि गर्ने
-                await loadDistricts(provinceSelect.value, tempDistrict, districtSelect.value);
-
-                // ३. नगरपालिका लोड गरेर भ्यालु कपि गर्ने
-                await loadMunicipalities(districtSelect.value, tempMuni, muniSelect.value);
-
-                // ४. वार्ड र टोल कपि गर्ने
-                if (tempWard && ward) tempWard.value = ward.value;
-                if (tempTole && tole) tempTole.value = tole.value;
-            });
-        }
-    });
-</script>
+                    // ४. वार्ड र टोल कपि गर्ने
+                    if (tempWard && ward) tempWard.value = ward.value;
+                    if (tempTole && tole) tempTole.value = tole.value;
+                });
+            }
+        });
+    </script>
 
     <script>
         document.querySelectorAll('.togglePassword').forEach(button => {

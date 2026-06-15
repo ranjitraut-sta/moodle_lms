@@ -82,7 +82,8 @@ $user->firstname = $firstname;
 $user->lastname = $lastname;
 $user->auth = 'email'; // 🔥 'manual' बाट 'email' बनाउनुहोस् ताकि Moodle ले Secret Key जेनरेट गरोस्
 $user->mnethostid = $CFG->mnet_localhost_id;
-$user->password = hash_internal_user_password($password);
+// $user->password = hash_internal_user_password($password);
+$user->password = $password;
 
 // झण्डा (Flag) अनुसार अकाउन्टको status तय गर्ने
 if ($isEmailSend) {
@@ -153,10 +154,10 @@ unset($_SESSION['register_form_data']);
 if ($isEmailSend) {
     // १. पहिले Moodle को कोर फङ्गसनलाई सेक्रेट जनरेट गर्न र पहिलो ड्राफ्ट पठाउन दिने, 
     // वा हामी आफैँ सेक्रेट कुँदेर कस्टुम मेल पठाउने (हामीले अघि कस्टुम मेल बनाएका थियौँ)
-    
+
     // सेक्रेट की डेटाबेसमा छ कि छैन निश्चित गर्न फ्रेस रेकर्ड तान्ने
     $userobj = $DB->get_record('user', ['id' => $userid]);
-    
+
     // यदि Moodle ले सेक्रेट बनाएको छैन भने कस्टुम जनरेट गरिदिने (ताकि खाली कहिल्यै नहोस्)
     if (empty($userobj->secret)) {
         $userobj->secret = random_string(15);
@@ -173,7 +174,7 @@ if ($isEmailSend) {
     $from = core_user::get_support_user();
     $subject = format_string($site->fullname) . ": Account Confirmation";
 
-    $message  = "Hi " . fullname($userobj) . ",\n\n";
+    $message = "Hi " . fullname($userobj) . ",\n\n";
     $message .= "To confirm your new account, please go to this web address:\n\n";
     $message .= $custom_confirm_url->out(false) . "\n\n";
     $message .= "If you need help, please contact the site administrator.\n";

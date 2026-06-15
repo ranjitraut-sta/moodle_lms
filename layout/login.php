@@ -18,12 +18,14 @@ if ($is_register) {
 
 // Moodle context and tokens
 $logintoken = \core\session\manager::get_login_token();
-$forgotpassurl = (new moodle_url('/login/forgot_password.php'))->out(false);
+// पुरानो $forgotpassurl को सट्टा यो राख्नुहोस्:
+$forgotpassurl = (new moodle_url('/theme/mytheme/pages/forgetpassword.php'))->out(false);
 $PAGE->requires->css('/theme/mytheme/styles/login.css');
 
 // Theme settings
 $templatecontext = theme_mytheme_get_base_context();
 $logo = !empty($templatecontext['setting']['logo']) ? $templatecontext['setting']['logo'] : false;
+
 
 // Show friendly error for login failures (e.g. redirected with ?errorcode=3)
 $errorcode = optional_param('errorcode', 0, PARAM_INT);
@@ -83,6 +85,9 @@ echo $OUTPUT->doctype();
                                 data-form="login">Login</button></a>
                         <a href="?register=1"> <button class="amd-lms-login-control-btn"
                                 data-form="register">Register</button>
+                        </a>
+                        <a href="<?php echo $forgotpassurl; ?>"> <button class="amd-lms-login-control-btn"
+                                data-form="forgot">Forgot Password</button>
                         </a>
                     </div>
                 </div>

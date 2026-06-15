@@ -465,6 +465,7 @@ a {
   padding-right: 30px;
   /* space for the tick */
   font-family: Arial, Helvetica, sans-serif;
+  margin: 6px;
 }
 
 .lesson:hover {
@@ -545,6 +546,9 @@ a {
   flex-shrink: 0;
   width: 40px;
   /* fixed width to align numbers */
+}
+.lesson .number i {
+  margin: 5px;
 }
 
 /* New rule for .text-label to wrap text */
